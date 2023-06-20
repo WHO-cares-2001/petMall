@@ -1,0 +1,16 @@
+/* 全局css文件 */
+
+/* 默认字体颜色 */
+.f-color{
+	color:#636263;
+}
+
+/* 选中字体颜色 */
+.f-active{
+	color: #636263;
+}
+
+/* 主题色 */
+.bg-color{
+	background-color: #42B7FB;
+}

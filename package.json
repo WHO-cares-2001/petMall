@@ -1,0 +1,18 @@
+{
+  "name": "petapp2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dcloudio/uni-ui": "^1.4.28",
+    "axios": "^1.4.0",
+    "router": "^1.3.8",
+    "uni-simple-router": "^2.0.7"
+  }
+}
