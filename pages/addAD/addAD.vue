@@ -132,6 +132,8 @@
 						isDefault: isDefault,
 						userId: Id
 					});
+					
+					
 					saves({...this.FormData,isDefault: isDefault,userId:Id}).then(function(res){
 						uni.showToast({
 							title: `新增成功`

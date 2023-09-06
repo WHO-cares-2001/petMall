@@ -1,5 +1,7 @@
 import App from './App'
 
+
+
 //vuex
 import store from './store'
 Vue.prototype.$store=store;
@@ -40,6 +42,8 @@ export function createApp() {
 }
 // #endif
 
+// import uView from "@/uview-ui";
+// Vue.use(uView);
 
 // 定义无需登录即可访问的路径列表
 const publicRoutes = ['/', '/pages/login/login', 

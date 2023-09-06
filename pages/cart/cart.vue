@@ -62,7 +62,7 @@
 					<view class="foot-count">
 						合计：<text style="color: #49BDFB;">￥{{totalCount.pprice}}</text>
 					</view>
-					<view class="foot-num">
+					<view class="foot-num" @tap="goBuy">
 						结算（{{totalCount.num}}）
 					</view>
 				</view>
@@ -112,10 +112,30 @@
 				username: state => state.username,
 				list:state=>state.cart.list,
 				
+				//选中的商品
+				selectedList:state=>state.cart.selectedList
 			}),
 			...mapGetters(['checkedAll','totalCount'])
 		},
 		methods:{
+			//进入确认订单
+			goBuy(){
+				console.log(this.selectedList)
+				if( this.selectedList.length === 0 ){
+					return uni.showToast({
+						title:"请至少选择一件商品",
+						icon:"none"
+					})
+				}
+				
+				
+				// 把选中的传过去
+				uni.navigateTo({
+					// url: '../buy/buy?detail='+goods
+					url:`../buy/createOrder?detail=${JSON.stringify(this.selectedList)}`
+				});
+				
+			},
 			...mapActions(['selectAll']),
 			...mapMutations(['selectedItem','updateList']),
 			judgeNum(num){
@@ -130,14 +150,8 @@
 				getCart(this.id)
 				.then(function(res){
 					console.log(res.data); // 输出完整的响应对象，以便查看数据结构
-					  // if (res.status === 200) {
-						self.$store.commit('updateList', res.data)
-						// console.log(typeof(res.data[0].number)); 
-						//console.log(res.data.data)
-	     //              
-					  // }
-					// self.list=res.data
-					
+					self.$store.commit('updateList', res.data)
+						
 				})
 				.catch(function(err){
 					console.log(err)

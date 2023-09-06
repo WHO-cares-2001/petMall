@@ -5,7 +5,7 @@
 		</view>
 		<uni-forms ref="userForm" :modelValue="userData" class="userForm-box" :rules="userFormRules">
 			<view class="userImg">
-				<image :src="userData.img" mode="aspectFit" style="width: 170rpx;margin-left: 35%"></image>
+				<image :src="'../../static/petImgs/'+userData.img" mode="aspectFit" style="width: 170rpx;margin-left: 35%"></image>
 			</view>
 
 			<uni-forms-item label="用户名">
@@ -81,7 +81,7 @@
 				id: id
 			}).then(function(res) {
 				self.userData = res.data;
-				self.userData.img='../../static/petImgs/'+self.userData.img;
+				self.userData.img=self.userData.img;
 				console.log(self.userData);
 			})
 		},
@@ -94,7 +94,9 @@
 			submit(ref) {
 				let self = this;
 				this.$refs[ref].validate().then(res => {
+					
 					update(self.userData).then(function(res){
+						console.log(res.data)
 						uni.showToast({
 							title: `修改成功`
 						})

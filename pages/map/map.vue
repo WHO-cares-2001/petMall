@@ -1,9 +1,25 @@
 <template>
 	<view>
+		<TopBar barTitle="附近商店" @click-left='callGoIndex()'></TopBar>
+		
 		<!-- <button type="default" @click="getCurrentLocation()">获取当前位置</button> -->
-		<button type="primary" @click="getaddress()">获取选择的位置</button>
-		<view style="color: red;">
+		<button type="primary" @click="getaddress()">选择当前位置</button>
+		<view style="color: red;" class="pos">
 			{{positionInfo.address}}
+		</view>
+		
+		<view class="shop-item">
+			<uni-list>
+				<uni-list-item :title="shopInfo.shopName" 
+				:note="shopInfo.address" showArrow
+				:thumb="'../../static/petImgs/'+shopInfo.img"
+				thumb-size="lg" rightText="详情" link
+				@click="goShop(shopInfo.id)" class="shop-text"
+				v-for="(shopInfo,index) in shopList"
+				:key="index"
+				/>
+				
+			</uni-list>
 		</view>
 	</view>
 </template>
@@ -12,8 +28,14 @@
 	import {
 		nearbyShops
 	} from "../../network/modules/map.js";
+	import {goIndex,goBack} from '@/common/sharedMethods.js'
+	import TopBar from '../../components/common/topBar.vue'
+	
 	
 	export default {
+		components:{
+			TopBar
+		},
 		data() {
 			return {
 				positionInfo: {
@@ -22,6 +44,7 @@
 					latitude: '', //纬度
 				},
 				shopList:[],
+				
 			}
 		},
 		methods: {
@@ -49,6 +72,7 @@
 				//https://apis.map.qq.com/ws/geocoder/v1/?location=24.6218,118.0805&key=F2XBZ-SCM3G-W53Q3-QVSOB-NUXBO-TDBUI
 				let str = `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=F2XBZ-SCM3G-W53Q3-QVSOB-NUXBO-TDBUI` 
 				console.log(str)
+				
 				that.$jsonp('https://apis.map.qq.com/ws/geocoder/v1/?location=24.6218,118.0805&key=F2XBZ-SCM3G-W53Q3-QVSOB-NUXBO-TDBUI')
 				.then(res => {
 					console.log(1)
@@ -69,20 +93,32 @@
 				var str;
 				
 				uni.chooseLocation({
-					success: function(res) {												
-						that.positionInfo.address = '选择的位置是：' 
+					success: function(res) {			
+						
+						that.positionInfo.address = '你选择的位置是：' 
 						+ res.address.substring(0,res.address.indexOf('市'));
+
 						str=res.address.substring(0,res.address.indexOf('市'));
+						
 						nearbyShops(str)
-						
-					.then(function(res){
-						console.log(res);
-						
+						.then(function(res){
+							console.log(res.data);
+							that.shopList=res.data
 						})	
 					}
 				});
 						
 				
+			},
+			callGoIndex(){
+				// console.log('触发')
+				goIndex();
+			},
+			goShop(id){
+				uni.navigateTo({
+					url: '../shop/shop?shopId='+ id
+				});
+				  
 			},
 			/*api(address){
 				let self=this
@@ -98,8 +134,10 @@
 </script>
  
 <style scoped>
-	button,
-	view {
-		margin: 20px;
+	button{
+		margin: 40px;
+	}
+	.pos{
+		margin-left:40px;
 	}
 </style>

@@ -94,25 +94,13 @@
 					
 					<uni-list>
 						<uni-list-item :title="item.typeName">
-							<!-- direction="column" -->
 							<template v-slot:footer>
-								<!-- <text >柯基</text> -->
 								<text class="slot-text" >
 									￥{{item.price}}
 								</text>
 								
 							</template>
-							
-							<!-- <template v-slot:footer>
-								<view>
-									<image src="../../static/logo.png" class="list-img"></image>
-									<text>商店</text>
-								</view>
-							</template> -->
 						</uni-list-item>
-						
-						<!-- <uni-list-item title="商店">
-						</uni-list-item> -->
 					</uni-list>
 					
 				</uni-card>

@@ -79,9 +79,21 @@
 				})
 			},
 			updateAdd(index) {
+				const json=this.addressListData.find(item=>item.isDefault===1)
+				console.log(json)
+				
+				let flagId=null
+				if(json){
+					flagId=json.id
+				}else{
+					flagId=null
+				}
+				
+				
 				let addressObj = JSON.stringify({
 					index: index,
-					item: this.addressListData[index]
+					item: this.addressListData[index],
+					flag:flagId
 				})
 				uni.navigateTo({
 					url: "../editAD/editAD?data=" + addressObj

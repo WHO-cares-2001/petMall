@@ -68,15 +68,21 @@
 				:note="shopInfo.address" showArrow
 				:thumb="'../../static/petImgs/'+shopInfo.img"
 				thumb-size="lg" rightText="详情" link
-				@click="goShop"
+				@click="goShop" class="shop-text"
 				/>
+				
+				<view class="" v-if="this.type==='1'">
+					<uni-list-item showArrow title="周边评价信息"
+					rightText="评价详情" link
+					@click="goRemark(detailInfo.id)"/>
+				</view>
 			</uni-list>
 		</view>
 		
 		<!-- 底部导航栏 -->
 		<view class="goods-carts">
 			<uni-goods-nav :options="options" :fill="true" :button-group="buttonGroup" 
-			@click="onClick"
+			@click="onClick" 
 			@buttonClick="buttonClick" />
 		</view>
 		
@@ -96,9 +102,11 @@ import {
 } from "../../network/modules/cart.js";
 	
 import {
-	addFavor
+	addFavor,deleteFavor
 } from "../../network/modules/collection.js";
 	
+import {mapState,mapActions,mapGetters,mapMutations} from 'vuex'
+
 export default {
 	components:{
 		TopBar
@@ -145,37 +153,12 @@ export default {
 			videoPath:'',
 			shopInfo:[],
 			userId:'',
+			//该商品收藏id
+			favorId:''
 		}
 	},
 	methods: {
-		onClick(e) {
-			// console.log(e)
-			this.userId=localStorage.getItem('userId');
-			
-			if(e.index===1){
-				//console.log(this.detailInfo)
-				let data = {
-				    "animalId": null,
-				    "userId": null,
-				    "goodsId": 0,
-					"stuffId": null
-				}
-				
-				data.userId=this.userId
-				if(this.type==='0'){
-					data.goodsId=0
-					data.animalId=this.detailInfo.id
-					//console.log(typeof(data.animalId))
-				}
-				else if(this.type==='1'){
-					data.goodsId=1
-					data.stuffId=this.detailInfo.id
-					//console.log(typeof(data.stuffId))
-				}
-				this.addCollection(data)
-				
-			}
-		},
+		...mapMutations(['addone','delfavorList']),
 		buttonClick(e) {
 			// console.log(e)
 			this.userId=localStorage.getItem('userId');
@@ -206,21 +189,80 @@ export default {
 			}
 			
 		},
-		addCollection(data){
-			console.log(data)
+		onClick(e) {
+			// console.log(e)
+			this.userId=localStorage.getItem('userId');
 			
-			addFavor(data)
+			if(e.index===1){
+				//console.log(this.detailInfo)
+				let data = {
+				    "animalId": null,
+				    "userId": null,
+				    "goodsId": 0,
+					"stuffId": null
+				}
+				
+				data.userId=this.userId
+				if(this.type==='0'){
+					data.goodsId=0
+					data.animalId=this.detailInfo.id
+					//console.log(typeof(data.animalId))
+				}
+				else if(this.type==='1'){
+					data.goodsId=1
+					data.stuffId=this.detailInfo.id
+					//console.log(typeof(data.stuffId))
+				}
+				this.addCollection(data)
+				
+			}
+		},
+		delC(id){
+			let self=this
+			
+			deleteFavor(id)
 			.then(function(res){
-				// console.log(res); 
-				  
-					console.log(res); 
-					
+				console.log(res); // 输出完整的响应对象，以便查看数据结构
+				self.$store.commit('delfavorList', id);
+				self.options[1].text="收藏"
+				console.log(res.data); 
+			})
+		},
+		addCollection(data){
+			let self=this
+			
+			console.log(this.$store.getters.isFavorite(this.type,this.goodsId))
+			if(this.$store.getters.isFavorite(this.type,this.goodsId)){
+				console.log('已收藏，取消收藏')
+				uni.showToast({
+					title: '取消收藏成功',
+					icon: 'none'
+				})
+				
+				//去后端改一下
+				this.delC(this.favorId)
+			}else{
+				console.log('未收藏')
+				
+				addFavor(data)
+				.then(function(res){
+					console.log(res.data); 
+					//应该先判断一下是不是已经收藏了
 					uni.showToast({
-						title: `加入收藏成功`,
+						title: `收藏成功`,
 						icon: 'none'
 					})
-				  
-			})
+					self.options[1].text="已收藏"
+					
+					data.id=res.data
+					self.favorId=res.data
+					console.log(self.favorId)
+					console.log(data)
+					self.$store.commit('addone', data)
+					
+				})
+				
+			}
 		},
 		addGoods(data){
 			console.log(data)
@@ -229,21 +271,22 @@ export default {
 			.then(function(res){
 				// console.log(res); 
 				  
-					console.log(res); 
-					
-					uni.showToast({
-						title: `加入购物车成功`,
-						icon: 'none'
-					})
+				console.log(res); 
+				
+				uni.showToast({
+					title: `加入购物车成功`,
+					icon: 'none'
+				})
 				  
 				
 			})
 			
 		},
 		callGoIndex(){
-			console.log('触发')
-			goIndex();
-			// goBack();
+			// goIndex();
+			uni.navigateBack({
+				delta: 1, //返回层数，2则上上页
+			})
 		},
 		swiperChange(e) {
 		  console.log('Current Swiper Index:', e.detail.current)
@@ -258,12 +301,11 @@ export default {
 				.then(function(res){
 					// console.log(res); 
 						self.detailInfo=res.data
-						//console.log(self.detailInfo)
+						console.log(self.detailInfo)
 						self.video(self.detailInfo.videoId,self)
 						self.shop(self.detailInfo.shopId,self)
 						//
 					 
-					
 				})
 				.catch(function(err){
 					console.log(err)
@@ -322,10 +364,16 @@ export default {
 				url: '../shop/shop?shopId='+ this.shopId
 			});
 			  
+		},
+		goRemark(stuffId){
+			uni.navigateTo({
+				url: '../remark/remark?stuffId='+stuffId
+			});
 		}
 		
 	},
 	mounted() {
+		//别的界面进入详情页需要的信息
 		var petId=parseInt(this.$route.query.id)
 		this.goodsId=this.$route.query.id
 		this.type=this.$route.query.type
@@ -338,13 +386,30 @@ export default {
 		console.log(typeof(this.type))
 		// this.video()
 		
+		if(this.$store.getters.isFavorite(this.type,this.goodsId)){
+			this.options[1].text="已收藏"
+		}else{
+			this.options[1].text="收藏"
+		}
+	},
+	computed:{
+		...mapGetters(['isFavorite']),
+		// isFavorite() {
+		//   const productId = this.product.id;
+		//   return this.$store.getters['favorites/isFavorite'](productId);
+		// },
 	}
 }
 </script>
 
 <style>
+.shop-text{
+	margin-bottom: 20rpx;
+}
+
 .all-detail{
 	background-color: #F7F7F7;
+	padding-bottom: 120rpx;
 }
 .goods-carts {
 	/* #ifndef APP-NVUE */

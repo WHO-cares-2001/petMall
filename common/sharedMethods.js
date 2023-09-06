@@ -1,6 +1,7 @@
 // 共享方法示例
 
 //去商品详情页
+//type值为0是宠物，值为1是周边
 export function goDetail(id,type,shopId) {
   uni.navigateTo({
     url: '../goodsDetail/goodsDetail?id='+id+'&type='+type+'&shopId='+shopId

@@ -184,6 +184,61 @@
             }
             
         }
+        ,{
+            "path" : "pages/buy/buy",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+        }
+		,{
+            "path" : "pages/confirm-order/confirm-order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+        },
+		{
+		    "path" : "pages/buy/createOrder",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		
+        ,{
+            "path" : "pages/payment/payment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+        },
+		{
+			"path": "pages/payment/paySuccess",
+			"style": {
+				"navigationBarTitleText": "支付成功"
+			}
+		},
+		{
+			"path": "pages/user-order-detail/user-order-detail",
+			"style": {
+				"enablePullDownRefresh": true,
+		        "navigationBarTitleText": "订单详情"
+			}
+		}
+        ,{
+            "path" : "pages/orderDetail/orderDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

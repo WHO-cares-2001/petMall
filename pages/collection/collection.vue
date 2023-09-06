@@ -124,14 +124,10 @@ export default {
 			deleteFavor(id)
 			.then(function(res){
 				console.log(res); // 输出完整的响应对象，以便查看数据结构
-				  // if (res.status === 200) {
-					self.$store.commit('delfavorList', id);
+				self.$store.commit('delfavorList', id);
 
-					console.log(res.data); 
+				console.log(res.data); 
 					
-				  // }
-				// self.list=res.data
-				
 			})
 		},
 		goBack(){
