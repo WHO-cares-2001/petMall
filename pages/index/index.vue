@@ -15,21 +15,6 @@
 				</uni-col>
 			</uni-row>
 			
-			
-			
-			<!-- <uni-grid :column="4" :highlight="true" @change="change">
-				<uni-grid-item v-for="(item, index) in category" :index="index" :key="index">
-					<view class="grid-item-box" >
-						 -->
-						<!-- <uni-icons type="image" :size="30" color="#777" /> -->
-						<!-- <image style="width: 80px; height: 60px;" 
-						:src="'../../static/icon/cat1.png'" >
-						</image>
-						<text class="text">{{item}}</text>
-					</view>
-				</uni-grid-item>
-			</uni-grid> -->
-							
 			<!-- 整个分类部分 -->
 			<view class="icons">
 				<!-- 每个分类项 -->
@@ -74,12 +59,13 @@
 			</view>			
 		</view><!-- 宠物周边区域结束-->
 		
-		<uni-row>
+		<!-- 商品卡片 -->
+		<!-- <uni-row>
 			<uni-col :span="12" 
 			v-for="(item,index) in items" :key="index" :index="index">
-				
+				 -->
 				<!-- 用margin改uni-card的外边距 -->
-				<uni-card padding="0" spacing="0" margin="15rpx" 
+				<!-- <uni-card padding="0" spacing="0" margin="15rpx" 
 				@tap='callGoDetail(item.id,0,item.shopId)'>
 				
 					<template v-slot:cover>
@@ -102,11 +88,26 @@
 							</template>
 						</uni-list-item>
 					</uni-list>
-					
 				</uni-card>
-				
 			</uni-col>
-		</uni-row>
+		</uni-row> -->
+		
+		<!-- 卡片 -->
+		<view class="grey">
+			<view class="guess-section">
+				<view 
+					v-for="(item, index) in items" :key="index"
+					class="guess-item"
+					@tap='callGoDetail(item.id,0,item.shopId)'
+				>
+					<view class="image-wrapper">
+						<image :src="petPath+item.img" mode="aspectFill"></image>
+					</view>
+					<text class="title clamp">{{item.name}}</text>
+					<text class="price">￥{{item.price}}</text>
+				</view>
+			</view>
+		</view>
 		
 	</view>
 </template>
@@ -254,7 +255,7 @@
 }
 
 .cards-item{
-	padding: 30rpx 0 0 30rpx;
+	padding: 30rpx 0 20rpx 30rpx;
 }
 .cards-item-2{
 	padding: 5rpx 0 0 30rpx;
@@ -286,4 +287,54 @@
 	width: 310rpx;
 	height: 340rpx;
 }
+
+/* 猜你喜欢 */
+	.guess-section{
+		display:flex;
+		flex-wrap:wrap;
+		padding: 0 20upx;
+		background: #f5f5f5;
+		.guess-item{
+			background: #fff;
+			display:flex;
+			flex-direction: column;
+			width: 49%;
+			margin-bottom: 20upx;
+			padding-bottom: 30upx;
+			border-radius: 10upx;
+			// margin-right: 5upx;
+			// margin-left: 5upx;
+			
+			&:nth-child(2n+1){
+				margin-right: 2%;
+			}
+		}
+		.image-wrapper{
+			width: 100%;
+			height: 330upx;
+			border-radius: 3px;
+			overflow: hidden;
+			image{
+				width: 100%;
+				height: 100%;
+				opacity: 1;
+			}
+		}
+		.title{
+			font-size: $font-lg-like;
+			color: $font-color-dark-like;
+			line-height: 80upx;
+			padding: 0 0 0 20upx;
+			// padding-left: 10upx;
+		}
+		.price{
+			font-size: $font-lg-like;
+			color: $uni-color-primary-like;
+			line-height: 1;
+			padding: 0 0 0 20upx;
+		}
+	}
+	.grey{
+		background: #F7F7F7;
+	}
 </style>

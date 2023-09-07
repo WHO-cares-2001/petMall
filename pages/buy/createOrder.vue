@@ -41,7 +41,8 @@
 
 		<view class="goods-section">
 			<view class="g-header b-b">
-				<image class="logo" src="http://duoduo.qibukj.cn/./Upload/Images/20190321/201903211727515.png"></image>
+				<!-- <image class="logo" src="http://duoduo.qibukj.cn/./Upload/Images/20190321/201903211727515.png"></image> -->
+				<uni-icons type="shop" size="30"></uni-icons>
 				<text class="name">西城小店铺</text>
 			</view>
 			
@@ -51,7 +52,7 @@
 				<view class="right">
 					<text class="title clamp">{{item.name}}</text>
 					<br>
-					<text class="spec">春装款 M</text>
+					<!-- <text class="spec">春装款 M</text> -->
 					<view class="price-box">
 						<text class="price">￥{{item.pprice}}</text>
 						<text class="number">x {{item.number}}</text>
@@ -199,7 +200,7 @@
 				this.payType = type;
 			},
 			submit(){
-				//需要检查一下所有选项是不是都填了
+				//提交订单需要在vuex删除一下被提交的这些商品
 				
 				uni.navigateTo({
 					url: '/pages/payment/payment?money='+this.totalCount.pprice

@@ -6,7 +6,7 @@
 		
 		<view class="detail">
 			
-			<view class="" v-if="this.type==='1'">
+			<view class="iimg" v-if="this.type==='1'">
 				<image class="detail-img-1"
 				:src="'../../static/petImgs/'+detailInfo.imgs"
 				mode="aspectFit">
@@ -18,12 +18,14 @@
 				<swiper :loop="true" indicator-active-color="#FE4355"
 				indicator-dots="true" class="swiper">
 				  <swiper-item>
-					<image :src="'../../static/petImgs/'+detailInfo.img" 
-					class="detail-img"  mode="aspectFit">
+					<image 
+					:src="'../../static/petImgs/'+detailInfo.img" 
+					class="detail-img"  mode="scaleToFill"
+					@tap="goods_photo_view_event">
 					</image>
 				  </swiper-item>
 				  <swiper-item>
-					<video class="goods-video"
+					<video class="goods-video" 
 					:src="'../../static/petImgs/'+videoPath" controls>
 					</video>
 				  </swiper-item>
@@ -121,9 +123,10 @@ export default {
 				infoBackgroundColor: '#007aff',
 				infoColor: "#f5f5f5"
 			}, {
-				icon: 'star',
+				icon: 'star-filled',
 				text: '收藏',
-				info: 0
+				info: 0,
+				color:"red"
 			}],
 			buttonGroup: [{
 					text: '加入购物车',
@@ -188,6 +191,19 @@ export default {
 				this.addGoods(data)
 			}
 			
+		},
+		addGoods(data){
+			console.log(data)
+			
+			addCart(data)
+			.then(function(res){
+				console.log(res); 
+				
+				uni.showToast({
+					title: `加入购物车成功`,
+					icon: 'none'
+				})
+			})
 		},
 		onClick(e) {
 			// console.log(e)
@@ -264,24 +280,6 @@ export default {
 				
 			}
 		},
-		addGoods(data){
-			console.log(data)
-			
-			addCart(data)
-			.then(function(res){
-				// console.log(res); 
-				  
-				console.log(res); 
-				
-				uni.showToast({
-					title: `加入购物车成功`,
-					icon: 'none'
-				})
-				  
-				
-			})
-			
-		},
 		callGoIndex(){
 			// goIndex();
 			uni.navigateBack({
@@ -300,12 +298,10 @@ export default {
 				animalById(this.goodsId)
 				.then(function(res){
 					// console.log(res); 
-						self.detailInfo=res.data
-						console.log(self.detailInfo)
-						self.video(self.detailInfo.videoId,self)
-						self.shop(self.detailInfo.shopId,self)
-						//
-					 
+					self.detailInfo=res.data
+					console.log(self.detailInfo)
+					self.video(self.detailInfo.videoId,self)
+					self.shop(self.detailInfo.shopId,self)
 				})
 				.catch(function(err){
 					console.log(err)
@@ -316,16 +312,11 @@ export default {
 				//stuff
 				stuffById(this.goodsId)
 				.then(function(res){
-					// console.log(res); 
-					 
-						// console.log(res.data.data); 
-						self.detailInfo=res.data
-						console.log(self.detailInfo)
-						self.video(self.detailInfo.videoId,self)
-						self.shop(self.detailInfo.shopId,self)
-						//
-					 
-					
+					// console.log(res.data); 
+					self.detailInfo=res.data
+					console.log(self.detailInfo)
+					self.video(self.detailInfo.videoId,self)
+					self.shop(self.detailInfo.shopId,self)
 				})
 			}
 		},
@@ -334,43 +325,41 @@ export default {
 			
 			videoById(id)
 			.then(function(res){
-				// console.log(res); 
-				 
-					//console.log(res.data); 
-					self.videoPath=res.data.videoName
-					console.log(self.videoPath)
-				 
-				
+				//console.log(res.data); 
+				self.videoPath=res.data.videoName
+				console.log(self.videoPath)
 			})
 			.catch(function(err){
 				console.log(err)
 			})
 		},
 		shop(shopId,self){
-			
 			shop(shopId)
 			.then(function(res){
-				// console.log(res); 
-				  
-					//console.log(res.data); 
-					self.shopInfo=res.data
-					//console.log(self.shopInfo)
-				  
-				
+				//console.log(res.data); 
+				self.shopInfo=res.data
+				//console.log(self.shopInfo)
 			})
 		},
 		goShop(){
 			uni.navigateTo({
 				url: '../shop/shop?shopId='+ this.shopId
 			});
-			  
 		},
 		goRemark(stuffId){
 			uni.navigateTo({
 				url: '../remark/remark?stuffId='+stuffId
 			});
-		}
-		
+		},
+		// 商品查看大图
+		goods_photo_view_event() {
+		   const imgUrl='../../static/petImgs/'+this.detailInfo.img
+		   console.log(imgUrl)
+		    uni.previewImage({
+		        current: imgUrl,
+		        urls: [imgUrl]
+		    });
+		},
 	},
 	mounted() {
 		//别的界面进入详情页需要的信息
@@ -430,7 +419,10 @@ export default {
 }
 .detail-img{
 	width: 100%;
-	/* height: 500rpx; */
+	/* height: 100%; */
+	
+	height: 60vh !important;
+	display: block;
 	
 }
 .detail-img-1{
@@ -475,10 +467,19 @@ export default {
 	margin-bottom: 30rpx;;
 }
 .swiper{
-	height: 530rpx;
+	/* height: 530rpx; */
+	height: 60vh !important;
 }
 .goods-video{
-	margin: 10rpx 70rpx;
+	/* margin: 10rpx 70rpx; */
+	height: 60vh !important;
+	display: block;
+	width: 100%;
 }
 
+	
+.iimg{
+	width: 100%;
+	height: 100%;
+}
 </style>

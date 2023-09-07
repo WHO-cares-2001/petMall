@@ -320,4 +320,11 @@
 	.icon-dianzan-ash:before {
 		content: "\e617";
 	}
+	
+	.clamp {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		display: block;
+	}
 </style>

@@ -8,10 +8,8 @@
 			
 			<!-- 商品内容 -->
 			<view class="shop-list">
-				
 				<view class="shop-item" v-for="(item,index) in list" :key="index"
 				>
-				
 					<!-- 多选框 -->
 					<label class="radio" @tap="selectedItem(index)">
 						<radio value="" color="#FF3333" :checked="item.checked"/>
@@ -46,7 +44,6 @@
 								<uni-number-box :min="1" :max="maxJudge(item.goodsType)" :value="judgeNum(item.number)" 
 								background="white" @change="onNumberChange($event,item.id)"/>
 							</view>
-							
 						</view>
 					</view>
 				</view>
@@ -249,8 +246,9 @@
 	right: 50rpx;
 }
 
-//这样可以看到最底下的那个商品卡片
+
 .shop-list{
+	//这样可以看到最底下的那个商品卡片
 	padding-bottom: 120rpx;
 }
 .shop-else-list{

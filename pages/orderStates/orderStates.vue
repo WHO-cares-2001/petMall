@@ -13,6 +13,7 @@
 			class="control"
 		>
 		</uni-segmented-control>
+		
 	</view>
 </template>
 
