@@ -237,8 +237,84 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
-        }
+        },
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我的",
+				// #ifdef MP
+				"navigationStyle": "custom",
+				// #endif
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"type": "transparent",
+						"buttons": [{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue60f",
+								"fontSize": "24",
+								"color": "#303133",
+								"width": "46px",
+								"background": "rgba(0,0,0,0)"
+							},
+							{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue744",
+								"fontSize": "28",
+								"color": "#303133",
+								"background": "rgba(0,0,0,0)",
+								"redDot": true
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/set/set",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "pages/userinfo/userinfo",
+			"style": {
+				"navigationBarTitleText": "个人信息"
+			}
+		},
+		{
+			"path": "pages/address/address",
+			"style": {
+				"navigationBarTitleText": "收货地址"
+			}
+		}, 
+		{
+			"path": "pages/address/addressManage",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/public/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"animationType": "slide-in-bottom"
+				}
+			}
+		}, {
+			"path": "pages/public/register",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"navigationStyle": "custom",
+				"app-plus": {
+					"titleNView": false,
+					"animationType": "slide-in-bottom"
+				}
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -274,7 +350,7 @@
 			},
 			{
 				"text": "我的",
-				"pagePath": "pages/my/my",
+				"pagePath": "pages/user/user",
 				"iconPath": "static/icon/me.png",
 				"selectedIconPath": "static/icon/selectMe.png"
 			}			

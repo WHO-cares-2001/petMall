@@ -29,7 +29,7 @@
 						</view>
 						<view class="">
 							<uni-icons type="trash-filled" size="25" 
-							color="#FE4355" @tap="del(item.id)"
+							color="grey" @tap="del(item.id)"
 							>
 							</uni-icons>
 						</view>
@@ -182,6 +182,10 @@ export default {
 </script>
 
 <style scoped>
+	page{
+		background-color: #f5f5f5;
+	}
+	
 .shop-list{
 	padding-bottom: 120rpx;
 }
@@ -190,14 +194,16 @@ export default {
 	display: flex;
 	padding: 20rpx;
 	align-items: center;
-	background-color: #F7F7F7;
-	margin-bottom: 10rpx;
+	margin: 10rpx 10rpx;
+	background-color: #fff;
+	border-radius: 20rpx;
 }
 
 .shop-img{
 	width: 200rpx;
 	height: 200rpx;
-	padding-left: 30rpx;
+	margin-left: 20rpx;
+	border-radius: 20rpx;
 }
 
 .shop-price{

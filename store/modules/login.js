@@ -5,6 +5,9 @@ export default{
 		token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
 		userId:localStorage.getItem('userId') ? localStorage.getItem('userId') : null,
 		
+		//2
+		hasLogin: false,
+		userInfo: {},
 	},
 	mutations: {
 		setUserId(state, userId) {
@@ -19,5 +22,36 @@ export default{
 			console.log('veux')
 			console.log('token',token)
 		},
-	}
+		//2
+		setUserInfo(state, provider) {
+			state.hasLogin = true;
+			state.userInfo = provider;
+			uni.setStorage({ //缓存用户登陆状态
+				key: 'userInfo',
+				data: provider
+			});
+			
+			localStorage.setItem('token', provider.token);
+			localStorage.setItem('userId', provider.user.id)
+		},
+		cleanUserInfo(state) {
+			state.hasLogin = false;
+			state.userInfo = {};
+			uni.removeStorage({
+				key: 'userInfo'
+			});
+			
+			localStorage.removeItem('token');
+			localStorage.removeItem('userId');
+		}
+	},
+	//2
+	getters:{
+		getHasLogin(state){
+			return state.hasLogin
+		},
+		getUserInfo(state){
+			return state.userInfo
+		}
+	},
 }

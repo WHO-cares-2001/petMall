@@ -5,8 +5,8 @@
 		</view>
 		
 		<!-- 地址 v-if如果没有地址，else有地址 -->
-		<view class="" v-if="!addressId">
-			<navigator url="../myAD/myAD" class="address-section">
+		<view class="" v-if="defaultPath.length===0">
+			<navigator url="../address/address" class="address-section">
 				<view class="order-content">
 					<text class="yticon icon-shouhuodizhi"></text>
 					<view class="cen">
@@ -23,15 +23,15 @@
 		</view>
 		
 		<view class="" v-else>
-			<navigator url="../myAD/myAD" class="address-section">
+			<navigator url="../address/address"  class="address-section">
 				<view class="order-content">
 					<text class="yticon icon-shouhuodizhi"></text>
 					<view class="cen">
 						<view class="top">
-							<text class="name">{{addressData.addressName}}</text>
-							<text class="mobile">{{addressData.tel}}</text>
+							<text class="name">{{defaultPath.addressName}}</text>
+							<text class="mobile">{{defaultPath.tel}}</text>
 						</view>
-						<text class="address">{{addressData.province}} {{addressData.adress}}</text>
+						<text class="address">{{defaultPath.province}} {{defaultPath.adress}}</text>
 					</view>
 					<text class="yticon icon-you"></text>
 				</view>
@@ -140,11 +140,11 @@
 
 <script>
 	import {
-		addressList
+		addressList,adList
 	} from "../../network/modules/address.js";
 	
 	import {mapGetters,mapState} from 'vuex';
-	
+	import {goBack} from '@/common/sharedMethods.js'
 	
 	export default {
 		data() {
@@ -174,7 +174,7 @@
 					default: false,
 				},
 				addressId: 0, //收货地址ID
-				
+				defaultPath:[]//默认地址
 			}
 		},
 		onLoad(e){
@@ -184,6 +184,9 @@
 			this.para(e);
 		},
 		methods: {
+			goBack(){
+				goBack()
+			},
 			//显示优惠券面板
 			toggleMask(type){
 				let timer = type === 'show' ? 10 : 300;
@@ -214,16 +217,23 @@
 				//选中的商品id集合  [2,9]
 				this.item= JSON.parse(e.detail);
 				
-				//如果有默认地址的一个赋值
-				// if(this.defaultPath.length){
-				// 	this.path = this.defaultPath[0];
-				// }
-				
-				// //如果出发自定义事件，on去接受值
-				// uni.$on("selectPathItem",(res)=>{
-				// 	this.path = res;
-				// })
-				
+				let self = this;
+				let Id = window.localStorage.getItem("userId");
+				adList({
+					userId: Id
+				}).then(function(res) {
+					{
+						let result = res.data;
+						console.log(result)
+						for (let i = 0; i < result.length; i++) {
+							// console.log(result[i])
+							if (result[i].usefull === 1&&result[i].isDefault===1) {
+								self.defaultPath = result[i]
+								console.log(self.defaultPath)
+							}
+						}
+					}
+				})
 			},
 			//确认支付
 			goPayment(){
@@ -236,7 +246,7 @@
 			...mapState({
 				list:state=>state.cart.list
 			}),
-			...mapGetters(['defaultPath','totalCount']),
+			...mapGetters(['totalCount']),
 			//根据商品列表找到对应e.detail 数据的 id  最终返回商品数据
 			goodsList(){
 				console.log(this.list)

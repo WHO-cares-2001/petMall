@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="container">
 		<!-- 如果有数据展示template里面的内容，没有数据就显示一行字 -->
 		<template v-if="list.length>0">
 			
@@ -26,7 +26,7 @@
 								<view @tap="callGoDetail(item)">{{item.name}}</view>
 								
 								<uni-icons type="trash-filled" size="25"
-								color="#FE4355" @tap="del(item.id)"
+								color="grey" @tap="del(item.id)"
 								class="trash">
 								</uni-icons>
 								
@@ -42,7 +42,7 @@
 							</view>
 							<view class="">
 								<uni-number-box :min="1" :max="maxJudge(item.goodsType)" :value="judgeNum(item.number)" 
-								background="white" @change="onNumberChange($event,item.id)"/>
+								background="#fff" @change="onNumberChange($event,item.id)"/>
 							</view>
 						</view>
 					</view>
@@ -51,16 +51,19 @@
 			
 			<!-- 底部结算 -->
 			<view class="shop-foot">
-				<label class="radio" @tap="selectAll">
+				<label class="radio rtext" @tap="selectAll">
 					<radio value="" color="#FF3333" :checked="checkedAll"/><text>全选</text>
 				</label>
 				
 				<view class="foot-total">
 					<view class="foot-count">
-						合计：<text style="color: #49BDFB;">￥{{totalCount.pprice}}</text>
+						合计：<text class="total-price" >￥{{totalCount.pprice}}</text>
 					</view>
-					<view class="foot-num" @tap="goBuy">
-						结算（{{totalCount.num}}）
+					<!-- <button  @tap="goBuy" class="">结算</button> -->
+					<view class="outside">
+						<view class="foot-num" @tap="goBuy">
+							结算（{{totalCount.num}}）
+						</view>
 					</view>
 				</view>
 			</view>
@@ -240,6 +243,10 @@
 </script>
 
 <style scoped>
+	page{
+		background-color: #f5f5f5;
+	}
+	
 .trash{
 	
 	position: absolute;
@@ -269,13 +276,20 @@
 	display: flex;
 	padding: 20rpx;
 	align-items: center;
-	background-color: #F7F7F7;
-	margin-bottom: 10rpx;
+	margin: 10rpx 10rpx;
+	background-color: #fff;
+	border-radius: 20rpx;
 }
 
 .shop-img{
 	width: 200rpx;
 	height: 200rpx;
+	border-radius: 20rpx;
+}
+
+.shop-name{
+	display:flex;
+	justify-content: space-between;
 }
 
 .shop-price{
@@ -318,12 +332,27 @@
 	line-height: 100rpx;
 }
 .foot-num{
+	/* background-color: #49BDFB; */
 	background-color: #49BDFB;
 	color: #FFFFFF;
-	padding: 0 30rpx;
-	line-height: 100rpx;
+	padding: 0 25rpx;
+	line-height: 80rpx;
+	border-radius: 100rpx;
+	height: 80rpx;
+	margin-top: 15rpx;
 }
 .radio{
 	padding:0 10rpx;
+}
+
+.total-price{
+	color: #FE4355;
+	font-weight: bold
+}
+.outside{
+	padding:  0 10rpx;
+}
+.rtext{
+	margin-left: 30rpx;
 }
 </style>

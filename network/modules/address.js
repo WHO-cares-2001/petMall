@@ -7,10 +7,12 @@ export function saves(params) {
 	return postJson('/address/saves', params)
 }
 
-export function addressList(params) {
+// export function addressList(params) {
+// 	return post('/address/searchs', params)
+// }
+export function adList(params) {
 	return post('/address/searchs', params)
 }
-
 export function update(params) {
 	return postJson('/address/updatas', params)
 }
