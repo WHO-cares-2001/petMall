@@ -42,6 +42,7 @@
 		</view>
 		
 		<text class="mix-btn" @click="confirm">确认支付</text>
+		<text class="cancel-btn" @tap="cancelPay">取消支付</text>
 	</view>
 </template>
 
@@ -74,6 +75,11 @@
 					url: '/pages/payment/paySuccess'
 				})
 			},
+			cancelPay(){
+				uni.switchTab({
+					url:"../cart/cart"
+				})
+			}
 		}
 	}
 </script>
@@ -160,4 +166,17 @@
 		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 	}
 
+	.cancel-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 630upx;
+		height: 80upx;
+		margin: 0 auto 30upx;
+		font-size: $font-lg;
+		color: #fff;
+		background-color: grey;
+		border-radius: 10upx;
+		box-shadow: 1px 2px 5px ;
+	}
 </style>

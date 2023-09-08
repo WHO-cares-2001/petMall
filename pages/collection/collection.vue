@@ -15,23 +15,17 @@
 				
 				<view class="shop-text">
 					<view class="" @tap="callGoDetail(item.animalId,item.goodsId,null)">
-						<view class="shop-name">
-							{{item.name}}
-						</view>
-						<view class="shop-option">
-							<!-- {{item.option}} -->
-						</view>
-					</view>
-					
-					<view class="shop-price">
-						<view class="">
-							<!-- ￥{{item.pprice}} -->
-						</view>
-						<view class="">
-							<uni-icons type="trash-filled" size="25" 
+						<view class="header">
+							<view class="shop-name">
+								{{item.name}}
+							</view>
+							<uni-icons type="trash-filled" size="25"
 							color="grey" @tap="del(item.id)"
 							>
 							</uni-icons>
+						</view>
+						<view class="footer">
+							
 						</view>
 					</view>
 				</view>
@@ -210,7 +204,18 @@ export default {
 	display:flex;
 	justify-content: space-between;
 }
-
+.shop-name{
+	
+}
+.header{
+	display: flex;
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+.footer{
+	height: 90rpx;
+}
 .shop-option{
 	font-size: 27rpx;
 	color: #636263;

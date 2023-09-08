@@ -26,37 +26,10 @@ export default{
 				imgUrl:"../../static/petImgs/img/16.jpg",
 				price:"2000.0",
 				num:1
-			},
-			{
-				checked:false,
-				id:3,
-				name:"啊拒绝偶爱你分配就怕看佛经破",
-				option:"规格",
-				imgUrl:"../../static/petImgs/img/16.jpg",
-				price:"2000.0",
-				num:1
-			},
-			{
-				checked:false,
-				id:4,
-				name:"啊拒绝偶爱你分配就怕看佛经破",
-				option:"规格",
-				imgUrl:"../../static/petImgs/img/16.jpg",
-				price:"2000.0",
-				num:1
-			},
-			{
-				checked:false,
-				id:5,
-				name:"啊拒绝偶爱你分配就怕看佛经破",
-				option:"规格",
-				imgUrl:"../../static/petImgs/img/16.jpg",
-				price:"2000.0",
-				num:1
 			}
 		],
 		selectedList:[],
-		
+		orderListByShopId:[]
 	},
 	getters:{
 		//判断是否全选
@@ -79,6 +52,7 @@ export default{
 					total.num=state.selectedList.length;
 				}
 			})
+			total.pprice=total.pprice.toFixed(2)
 			return total;
 		},
 		
@@ -124,9 +98,10 @@ export default{
 		  state.list = state.list.filter(item => item.id !== itemId);
 		  
 		},
-		//从后端获取的数据放进来
+		//从后端获取的所有数据放进来
 		updateList(state, data) {
 		  state.list = data;
+		  console.log(data)
 		  console.log('updateList')
 		},
 		//删一个购物车

@@ -34,10 +34,17 @@
 				<view class="right">
 					<text class="title clamp">{{item.name}}</text>
 					<br>
-					<text class="spec">春装款 M</text>
+					<!-- <text class="spec">春装款 M</text> -->
+					
 					<view class="price-box">
 						<text class="price">￥{{item.pprice}}</text>
 						<text class="number">x {{item.number}}</text>
+						<button 
+							type="primary" plain="true" size="mini" 
+							style="color:grey;border-radius: 15rpx;border-color: grey;
+							border-radius: 30rpx;height: 60rpx;">
+							退单
+						</button>
 					</view>
 				</view>
 			</view>
@@ -273,7 +280,7 @@
 	}
 
 	.underline-between-views {
-	  border-bottom: 1px solid #DCDFE6; /* 设置下划线的样式，颜色可以根据您的需求进行更改 */
+	  border-bottom: 1px solid #DCDFE6;
 	  // margin-bottom: 10px; /* 可选：添加一些底部间距以分隔视图 */
 	}
 	

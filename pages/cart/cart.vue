@@ -8,45 +8,54 @@
 			
 			<!-- 商品内容 -->
 			<view class="shop-list">
-				<view class="shop-item" v-for="(item,index) in list" :key="index"
+				<view class="shop-item" v-for="(i,index) in byshopList" :key="index"
 				>
-					<!-- 多选框 -->
-					<label class="radio" @tap="selectedItem(index)">
-						<radio value="" color="#FF3333" :checked="item.checked"/>
-						<text></text>
-					</label>
+					<view class="g-header">
+						<uni-icons type="shop" size="27" color="#FE4355"></uni-icons>
+						<text class="name">{{i[0].shopName}}</text>
+					</view>
 					
-					<image :src="petPath+item.img" mode="" 
-					class="shop-img"@tap="callGoDetail(item)">
-					</image>
-					
-					<view class="shop-text">
-						<view class="" >
-							<view class="shop-name" >
-								<view @tap="callGoDetail(item)">{{item.name}}</view>
+					<view class="shops-goods" v-for="item in i">
+						<view class="g-body">
+								<!-- 多选框 -->
+								<label class="radio" @tap="selectedItem(index)">
+									<radio value="" color="#FF3333" :checked="item.checked"/>
+									<text></text>
+								</label>
 								
-								<uni-icons type="trash-filled" size="25"
-								color="grey" @tap="del(item.id)"
-								class="trash">
-								</uni-icons>
+								<image :src="petPath+item.img" mode="" 
+								class="shop-img"@tap="callGoDetail(item)">
+								</image>
 								
-							</view @tap="callGoDetail(item)">
-							<view class="shop-option">
-								<!-- {{item.option}} -->
-							</view>
-						</view>
-						
-						<view class="shop-price">
-							<view class="" @tap="callGoDetail(item)">
-								￥{{item.pprice}}
-							</view>
-							<view class="">
-								<uni-number-box :min="1" :max="maxJudge(item.goodsType)" :value="judgeNum(item.number)" 
-								background="#fff" @change="onNumberChange($event,item.id)"/>
+								<view class="shop-text">
+									<view class="" >
+										<view class="shop-name" >
+											<view @tap="callGoDetail(item)">{{item.name}}</view>
+											
+											<uni-icons type="trash-filled" size="25"
+											color="grey" @tap="del(item.id)"
+											class="trash">
+											</uni-icons>
+											
+										</view @tap="callGoDetail(item)">
+										<view class="shop-option">
+											<!-- {{item.option}} -->
+										</view>
+									</view>
+									
+									<view class="shop-price">
+										<view class="price-color" @tap="callGoDetail(item)">
+											￥{{item.pprice}}
+										</view>
+										<view class="">
+											<uni-number-box :min="1" :max="maxJudge(item.goodsType)" :value="judgeNum(item.number)" 
+											background="#fff" @change="onNumberChange($event,item.id)"/>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
 					</view>
-				</view>
 			</view>
 			
 			<!-- 底部结算 -->
@@ -62,7 +71,8 @@
 					<!-- <button  @tap="goBuy" class="">结算</button> -->
 					<view class="outside">
 						<view class="foot-num" @tap="goBuy">
-							结算（{{totalCount.num}}）
+							结算
+							<!-- （{{totalCount.num}}） -->
 						</view>
 					</view>
 				</view>
@@ -103,7 +113,7 @@
 				id:'',
 				numbers:'',
 				oldNum:null,
-				
+				byshopList:[]
 			};
 		},
 		computed:{
@@ -142,6 +152,27 @@
 				this.oldNum=num;
 				return num;
 			},
+			goodsByShopId(data){
+				const shopIdMap = new Map();
+				
+				  // 遍历原始数组
+				  data.forEach(item => {
+				    const shopId = item.shopId;
+				
+				    // 检查是否已经有相同 shopId 的数组，如果没有则创建一个新数组
+				    if (!shopIdMap.has(shopId)) {
+				      shopIdMap.set(shopId, []);
+				    }
+				
+				    // 将商品添加到对应的数组中
+				    shopIdMap.get(shopId).push(item);
+				  });
+				
+				  // 将 Map 转换为数组，即按照 shopId 分组的数组
+				  const result = [...shopIdMap.values()];
+				  console.log(result)
+				  this.byshopList=result
+			},
 			getAll(){
 				let self=this
 				this.id=localStorage.getItem('userId');
@@ -151,7 +182,8 @@
 				.then(function(res){
 					console.log(res.data); // 输出完整的响应对象，以便查看数据结构
 					self.$store.commit('updateList', res.data)
-						
+					
+					self.goodsByShopId(res.data)
 				})
 				.catch(function(err){
 					console.log(err)
@@ -273,14 +305,34 @@
 }
 
 .shop-item{
-	display: flex;
+	/* display: flex; */
+	/* align-items: center; */
 	padding: 20rpx;
-	align-items: center;
-	margin: 10rpx 10rpx;
+	margin: 20rpx 10rpx;
 	background-color: #fff;
 	border-radius: 20rpx;
 }
-
+.shops-goods{
+	margin-bottom: 20rpx;
+}
+.g-body{
+	display: flex;
+	align-items: center;
+}
+.name {
+	font-size: 30upx;
+	margin-left: 24upx;
+	/* line-height: 40upx; */
+	align-items: center;
+}
+.g-header {
+	display: flex;
+	align-items: center;
+	height: 84upx;
+	padding: 0 10upx;
+	position: relative;
+}
+		
 .shop-img{
 	width: 200rpx;
 	height: 200rpx;
@@ -296,7 +348,9 @@
 	display:flex;
 	justify-content: space-between;
 }
-
+.price-color{
+	color:#FE4355 ;
+}
 .shop-option{
 	font-size: 27rpx;
 	color: #636263;
@@ -313,15 +367,18 @@
 .shop-foot{
 	position: fixed;
 	//不能是0,不然就没了
-	bottom: 100rpx;
+	bottom: 130rpx;
 	left: 0;
-	width: 100%;
+	width: 94%;
 	height: 100rpx;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	//
 	background-color: #FFFFFF;
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+	position: fixed;
+	left: 20rpx;
+	border-radius: 20rpx;
 }
 .foot-total{
 	display: flex;
@@ -335,14 +392,17 @@
 	/* background-color: #49BDFB; */
 	background-color: #49BDFB;
 	color: #FFFFFF;
-	padding: 0 25rpx;
+	padding: 0 40rpx;
 	line-height: 80rpx;
 	border-radius: 100rpx;
 	height: 80rpx;
-	margin-top: 15rpx;
+	margin-top: 13rpx;
 }
 .radio{
 	padding:0 10rpx;
+}
+radio{
+	transform: scale(0.9)
 }
 
 .total-price{
@@ -355,4 +415,6 @@
 .rtext{
 	margin-left: 30rpx;
 }
+
+
 </style>

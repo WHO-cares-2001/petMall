@@ -6,7 +6,7 @@
 		
 		<!-- 地址 v-if如果没有地址，else有地址 -->
 		<view class="" v-if="defaultPath.length===0">
-			<navigator url="../address/address" class="address-section">
+			<navigator url="../address/address?source=1" class="address-section">
 				<view class="order-content">
 					<text class="yticon icon-shouhuodizhi"></text>
 					<view class="cen">
@@ -23,7 +23,7 @@
 		</view>
 		
 		<view class="" v-else>
-			<navigator url="../address/address"  class="address-section">
+			<navigator url="../address/address?source=1"  class="address-section">
 				<view class="order-content">
 					<text class="yticon icon-shouhuodizhi"></text>
 					<view class="cen">
@@ -217,6 +217,7 @@
 				//选中的商品id集合  [2,9]
 				this.item= JSON.parse(e.detail);
 				
+				//找默认地址
 				let self = this;
 				let Id = window.localStorage.getItem("userId");
 				adList({
