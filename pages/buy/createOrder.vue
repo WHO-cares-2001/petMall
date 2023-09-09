@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<!-- 顶部导航栏 -->
 		<view>
 			<uni-nav-bar left-icon="left" title="订单详情" @clickLeft="goBack()" />
 		</view>
@@ -30,6 +31,7 @@
 						<view class="top">
 							<text class="name">{{defaultPath.addressName}}</text>
 							<text class="mobile">{{defaultPath.tel}}</text>
+							<text v-if="defaultPath.isDefault" class="tag">默认</text>
 						</view>
 						<text class="address">{{defaultPath.province}} {{defaultPath.adress}}</text>
 					</view>
@@ -39,67 +41,68 @@
 			</navigator>
 		</view>
 
-		<view class="goods-section">
-			<view class="g-header b-b">
-				<!-- <image class="logo" src="http://duoduo.qibukj.cn/./Upload/Images/20190321/201903211727515.png"></image> -->
-				<uni-icons type="shop" size="30"></uni-icons>
-				<text class="name">西城小店铺</text>
-			</view>
-			
-			<!-- 商品列表 -->
-			<view class="g-item" v-for="(item,index) in goodsList" :key="index">
-				<image :src="'../../static/petImgs/'+item.img"></image>
-				<view class="right">
-					<text class="title clamp">{{item.name}}</text>
-					<br>
-					<!-- <text class="spec">春装款 M</text> -->
-					<view class="price-box">
-						<text class="price">￥{{item.pprice}}</text>
-						<text class="number">x {{item.number}}</text>
+
+		<view class="order-item" v-for="(i,shopIndex) in goodsList" :key="shopIndex">
+			<view class="goods-section" >
+				<view class="g-header b-b">
+					<uni-icons type="shop" size="30" color="#FE4355"></uni-icons>
+					<text class="name">{{i[0].shopName}}</text>
+				</view>
+				
+				<!-- 商品列表 -->
+				<view class="g-item" v-for="(item,secondIndex) in i" :key="secondIndex">
+					<image :src="'../../static/petImgs/'+item.img"></image>
+					<view class="right">
+						<text class="title clamp">{{item.name}}</text>
+						<br>
+						<!-- <text class="spec">春装款 M</text> -->
+						<view class="price-box">
+							<text class="price">￥{{item.pprice}}</text>
+							<text class="number">x {{item.number}}</text>
+						</view>
+					</view>
+				</view>
+					
+				<!-- 优惠明细 -->
+				<view class="yt-list">
+					<view class="yt-list-cell b-b" @click="toggleMask('show')">
+						<view class="cell-icon">
+							券
+						</view>
+						<text class="cell-tit clamp">优惠券</text>
+						<text class="cell-tip active">
+							选择优惠券
+						</text>
+						<text class="cell-more wanjia wanjia-gengduo-d"></text>
+					</view>
+					<view class="yt-list-cell b-b">
+						<view class="cell-icon hb">
+							减
+						</view>
+						<text class="cell-tit clamp">商家促销</text>
+						<text class="cell-tip disabled">暂无可用优惠</text>
 					</view>
 				</view>
 			</view>
 			
-		</view>
-		
-		<!-- 优惠明细 -->
-		<view class="yt-list">
-			<view class="yt-list-cell b-b" @click="toggleMask('show')">
-				<view class="cell-icon">
-					券
+			<!-- 金额明细 -->
+			<view class="yt-list">
+				<view class="yt-list-cell b-b">
+					<text class="cell-tit clamp">商品金额</text>
+					<text class="cell-tip">￥{{orderItemtotalCount(shopIndex)}}</text>
 				</view>
-				<text class="cell-tit clamp">优惠券</text>
-				<text class="cell-tip active">
-					选择优惠券
-				</text>
-				<text class="cell-more wanjia wanjia-gengduo-d"></text>
-			</view>
-			<view class="yt-list-cell b-b">
-				<view class="cell-icon hb">
-					减
+				<view class="yt-list-cell b-b">
+					<text class="cell-tit clamp">优惠金额</text>
+					<text class="cell-tip red">-￥0</text>
 				</view>
-				<text class="cell-tit clamp">商家促销</text>
-				<text class="cell-tip disabled">暂无可用优惠</text>
-			</view>
-		</view>
-		
-		<!-- 金额明细 -->
-		<view class="yt-list">
-			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥{{totalCount.pprice}}</text>
-			</view>
-			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">优惠金额</text>
-				<text class="cell-tip red">-￥0</text>
-			</view>
-			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">运费</text>
-				<text class="cell-tip">免运费</text>
-			</view>
-			<view class="yt-list-cell desc-cell">
-				<text class="cell-tit clamp">备注</text>
-				<input class="desc" type="text" v-model="desc" placeholder="请填写备注信息" placeholder-class="placeholder" />
+				<view class="yt-list-cell b-b">
+					<text class="cell-tit clamp">运费</text>
+					<text class="cell-tip">免运费</text>
+				</view>
+				<view class="yt-list-cell desc-cell">
+					<text class="cell-tit clamp">备注</text>
+					<input class="desc" type="text" v-model="desc" placeholder="请填写备注信息" placeholder-class="placeholder" />
+				</view>
 			</view>
 		</view>
 		
@@ -242,6 +245,21 @@
 					url:'../payment/payment'
 				})
 			},
+			//计算每个订单的总金额
+			orderItemtotalCount(index){
+				console.log(index)
+				const i=this.goodsList[index]
+				console.log(i)
+				let total=0
+				if(i.length>0){
+					i.forEach(item=>{
+						total+=item.pprice*item.number
+					})
+				}else if(i.length===0){
+					return item.pprice*item.number
+				}
+				return total
+			}
 		},
 		computed:{
 			...mapState({
@@ -251,10 +269,29 @@
 			//根据商品列表找到对应e.detail 数据的 id  最终返回商品数据
 			goodsList(){
 				console.log(this.list)
-				return this.item.map(id=>{
+				let arr={}
+				arr= this.item.map(id=>{
 					return this.list.find(v=>v.id == id);
 				})
-			}
+				console.log(arr)
+				
+				const shopIdMap = new Map();
+				// 遍历原始数组
+				arr.forEach(item => {
+				  const shopId = item.shopId;
+				  // 检查是否已经有相同 shopId 的数组，如果没有则创建一个新数组
+				  if (!shopIdMap.has(shopId)) {
+				    shopIdMap.set(shopId, []);
+				  }		
+				  // 将商品添加到对应的数组中
+				  shopIdMap.get(shopId).push(item);
+				});	
+				// 将 Map 转换为数组，即按照 shopId 分组的数组
+				const result = [...shopIdMap.values()];
+				console.log(result)
+				return result
+			},
+			
 		},
 	}
 </script>
@@ -292,7 +329,16 @@
 			font-size: 28upx;
 			color: $font-color-dark;
 		}
-
+		.tag {
+			font-size: 24upx;
+			color: $base-color;
+			margin:0 30upx;
+			background: #fffafb;
+			border: 1px solid #ffb4c7;
+			border-radius: 4upx;
+			padding: 4upx 10upx;
+			line-height: 1;
+		}
 		.name {
 			font-size: 34upx;
 			margin-right: 24upx;

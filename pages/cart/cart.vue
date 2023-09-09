@@ -15,10 +15,10 @@
 						<text class="name">{{i[0].shopName}}</text>
 					</view>
 					
-					<view class="shops-goods" v-for="item in i">
+					<view class="shops-goods" v-for="item in i" :key="item.id">
 						<view class="g-body">
 								<!-- 多选框 -->
-								<label class="radio" @tap="selectedItem(index)">
+								<label class="radio" @tap="selectedItem(item.id)">
 									<radio value="" color="#FF3333" :checked="item.checked"/>
 									<text></text>
 								</label>
@@ -61,7 +61,7 @@
 			<!-- 底部结算 -->
 			<view class="shop-foot">
 				<label class="radio rtext" @tap="selectAll">
-					<radio value="" color="#FF3333" :checked="checkedAll"/><text>全选</text>
+					<radio value="" color="#FF3333" :checked="checkedAll" /><text>全选</text>
 				</label>
 				
 				<view class="foot-total">
@@ -137,7 +137,6 @@
 						icon:"none"
 					})
 				}
-				
 				
 				// 把选中的传过去
 				uni.navigateTo({
@@ -397,6 +396,7 @@
 	border-radius: 100rpx;
 	height: 80rpx;
 	margin-top: 13rpx;
+	margin-right: 10rpx;
 }
 .radio{
 	padding:0 10rpx;

@@ -1,5 +1,8 @@
 <template>
 	<view class="content">
+		<!-- 顶部导航栏 -->
+		<TopBar barTitle="编辑收货地址" @click-left='goBack()'></TopBar>
+		
 		<span class="btn-delete">12321</span>
 		<view class="row b-b">
 			<text class="tit">收件人</text>
@@ -50,6 +53,9 @@
 </template>
 
 <script>
+	import {goBack} from '@/common/sharedMethods.js'
+	import TopBar from '../../components/common/topBar.vue'
+	
 	import {
 		update,
 		deleteByIds,
@@ -57,6 +63,10 @@
 	} from "../../network/modules/address.js";
 	import mpvueCityPicker from '../../components/uni/mpvue-citypicker/mpvueCityPicker.vue';
 	export default {
+		components:{
+			TopBar,
+			mpvueCityPicker
+		},
 		data() {
 			return {
 				flag: false,
@@ -96,6 +106,9 @@
 			})
 		},
 		methods: {
+			goBack(){
+				goBack()
+			},
 			dialogToggle(type) {
 				this.msgType = type
 				this.$refs.alertDialog.open()
@@ -202,9 +215,7 @@
 			},
 
 		},
-		components: {
-			mpvueCityPicker
-		}
+		
 	}
 </script>
 

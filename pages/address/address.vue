@@ -1,5 +1,8 @@
 <template>
 	<view class="content b-t">
+		<!-- 顶部导航栏 -->
+		<TopBar barTitle="我的收货地址" @click-left='goBack()'></TopBar>
+		
 		<view class="list b-b" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
 			<view class="wrapper">
 				<view class="address-box">
@@ -22,10 +25,16 @@
 </template>
 
 <script>
+	import {goBack} from '@/common/sharedMethods.js'
+	import TopBar from '../../components/common/topBar.vue'
+	
 	import {
 		adList
 	} from "../../network/modules/address.js";
 	export default {
+		components:{
+			TopBar
+		},
 		data() {
 			return {
 				source: 0,
@@ -63,13 +72,15 @@
 			})
 		},
 		methods: {
+			goBack(){
+				goBack()
+			},
 			//选择地址
 			checkAddress(item) {
 				console.log(this.source)
 				if (this.source == 1) {
 					//this.$api.prePage()获取上一页实例，在App.vue定义
-					
-					this.$api.prePage().addressData = item;
+					this.$api.prePage().defaultPath = item;
 					uni.navigateBack()
 				}
 			},

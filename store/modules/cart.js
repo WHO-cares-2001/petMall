@@ -74,17 +74,22 @@ export default{
 		},
 		//单选
 		selectedItem(state,index){
-			let id=state.list[index].id
+			// let id=state.list[index].id
+			let id=index
 			// console.log(id)
 			let i=state.selectedList.indexOf(id)
+			let item=state.list.find(item=>item.id===id)
 			//如果selectedList中已经存在表示之前是选中状态
 			//那么此时就要从selectedList中删除
 			if(i>-1){
-				state.list[index].checked=false
+				// state.list[index].checked=false
+				// return state.selectedList.splice(i,1)
+				item.checked=false
 				return state.selectedList.splice(i,1)
 			}
 			//如果之前没有选中
-			state.list[index].checked=true
+			// state.list[index].checked=true
+			item.checked=true
 			state.selectedList.push(id)
 		},
 		
