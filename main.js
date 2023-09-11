@@ -1,5 +1,7 @@
 import App from './App'
 
+//未登录拦截器
+import interceptor from 'interceptor.js'
 
 
 //vuex
@@ -50,40 +52,8 @@ const publicRoutes = ['/', '/pages/login/login',
 '/pages/register/register','/pages/index/index',
 '/pages/searchResults/searchResults']
 
-//路由全局前置守卫
+//路由全局前置守卫,这种对uniapp不适用
 // router.beforeEach((to,from,next) => {
-//   //这些无需登录
-//   if(publicRoutes.includes(to.path)){ 
-// 	//若是进入登录与注册页面 ==> pass
-//     if(to.path === '/pages/login/login'&&localStorage.getItem('token')!=null)
-//     {
-//       return next('/pages/my/my');
-//     }else{
-//       next();
-//     }
-//   }else{ 
-//     let userToken = localStorage.getItem('token');
-//     // console.log("Token为:"+userToken); 
-
-//     let user = localStorage.getItem('user');
-//     // console.log("username:"+user); 
-
-//     if(userToken === null || userToken === ''){
-// 		uni.showToast({
-// 			  title: '无权限，请先登录！',
-// 			  icon: 'none',
-// 			  duration: 2000
-// 		})
-//       return next('/pages/login/login');
-//     }else{
-//       next();
-//     }
-//   }
-// })
-// export default router
-
-
-
 
 
 // import Json from './Json'

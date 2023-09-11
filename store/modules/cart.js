@@ -115,7 +115,6 @@ export default{
 		    if (index !== -1) {
 		      state.list.splice(index, 1);
 		    }
-			
 			console.log('delList')
 		},
 		addUpdate(state,id){

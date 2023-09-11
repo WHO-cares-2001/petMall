@@ -14,17 +14,20 @@
 		>
 		</uni-segmented-control>
 		
+		<orderItems :byshopList="test"></orderItems>
 	</view>
 </template>
 
 <script>
 import TopBar from '../../components/common/topBar.vue'
-	
+import orderItems from '../../components/orderItems.vue'
+
 import {goMy} from '@/common/sharedMethods.js'
 
 export default {
 	components:{
-		TopBar
+		TopBar,
+		orderItems
 	},
 	data() {
 		return {
@@ -37,6 +40,58 @@ export default {
 				{title:"退款项"}
 			],
 			current:0,
+			test:[
+				[
+					{
+						"id": "1701028824264740865",
+						"etc": null,
+						"userId": "8",
+						"animalId": "1",
+						"stuffId": null,
+						"number": 1,
+						"goodsType": 0,
+						"name": "可爱的金毛",
+						"img": "img/22.jpg",
+						"pprice": 2000,
+						"shopId": "1",
+						"shopName": "蓝精灵萌宠专卖",
+						"checked": true
+					}
+				],
+				[
+					{
+						"id": "1701028838672175106",
+						"etc": null,
+						"userId": "8",
+						"animalId": "12",
+						"stuffId": null,
+						"number": 1,
+						"goodsType": 0,
+						"name": "完美海双布偶弟弟",
+						"img": "img/33.jpg",
+						"pprice": 4888,
+						"shopId": "6",
+						"shopName": "Healer布偶猫舍",
+						"checked": true
+					},
+					{
+						"id": "1701029039373815810",
+						"etc": null,
+						"userId": "8",
+						"animalId": "11",
+						"stuffId": null,
+						"number": 1,
+						"goodsType": 0,
+						"name": "海双布偶妹妹",
+						"img": "img/32.jpg",
+						"pprice": 2188,
+						"shopId": "6",
+						"shopName": "Healer布偶猫舍",
+						"checked": true
+					}
+				]
+			],
+			
 		}
 	},
 	methods: {
@@ -48,17 +103,17 @@ export default {
 		},
 		
 		fetchPetData(current){
-			// this.petList =
+			
 		},
 		callGoMy(){
 			goMy();
 		},
 	},
 	mounted() {
-		console.log('mounted:index ',this.$route.query.num)
-		var selectNum=parseInt(this.$route.query.num)
-		this.current=selectNum
-		//this.fetchPetData(selectNum); // 初始化时获取默认选项卡的宠物信息数据
+		console.log('mounted:index ',this.$route.query.state)
+		var selectNum=parseInt(this.$route.query.state)
+		this.current=selectNum+1
+		this.fetchPetData(this.current); // 初始化时获取默认选项卡的宠物信息数据
 		
 	}
 }

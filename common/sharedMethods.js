@@ -22,9 +22,8 @@ export function goIndex() {
 export function goMy() {
 	// console.log('goMy')
 	uni.switchTab({
-		url: '../my/my' // 替换为目标页面的路径
+		url: '../user/user' // 替换为目标页面的路径
 	});
-  
 }
 
 //去全部订单页

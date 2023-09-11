@@ -33,6 +33,7 @@ export default{
 			
 			localStorage.setItem('token', provider.token);
 			localStorage.setItem('userId', provider.user.id)
+			console.log('set token,userId')
 		},
 		cleanUserInfo(state) {
 			state.hasLogin = false;
@@ -43,6 +44,7 @@ export default{
 			
 			localStorage.removeItem('token');
 			localStorage.removeItem('userId');
+			console.log('remove token,userId')
 		}
 	},
 	//2

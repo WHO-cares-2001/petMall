@@ -206,11 +206,30 @@
 				this.payType = type;
 			},
 			submit(){
-				//提交订单需要在vuex删除一下被提交的这些商品
-				
-				uni.navigateTo({
-					url: '/pages/payment/payment?money='+this.totalCount.pprice
-				})
+				console.log(this.defaultPath)
+				if(Object.keys(this.defaultPath).length === 0){
+					uni.showToast({
+					  title: '地址不能为空',
+					  icon: 'none',
+					});
+				}
+				else{
+					uni.navigateTo({
+						url: '/pages/payment/payment?money='+this.totalCount.pprice
+					})
+					//提交订单需要在vuex删除一下被提交的这些商品
+					this.goodsList.forEach((innerArray) => {
+					  innerArray.forEach((item) => {
+					    // 在这里执行删除操作，传递item的id给commit函数
+						//而且买的如果是动物，变成禁买状态
+					    // this.$store.commit('delList', item.id);
+					  });
+					});
+
+					
+					//传给后端
+					this.addOrderItem()
+				}
 			},
 			stopPrevent(){},
 			
@@ -221,6 +240,7 @@
 				this.item= JSON.parse(e.detail);
 				
 				//找默认地址
+				//有个bug，地址更改了不能实时更新
 				let self = this;
 				let Id = window.localStorage.getItem("userId");
 				adList({
@@ -288,7 +308,7 @@
 				});	
 				// 将 Map 转换为数组，即按照 shopId 分组的数组
 				const result = [...shopIdMap.values()];
-				console.log(result)
+				console.log(result)//goodsList内容	
 				return result
 			},
 			
