@@ -14,14 +14,21 @@
 		>
 		</uni-segmented-control>
 		
-		<orderItems :byshopList="test" :text="ftext"></orderItems>
+		<orderItems :byshopList="items" :text="ftext"></orderItems>
+		
+		<!-- <view class="" v-if="current===0">
+			
+		</view> -->
 	</view>
 </template>
 
 <script>
 import TopBar from '../../components/common/topBar.vue'
 import orderItems from '../../components/orderItems.vue'
-
+import {
+		getByStates,getAll
+	} from "../../network/modules/order.js";
+	
 import {goMy} from '@/common/sharedMethods.js'
 
 export default {
@@ -73,37 +80,68 @@ export default {
 						"shopId": "6",
 						"shopName": "Healer布偶猫舍",
 						"checked": true
-					},
-					{
-						"id": "1701029039373815810",
-						"etc": null,
-						"userId": "8",
-						"animalId": "11",
-						"stuffId": null,
-						"number": 1,
-						"goodsType": 0,
-						"name": "海双布偶妹妹",
-						"img": "img/32.jpg",
-						"pprice": 2188,
-						"shopId": "6",
-						"shopName": "Healer布偶猫舍",
-						"checked": true
 					}
 				]
 			],
-			ftext:"退单"
+			ftext:"退单",
+			items:[],
+			texts:[
+				"去支付",
+				"",
+				"签收",
+				"评价"
+			]
 		}
 	},
 	methods: {
 		onClickItem(e){
+			let self=this
 			if(this.current != e.currentIndex){
 				this.current = e.currentIndex;
 			}
-			this.fetchPetData(this.current)
+			if(this.current===0){
+				getAll()
+				.then(function(res){
+					console.log(res.data)
+					self.orderByNumber(res.data)
+				})
+			}else if(this.current>0){
+				this.fetchPetData(this.current)
+			}
 		},
-		
+		orderByNumber(data){
+			const orderMap = new Map();
+			  // 遍历原始数组
+			  data.forEach(item => {
+			    const n = item.number;
+			    // 检查是否已经有相同 shopId 的数组，如果没有则创建一个新数组
+			    if (!orderMap.has(n)) {
+			      orderMap.set(n, []);
+			    }
+			    // 将商品添加到对应的数组中
+			    orderMap.get(n).push(item);
+			  });
+			  // 将 Map 转换为数组，即按照 shopId 分组的数组
+			  const result = [...orderMap.values()];
+			  console.log(result)
+			  this.items=result
+			  console.log(this.items)
+			  // 强制更新组件，使新数据生效
+				// self.$forceUpdate();
+		},
 		fetchPetData(current){
-			
+			let self=this
+			if(current>0&&this.current<5){
+				//查state
+				getByStates(current-1)
+				.then(function(res){
+					console.log(res.data)
+					self.orderByNumber(res.data)
+				})
+				self.ftext=self.texts[current-1]
+			}else if(current===5){
+				this.items=[]
+			}
 		},
 		callGoMy(){
 			goMy();
@@ -119,6 +157,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.control{
+	background-color: white;
+}
 </style>

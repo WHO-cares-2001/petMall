@@ -11,3 +11,15 @@ export function add(Orders){
 export function addDetails(OrderDetails){
     return postJson('/orderdetails/saves', OrderDetails)
 }
+
+export function updateDetails(OrderDetails){
+    return postJson('/orderdetails/update', OrderDetails)
+}
+
+export function getByStates(state){
+    return get('/show/bystateorders', { state: state })
+}
+
+export function getAll(){
+    return get('/show/allorders')
+}

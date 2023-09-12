@@ -53,12 +53,16 @@
 
 <script>
 	import {goBack} from '@/common/sharedMethods.js'
-
+	import {
+			add,addDetails,updateDetails
+	} from "../../network/modules/order.js";
+	
 	export default {
 		data() {
 			return {
 				payType: 1,
-				orderInfo: {}
+				orderInfo: {},
+				orders:[]
 			};
 		},
 		computed: {
@@ -67,6 +71,9 @@
 		onLoad(e) {
 			console.log(e.money)
 			this.money=e.money
+			console.log(e)
+			this.orders=JSON.parse(e.goodsList)
+			console.log(this.orders)
 			
 		},
 
@@ -79,10 +86,21 @@
 				this.payType = type;
 			},
 			//确认支付
-			confirm: async function() {
-				uni.redirectTo({
-					url: '/pages/payment/paySuccess'
+			confirm() {
+				this.orders.forEach(i=>{
+					i.state=1
 				})
+				console.log(this.orders)
+				
+				updateDetails(this.orders)
+				.then(function(res){
+					console.log(res)
+					
+					uni.redirectTo({
+						url: '/pages/payment/paySuccess'
+					})
+				})
+				
 			},
 			cancelPay(){
 				uni.switchTab({

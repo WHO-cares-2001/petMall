@@ -11,51 +11,52 @@
 				
 				<view class="shops-goods" v-for="item in i" :key="item.id">
 					<view class="g-body">
-							<!-- 多选框 -->
-							<!-- <label class="radio" @tap="selectedItem(item.id)">
-								<radio value="" color="#FF3333" :checked="item.checked"/>
-								<text></text>
-							</label> -->
-							
-							<image :src="petPath+item.img" mode="" 
-							class="shop-img"@tap="callGoDetail(item)">
-							</image>
-							
-							<view class="shop-text">
-								<view class="" >
-									<view class="shop-name" >
-										<view @tap="callGoDetail(item)">{{item.name}}</view>
-										<!-- <uni-icons type="trash-filled" size="25"
-										color="grey" @tap="del(item.id)"
-										class="trash">
-										</uni-icons> -->
-									</view @tap="callGoDetail(item)">
-									<view class="shop-option">
-										<!-- {{item.option}} -->
-									</view>
+						<!-- 多选框 -->
+						<!-- <label class="radio" @tap="selectedItem(item.id)">
+							<radio value="" color="#FF3333" :checked="item.checked"/>
+							<text></text>
+						</label> -->
+						
+						<image :src="petPath+item.img" mode="" 
+						class="shop-img"@tap="callGoDetail(item)">
+						</image>
+						
+						<view class="shop-text">
+							<view class="" >
+								<view class="shop-name" @tap="callGoDetail(item)">
+									<view @tap="callGoDetail(item)">{{item.name}}</view>
+									<!-- <uni-icons type="trash-filled" size="25"
+									color="grey" @tap="del(item.id)"
+									class="trash">
+									</uni-icons> -->
 								</view>
-								
-								<view class="shop-price">
-									<view class="price-color" @tap="callGoDetail(item)">
-										￥{{item.pprice}}
-									</view>
-									<view class="">
-										x{{item.number}}
-									</view>
+								<view class="shop-option">
+									<!-- {{item.option}} -->
+								</view>
+							</view>
+							
+							<view class="shop-price">
+								<view class="price-color" @tap="callGoDetail(item)">
+									￥{{item.money}}
+								</view>
+								<view class="">
+									x{{item.num}}
 								</view>
 							</view>
 						</view>
 					</view>
+				</view>
 					
-					<!-- 底部按钮 -->
-					<view class="btns">
-						<button
-							type="primary" plain="true" size="mini" 
-							style="color:#FE4355;border-color: #FE4355;
-							border-radius: 30rpx;height: 60rpx;">
+				<!-- 底部按钮  -->
+				<view class="btns" v-if="text.length!==0">
+					<button
+						type="primary" plain="true" size="mini" 
+						style="color:#FE4355;border-color: #FE4355;
+						border-radius: 30rpx;height: 60rpx;">
+						<!-- {{text[item.state]}} -->
 							{{text}}
-						</button>
-					</view>
+					</button>
+				</view>
 			</view>
 		</view>
 		
@@ -74,7 +75,11 @@
 			text:{
 				type:String,
 				required:true
-			}
+			},
+			// texts:{
+			// 	type:Array,
+			// 	required:true
+			// }
 		},
 		name:"orderItems",
 		data() {
@@ -93,13 +98,14 @@
 
 <style scoped>
 	/* .top{
-		margin-top: 10rpx;
+		background-color: white;
 	} */
+	page{
+		background-color: #f5f5f5;
+	}
 .shop-list{
 	//这样可以看到最底下的那个商品卡片
 	padding-bottom: 120rpx;
-	background-color: #f5f5f5;
-	
 }
 .shop-else-list{
 	background-color: #F7F7F7;

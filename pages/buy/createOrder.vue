@@ -183,7 +183,7 @@
 				usersId:'',
 				totals:[],//每个订单总金额
 				orderIds:[],//每个订单的编号
-				
+				submitJson:[]
 			}
 		},
 		onLoad(e){
@@ -237,6 +237,11 @@
 					self.orderIds=res.data
 					//增加订单项 addDetails
 					self.detail(self)
+					
+					uni.navigateTo({
+						url: '/pages/payment/payment?money='+self.totalCount.pprice
+						+'&goodsList='+JSON.stringify(self.submitJson)
+					})
 				})
 			},
 			detail(self){
@@ -256,6 +261,7 @@
 							moneys:ele.pprice*ele.number
 						}
 						console.log(json)
+						self.submitJson.push(json)
 						
 						addDetails(json)
 						.then(function(res){
@@ -263,6 +269,7 @@
 						})
 					}
 				}
+				console.log(self.submitJson)
 			},
 			submit(){
 				console.log(this.defaultPath)
@@ -273,9 +280,6 @@
 					});
 				}
 				else{
-					uni.navigateTo({
-						url: '/pages/payment/payment?money='+this.totalCount.pprice
-					})
 					//提交订单需要在vuex删除一下被提交的这些商品
 					this.goodsList.forEach((innerArray) => {
 					  innerArray.forEach((item) => {
