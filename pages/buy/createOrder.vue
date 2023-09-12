@@ -145,9 +145,11 @@
 	import {
 		addressList,adList
 	} from "../../network/modules/address.js";
-	
 	import {mapGetters,mapState} from 'vuex';
 	import {goBack} from '@/common/sharedMethods.js'
+	import {
+		add,addDetails
+	} from "../../network/modules/order.js";
 	
 	export default {
 		data() {
@@ -177,7 +179,11 @@
 					default: false,
 				},
 				addressId: 0, //收货地址ID
-				defaultPath:[]//默认地址
+				defaultPath:[],//默认地址
+				usersId:'',
+				totals:[],//每个订单总金额
+				orderIds:[],//每个订单的编号
+				
 			}
 		},
 		onLoad(e){
@@ -205,6 +211,59 @@
 			changePayType(type){
 				this.payType = type;
 			},
+			addOrderItem(){
+				// console.log(Orders)
+				this.everyOrderTotal()
+				let len=this.totals.length
+				let Orders2=[]
+				for(let i=0;i<len;i++){
+					let Orders={
+						userId:this.usersId,
+						adressesId:this.defaultPath.id,
+						money:null,
+						remark:this.desc
+					}
+					Orders.money=this.totals[i]
+					console.log(Orders)
+					Orders2.push(Orders)
+				}
+				console.log(Orders2)
+				
+				let self=this
+				//生成订单编号
+				add(Orders2)
+				.then(function(res){
+					console.log(res.data); 
+					self.orderIds=res.data
+					//增加订单项 addDetails
+					self.detail(self)
+				})
+			},
+			detail(self){
+				let len1=self.orderIds.length
+				console.log(len1)
+				for(let j=0;j<len1;j++){
+					let arr=self.goodsList[j]
+					for(let k=0;k<arr.length;k++){
+						let ele=arr[k]
+						let json={
+							animalId:ele.animalId,
+							num:ele.number,
+							stuffId:ele.stuffId,
+							goodsId:ele.goodsType,
+							orderitemNumber:self.orderIds[j],
+							state:0,
+							moneys:ele.pprice*ele.number
+						}
+						console.log(json)
+						
+						addDetails(json)
+						.then(function(res){
+							console.log(res.data)
+						})
+					}
+				}
+			},
 			submit(){
 				console.log(this.defaultPath)
 				if(Object.keys(this.defaultPath).length === 0){
@@ -225,7 +284,6 @@
 					    // this.$store.commit('delList', item.id);
 					  });
 					});
-
 					
 					//传给后端
 					this.addOrderItem()
@@ -243,6 +301,8 @@
 				//有个bug，地址更改了不能实时更新
 				let self = this;
 				let Id = window.localStorage.getItem("userId");
+				this.usersId=Id
+				
 				adList({
 					userId: Id
 				}).then(function(res) {
@@ -265,7 +325,7 @@
 					url:'../payment/payment'
 				})
 			},
-			//计算每个订单的总金额
+			//计算每个订单的总金额(被点击的那个)
 			orderItemtotalCount(index){
 				console.log(index)
 				const i=this.goodsList[index]
@@ -279,6 +339,14 @@
 					return item.pprice*item.number
 				}
 				return total
+			},
+			//计算所有订单的总金额
+			everyOrderTotal(){
+				let len=this.goodsList.length
+				for(let i=0;i<len;i++){
+					this.totals.push(this.orderItemtotalCount(i))
+				}
+				console.log(this.totals)
 			}
 		},
 		computed:{

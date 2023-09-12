@@ -1,5 +1,10 @@
 <template>
 	<view class="app">
+		<!-- 顶部导航栏 -->
+		<view>
+			<uni-nav-bar left-icon="left" title="选择支付方式" @clickLeft="goBack()" />
+		</view>
+		
 		<view class="price-box">
 			<text>支付金额</text>
 			<text class="price">{{money}}</text>
@@ -47,6 +52,7 @@
 </template>
 
 <script>
+	import {goBack} from '@/common/sharedMethods.js'
 
 	export default {
 		data() {
@@ -65,6 +71,9 @@
 		},
 
 		methods: {
+			goBack(){
+				goBack()
+			},
 			//选择支付方式
 			changePayType(type) {
 				this.payType = type;

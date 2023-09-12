@@ -14,7 +14,7 @@
 		>
 		</uni-segmented-control>
 		
-		<orderItems :byshopList="test"></orderItems>
+		<orderItems :byshopList="test" :text="ftext"></orderItems>
 	</view>
 </template>
 
@@ -91,7 +91,7 @@ export default {
 					}
 				]
 			],
-			
+			ftext:"退单"
 		}
 	},
 	methods: {

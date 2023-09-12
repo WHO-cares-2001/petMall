@@ -25,12 +25,10 @@
 								<view class="" >
 									<view class="shop-name" >
 										<view @tap="callGoDetail(item)">{{item.name}}</view>
-										
 										<!-- <uni-icons type="trash-filled" size="25"
 										color="grey" @tap="del(item.id)"
 										class="trash">
 										</uni-icons> -->
-										
 									</view @tap="callGoDetail(item)">
 									<view class="shop-option">
 										<!-- {{item.option}} -->
@@ -42,20 +40,23 @@
 										￥{{item.pprice}}
 									</view>
 									<view class="">
-										<!-- <uni-number-box :min="1" :max="maxJudge(item.goodsType)" :value="judgeNum(item.number)" 
-										background="#fff" @change="onNumberChange($event,item.id)"/> -->
 										x{{item.number}}
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
-				
-				<!-- 底部按钮 -->
-				<view class="btns">
 					
-				</view>
+					<!-- 底部按钮 -->
+					<view class="btns">
+						<button
+							type="primary" plain="true" size="mini" 
+							style="color:#FE4355;border-color: #FE4355;
+							border-radius: 30rpx;height: 60rpx;">
+							{{text}}
+						</button>
+					</view>
+			</view>
 		</view>
 		
 	</view>
@@ -69,6 +70,10 @@
 			byshopList: {
 			  type: Array,
 			  required: true
+			},
+			text:{
+				type:String,
+				required:true
 			}
 		},
 		name:"orderItems",
@@ -223,5 +228,10 @@ radio{
 .rtext{
 	margin-left: 30rpx;
 }
-
+.btns{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding-left:500rpx ;
+}
 </style>
