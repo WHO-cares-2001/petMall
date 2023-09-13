@@ -14,7 +14,7 @@
 		>
 		</uni-segmented-control>
 		
-		<orderItems :byshopList="items" :text="ftext"></orderItems>
+		<orderItems :byshopList="items" :text="texts"></orderItems>
 		
 		<!-- <view class="" v-if="current===0">
 			
@@ -87,9 +87,10 @@ export default {
 			items:[],
 			texts:[
 				"去支付",
-				"",
+				"待收货",
 				"签收",
-				"评价"
+				"评价",
+				"已完成"
 			]
 		}
 	},

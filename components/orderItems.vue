@@ -2,7 +2,7 @@
 	<view class="top">
 		
 		<!-- 商品内容 -->
-		<view class="shop-list" @tap="goMy()">
+		<view class="shop-list">
 			<view class="shop-item" v-for="(i,index) in byshopList" :key="index">
 				<view class="g-header">
 					<uni-icons type="shop" size="27" color="#FE4355"></uni-icons>
@@ -47,14 +47,14 @@
 					</view>
 				</view>
 					
-				<!-- 底部按钮  -->
-				<view class="btns" v-if="text.length!==0">
-					<button
+				<!-- 底部按钮  v-if="text[i[0].state]!==''"-->
+				<view class="btns" >
+					<button @click="go(text[i[0].state],i)"
 						type="primary" plain="true" size="mini" 
 						style="color:#FE4355;border-color: #FE4355;
 						border-radius: 30rpx;height: 60rpx;">
-						<!-- {{text[item.state]}} -->
-							{{text}}
+						{{text[i[0].state]}}
+							<!-- {{text}} -->
 					</button>
 				</view>
 			</view>
@@ -73,7 +73,7 @@
 			  required: true
 			},
 			text:{
-				type:String,
+				type:Array,
 				required:true
 			},
 			// texts:{
@@ -91,6 +91,22 @@
 		methods:{
 			goMy(){
 				goMy()
+			},
+			callGoDetail(item){
+				
+			},
+			go(t,i){
+				console.log('go')
+				let goodsList=i
+				console.log(goodsList)
+				if(t==="去支付"){
+					console.log(i[0].money)
+					uni.navigateTo({
+						// url:`../payment/payment?goodsList=${JSON.stringify(goodsList)}`
+						url: '../payment/payment?money='+i[0].money
+							+'&goodsList='+JSON.stringify(goodsList)
+					});
+				}
 			}
 		}
 	}

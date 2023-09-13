@@ -29,7 +29,10 @@ export default{
 			}
 		],
 		selectedList:[],
-		orderListByShopId:[]
+		orderListByShopId:[],
+		//购物车展示嵌套数组
+		byshopList:[],
+		
 	},
 	getters:{
 		//判断是否全选
@@ -97,7 +100,7 @@ export default{
 		addToCart(state, item) {
 		  state.list.push(item);
 		  // 调用后端接口将购物车数据保存到数据库
-		  
+		  console.log('addToCart')
 		},
 		removeFromCart(state, itemId) {
 		  state.list = state.list.filter(item => item.id !== itemId);

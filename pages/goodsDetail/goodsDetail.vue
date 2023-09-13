@@ -59,6 +59,17 @@
 					<text>{{detailInfo.introduction}}</text>
 				</view>
 				
+				<!-- 库存信息 -->
+				<view class="inventory">
+				    <view class="">
+				        <text class="">库存</text>
+				        <text class="cr-main">112</text>
+				    </view>
+				    <view class="">
+				        <text class="">热度</text>
+				        <text class="cr-main">123</text>
+				    </view>
+				</view>
 			</view>
 			<!-- 宠物介绍结束 -->
 		</view>
@@ -161,7 +172,7 @@ export default {
 		}
 	},
 	methods: {
-		...mapMutations(['addone','delfavorList']),
+		...mapMutations(['addone','delfavorList','addToCart']),
 		buttonClick(e) {
 			// console.log(e)
 			this.userId=localStorage.getItem('userId');
@@ -194,6 +205,7 @@ export default {
 		},
 		addGoods(data){
 			console.log(data)
+			let self=this
 			
 			addCart(data)
 			.then(function(res){
@@ -203,6 +215,7 @@ export default {
 					title: `加入购物车成功`,
 					icon: 'none'
 				})
+				// self.$store.commit('addToCart',data);
 			})
 		},
 		onClick(e) {
@@ -481,5 +494,15 @@ export default {
 .iimg{
 	width: 100%;
 	height: 100%;
+}
+
+.cr-main {
+    color: #f6c133 !important;
+}
+.inventory{
+	display: flex;
+	justify-content:space-around ;
+	margin: 10rpx 0;
+	/* border-top: 1px solid #DCDFE6; */
 }
 </style>
