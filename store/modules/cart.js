@@ -132,6 +132,7 @@ export default{
 			  item.number -= 1;
 			}
 		},
+		//byshopList的有关更新购物车界面操作写在下面
 		
 	},
 	actions:{

@@ -9,7 +9,21 @@
 					<text class="name">{{i[0].shopName}}</text>
 				</view>
 				
-				<view class="shops-goods" v-for="item in i" :key="item.id">
+				<view class="shops-goods" v-for="(item,secondIndex) in i" :key="item.id">
+					<!-- 倒计时 -->
+					<view class="countdown" v-if="timeupSecond!==null&&item.state === '0'">
+						<!-- <view>时间{{ timeupSecond }}</view> -->
+						<uni-countdown v-if="item.state === '0'&&secondIndex===0" 
+						class="room-count" color="#fff" 
+						:show-day="false" :second="timeupSecond"
+						 background-color="#FE4355"
+						@timeup="timeup(i[0].createTime)" />
+						<text v-if="item.state === '0'&&secondIndex===0" class="count-txt">之后订单取消</text>
+					</view>
+					<view class="invalid" v-if="timeupSecond===null&&secondIndex===0&&item.state === '0'">
+						<text class="invalid-text">交易关闭</text>
+					</view>
+					
 					<view class="g-body">
 						<!-- 多选框 -->
 						<!-- <label class="radio" @tap="selectedItem(item.id)">
@@ -85,7 +99,9 @@
 		data() {
 			return {
 				petPath:"../../static/petImgs/",
-				
+				//被绑定的时间值
+				timeupSecond:null,
+
 			};
 		},
 		methods:{
@@ -94,6 +110,39 @@
 			},
 			callGoDetail(item){
 				
+			},
+			// 倒计时
+			timeup(createTime) {
+					var that = this;
+					/**setInterval间歇调用 */
+					that.timer = setInterval(function () {
+					//订单下单时间
+					var buy_time = createTime;
+					//计算剩余时间
+					var time = (new Date(buy_time).getTime() + 10* 60 * 1000) - (new Date().getTime());
+					if(time>0){
+					  //计算剩余的分钟
+					  var minutes = parseInt(time / 1000 / 60 % 60, 10);
+					  //计算剩余的秒数
+					  var seconds = parseInt(time / 1000 % 60, 10);
+					  that.timeupSecond=parseInt(time / 1000);
+					  // console.log(that.timeupSecond)
+					  //判断分钟和秒数小于10要在前面加个0.
+					  if(minutes<10){
+						minutes = '0' + minutes;
+					  }
+					  if (seconds < 10) {
+						seconds = '0' + seconds;
+					  }
+					  var timer = minutes + ":" + seconds;
+					}
+				}, 1000);
+				if(that.timeupSecond==0) {
+					uni.showToast({
+						title: '时间到'
+					})
+					this.getOrderPage()
+				}
 			},
 			go(t,i){
 				console.log('go')
@@ -106,6 +155,12 @@
 						url: '../payment/payment?money='+i[0].money
 							+'&goodsList='+JSON.stringify(goodsList)
 					});
+				}else if(t==="待发货"){
+					
+				}else if(t==="签收"){
+					
+				}else if(t==="去评价"){
+					
 				}
 			}
 		}
@@ -148,9 +203,31 @@
 .shops-goods{
 	margin-bottom: 20rpx;
 }
+.countdown{
+	display: flex;
+	margin-left:20rpx;
+	margin-bottom: 15rpx;
+}
+.invalid{
+	background-color: #FE4355;
+	color: #fff;
+	width: 25%;
+	border-radius: 30rpx;
+	margin-left: 15rpx;
+	display: flex; 
+	justify-content: center;
+}
+.invalid-text{
+	padding: 10rpx;
+	font-size: 30upx;
+}
+.count-txt{
+	margin: 0 15rpx;
+}
 .g-body{
 	display: flex;
 	align-items: center;
+	
 }
 .name {
 	font-size: 30upx;

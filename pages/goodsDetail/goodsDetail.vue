@@ -9,7 +9,8 @@
 			<view class="iimg" v-if="this.type==='1'">
 				<image class="detail-img-1"
 				:src="'../../static/petImgs/'+detailInfo.imgs"
-				mode="aspectFit">
+				mode="scaleToFill"
+				@tap="goods_photo_view_event">
 				</image>
 			</view>
 			
@@ -366,7 +367,14 @@ export default {
 		},
 		// 商品查看大图
 		goods_photo_view_event() {
-		   const imgUrl='../../static/petImgs/'+this.detailInfo.img
+			let image
+			if(this.type==='1'){
+				//周边
+				image=this.detailInfo.imgs
+			}else if(this.type==='0'){
+				image=this.detailInfo.img
+			}
+		   const imgUrl='../../static/petImgs/'+image
 		   console.log(imgUrl)
 		    uni.previewImage({
 		        current: imgUrl,
@@ -433,7 +441,6 @@ export default {
 .detail-img{
 	width: 100%;
 	/* height: 100%; */
-	
 	height: 60vh !important;
 	display: block;
 	
@@ -441,6 +448,9 @@ export default {
 .detail-img-1{
 	width: 100%;
 	margin: 20rpx 0;
+	
+	height: 60vh !important;
+	display: block;
 }
 
 .detail-goods{

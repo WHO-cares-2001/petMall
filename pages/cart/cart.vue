@@ -171,6 +171,8 @@
 				  const result = [...shopIdMap.values()];
 				  console.log(result)
 				  this.byshopList=result
+				  //放入vuex
+				  
 			},
 			getAll(){
 				let self=this
