@@ -69,8 +69,8 @@
 				    </view>
 					
 				    <view class="">
-				        <text class="">热度</text>
-				        <text class="cr-main">{{detailInfo.clicks}}</text>
+				        <text class="" >热度</text>
+				        <text class="cr-main-2">{{detailInfo.clicks}}</text>
 				    </view>
 				</view>
 			</view>
@@ -510,6 +510,10 @@ export default {
 
 .cr-main {
     color: #f6c133 !important;
+	margin-left: 10rpx;
+}
+.cr-main-2 {
+    color: red !important;
 	margin-left: 10rpx;
 }
 .inventory{

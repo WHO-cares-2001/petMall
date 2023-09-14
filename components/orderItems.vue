@@ -9,7 +9,8 @@
 					<text class="name">{{i[0].shopName}}</text>
 				</view>
 				
-				<view class="shops-goods" v-for="(item,secondIndex) in i" :key="item.id">
+				<view class="shops-goods" v-for="(item,secondIndex) in i" 
+				:key="item.id" @tap="goOrderDetail(i)">
 					<!-- 倒计时 -->
 					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
 					secondIndex:{{secondIndex}}</view> -->
@@ -143,7 +144,8 @@
 					})
 					clearInterval(that.timer); // 清除计时器
 					// 在这里可以触发交易关闭的操作
-					// this.getOrderPage()
+					//后端写取消理由
+					
 				}
 			},
 			rest(time){
@@ -165,16 +167,24 @@
 				}
 			},
 			go(t,i){
-				console.log('go')
+				// console.log('go')
 				let goodsList=i
 				console.log(goodsList)
 				if(t==="去支付"){
-					console.log(i[0].money)
-					uni.navigateTo({
-						// url:`../payment/payment?goodsList=${JSON.stringify(goodsList)}`
-						url: '../payment/payment?money='+i[0].money
-							+'&goodsList='+JSON.stringify(goodsList)
-					});
+					if(this.rest(i[0].createTime)){
+						console.log(i[0].money)
+						uni.navigateTo({
+							// url:`../payment/payment?goodsList=${JSON.stringify(goodsList)}`
+							url: '../payment/payment?money='+i[0].money
+								+'&goodsList='+JSON.stringify(goodsList)
+						});
+					}
+					else{
+						uni.showToast({
+							title: `交易已失效，请重新购买！`,
+							icon: 'none'
+						})
+					}
 				}else if(t==="待发货"){
 					
 				}else if(t==="签收"){
@@ -182,6 +192,13 @@
 				}else if(t==="去评价"){
 					
 				}
+			},
+			goOrderDetail(i){
+				//订单详情
+				let it=JSON.stringify(i)
+				uni.navigateTo({
+					url: '../orderDetail/orderDetail?Info='+it
+				});
 			}
 		}
 	}
@@ -233,9 +250,11 @@
 	color: #fff;
 	width: 25%;
 	border-radius: 30rpx;
-	margin-left: 15rpx;
+	margin-left: 20rpx;
+	margin-bottom: 15rpx;
 	display: flex; 
 	justify-content: center;
+	
 }
 .invalid-text{
 	padding: 10rpx;

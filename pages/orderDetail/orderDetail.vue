@@ -25,58 +25,41 @@
 		<view class="goods-section">
 			<view class="g-header b-b">
 				<uni-icons type="shop" size="30"></uni-icons>
-				<text class="name">西城小店铺</text>
+				<text class="name">{{info[0].shopName}}</text>
 			</view>
 			
 			<!-- 商品列表 -->
-			<view class="g-item" v-for="(item,index) in goodsList" :key="index">
+			<view class="g-item" v-for="(item,index) in info" :key="index">
 				<image :src="'../../static/petImgs/'+item.img"></image>
 				<view class="right">
 					<text class="title clamp">{{item.name}}</text>
 					<br>
-					<!-- <text class="spec">春装款 M</text> -->
 					
 					<view class="price-box">
-						<text class="price">￥{{item.pprice}}</text>
-						<text class="number">x {{item.number}}</text>
-						<button 
-							type="primary" plain="true" size="mini" 
-							style="color:grey;border-radius: 15rpx;border-color: grey;
-							border-radius: 30rpx;height: 60rpx;">
-							退单
-						</button>
+						<text class="price">￥{{item.moneys}}</text>
+						<text class="number">x {{item.num}}</text>
+						
 					</view>
 				</view>
 			</view>
 			
+			<view class="btns">
+				<button
+					type="primary" plain="true" size="mini"
+					style="color:grey;border-radius: 15rpx;
+					border-color: grey;margin-right: 25rpx;
+					border-radius: 30rpx;height: 60rpx;">
+					退单
+				</button>
+			</view>
 		</view>
-		
 		<!-- 优惠明细 -->
-		<!-- <view class="yt-list">
-			<view class="yt-list-cell b-b" @click="toggleMask('show')">
-				<view class="cell-icon">
-					券
-				</view>
-				<text class="cell-tit clamp">优惠券</text>
-				<text class="cell-tip active">
-					选择优惠券
-				</text>
-				<text class="cell-more wanjia wanjia-gengduo-d"></text>
-			</view>
-			<view class="yt-list-cell b-b">
-				<view class="cell-icon hb">
-					减
-				</view>
-				<text class="cell-tit clamp">商家促销</text>
-				<text class="cell-tip disabled">暂无可用优惠</text>
-			</view>
-		</view> -->
 		
 		<!-- 金额明细 -->
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥12</text>
+				<text class="cell-tit clamp">商品总金额</text>
+				<text class="cell-tip red">￥{{info[0].money}}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
@@ -88,7 +71,7 @@
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">实付款</text>
-				<text class="cell-tip red">￥12</text>
+				<text class="cell-tip red">￥{{info[0].money-0}}</text>
 			</view>
 			<view class="yt-list-cell desc-cell underline-between-views">
 				<text class="cell-tit clamp">备注</text>
@@ -96,20 +79,20 @@
 			</view>
 			<view class="yt-list-cell  b-b ">
 				<text class="cell-tit clamp">创建时间</text>
-				<text class="cell-tip">2020-1-1 12:10:11</text>
+				<text class="cell-tip">{{info[0].createTime}}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">付款时间</text>
-				<text class="cell-tip">2020-1-1 12:11:11</text>
+				<text class="cell-tip">{{info[0].buyTime}}</text>
 			</view>
 		</view>
 		
 		<!-- 底部 -->
 		<view class="footer">
 			<view class="price-content">
-				<text>实付款</text>
+				<!-- <text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">12</text>
+				<text class="price">12</text> -->
 			</view>
 			<text class="submit" @click="submit">确认收货</text>
 		</view>
@@ -141,9 +124,9 @@
 
 <script>
 	import {
-		addressList
+		selectById
 	} from "../../network/modules/address.js";
-	
+	import {goBack} from '@/common/sharedMethods.js'
 	import {mapGetters,mapState} from 'vuex';
 	
 	
@@ -190,16 +173,30 @@
 						pprice:"2000.0",
 						number:1
 					}
-				]
+				],
+				info:[]
 			}
 		},
-		onLoad(){
-			//商品数据
-			//let data = JSON.parse(option.data);
-			//console.log(data);
-			// this.para(e);
+		onLoad(e){
+			console.log(e.Info)
+			this.info=JSON.parse(e.Info)
+			let id=this.info[0].adressesId
+			this.getAddress(id)
+			
 		},
 		methods: {
+			goBack(){
+				goBack()
+			},
+			getAddress(id){
+				let self=this
+				
+				selectById(id)
+				.then(function(res){
+					console.log(res.data)
+					self.addressData=res.data
+				})
+			},
 			//显示优惠券面板
 			toggleMask(type){
 				let timer = type === 'show' ? 10 : 300;
@@ -209,38 +206,12 @@
 					this.maskState = state;
 				}, timer)
 			},
-			numberChange(data) {
-				this.number = data.number;
-			},
-			changePayType(type){
-				this.payType = type;
-			},
 			submit(){
 				//需要检查一下所有选项是不是都填了
 				
 				uni.navigateTo({
 					url: '/pages/payment/payment?money='+this.totalCount.pprice
 				})
-			},
-			stopPrevent(){},
-			
-			para(e){
-				
-				console.log(e.detail)
-				//选中的商品id集合  [2,9]
-				// this.item= JSON.parse(e.detail);
-				this.item= this.selectedList;
-				
-				//如果有默认地址的一个赋值
-				// if(this.defaultPath.length){
-				// 	this.path = this.defaultPath[0];
-				// }
-				
-				// //如果出发自定义事件，on去接受值
-				// uni.$on("selectPathItem",(res)=>{
-				// 	this.path = res;
-				// })
-				
 			},
 			//确认支付
 			goPayment(){
@@ -255,20 +226,6 @@
 				selectedList:state=>state.cart.selectedList
 			}),
 			...mapGetters(['defaultPath','totalCount']),
-			//根据商品列表找到对应e.detail 数据的 id  最终返回商品数据
-			// goodsList(){
-			// 	// console.log(this.list)
-			// 	// return this.item.map(id=>{
-			// 	// 	return this.list.find(v=>v.id == id);
-			// 	// })
-			// 	list:[{
-			// 		id:1,
-			// 		name:"啊拒绝偶爱你分配就怕看佛经破",
-			// 		img:"../../static/petImgs/img/16.jpg",
-			// 		pprice:"2000.0",
-			// 		number:1
-			// 	}}
-			// }
 		},
 	}
 </script>
@@ -414,6 +371,13 @@
 			.step-box {
 				position: relative;
 			}
+		}
+		
+		.btns{
+			display: flex;
+			// justify-content: space-around;
+			// justify-items: end;
+			margin: 15rpx;
 		}
 	}
 	.yt-list {

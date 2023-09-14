@@ -1,6 +1,7 @@
 import {
 	postJson,
-	post
+	post,
+	get
 } from "../axios"
 
 export function saves(params) {
@@ -18,4 +19,8 @@ export function update(params) {
 }
 export function deleteByIds(params) {
 	return post('/address/updatass', params)
+}
+
+export function selectById(id){
+    return get('/address/selectById', { id: id })
 }
