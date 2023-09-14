@@ -132,9 +132,10 @@ export default {
 		},
 		fetchPetData(current){
 			let self=this
+			let id = window.localStorage.getItem("userId");
 			if(current>0&&this.current<5){
 				//查state
-				getByStates(current-1)
+				getByStates(id,current-1)
 				.then(function(res){
 					console.log(res.data)
 					self.orderByNumber(res.data)

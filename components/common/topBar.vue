@@ -27,9 +27,9 @@
 
 <style >
 /* .bar{
-	position: sticky;
+	position: fixed;
 	top: 0;
-	background-color: white;
+	
 } */
-
+/* background-color: white; */
 </style>

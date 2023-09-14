@@ -178,6 +178,7 @@
 			}
 		},
 		onLoad(e){
+			console.log("1")
 			console.log(e.Info)
 			this.info=JSON.parse(e.Info)
 			let id=this.info[0].adressesId

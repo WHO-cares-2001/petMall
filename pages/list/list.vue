@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
 	<view class="content">
 		<indexCard :items="goodsList" :type="0"></indexCard>
 		<uni-load-more status="noMore"></uni-load-more>
@@ -32,7 +32,7 @@
 
 		onLoad(options) {
 			// #ifdef H5
-			this.headerTop = document.getElementsByTagName('uni-page-head')[0].offsetHeight + 'px';
+			// this.headerTop = document.getElementsByTagName('uni-page-head')[0].offsetHeight + 'px';
 			// #endif
 			this.loadCateList(options.tid);
 			// this.loadData();
@@ -366,4 +366,4 @@ page{
 			}
 		}
 	}
-</style> -->
+</style>

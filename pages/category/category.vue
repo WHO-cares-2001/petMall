@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
 	<view class="content">
 		<scroll-view scroll-y class="left-aside">
 			<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{active: item.id === currentId}" @click="tabtap(item)">
@@ -91,7 +91,7 @@
 			},
 			navToList(tid) {
 				uni.navigateTo({
-					url: `/pages/product/list?fid=${this.currentId}&tid=${tid}`
+					url: `/pages/list/list?fid=${this.currentId}&tid=${tid}`
 				})
 			}
 		}
@@ -190,4 +190,4 @@
 			height: 140upx;
 		}
 	}
-</style> -->
+</style>
