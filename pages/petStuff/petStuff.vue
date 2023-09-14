@@ -3,14 +3,16 @@
 		<!-- 顶部导航栏 -->
 		<TopBar barTitle="宠物周边" @click-left='callGoIndex()'></TopBar>
 		
-		<StuffCard v-for="(item, index) in stuffList" 
-		:key="index" :pet="item" />
+	<!-- 	<StuffCard v-for="(item, index) in stuffList" 
+		:key="index" :pet="item" /> -->
 		
+		<indexCard :items="stuffList" :type="1"></indexCard>
 	</view>
 </template>
 
 <script>
 	import TopBar from '../../components/common/topBar.vue'
+	import indexCard from '../../components/indexCard.vue'
 	
 	import {goIndex} from '@/common/sharedMethods.js'
 	import StuffCard from '@/components/stuffCard/stuffCard.vue'
@@ -23,7 +25,8 @@
 	export default {
 		components:{
 			TopBar,
-			StuffCard
+			StuffCard,
+			indexCard
 		},
 		data() {
 			return {

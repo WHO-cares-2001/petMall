@@ -314,6 +314,14 @@
 					"animationType": "slide-in-bottom"
 				}
 			}
+		},
+		{
+		    "path" : "pages/comment/comment",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
 		}
     ],
 	"globalStyle": {

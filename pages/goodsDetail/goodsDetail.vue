@@ -3,7 +3,6 @@
 		<!-- 顶部导航栏 -->
 		<TopBar barTitle="商品详情页" @click-left='callGoIndex()'></TopBar>
 		
-		
 		<view class="detail">
 			
 			<view class="iimg" v-if="this.type==='1'">
@@ -13,7 +12,6 @@
 				@tap="goods_photo_view_event">
 				</image>
 			</view>
-			
 			
 			<view class="" v-if="this.type==='0'">
 				<swiper :loop="true" indicator-active-color="#FE4355"
@@ -64,11 +62,15 @@
 				<view class="inventory">
 				    <view class="">
 				        <text class="">库存</text>
-				        <text class="cr-main">112</text>
+						<!--分三种情况写库存，周边直接显示数量，动物判断是否已售来显示  -->
+						<text class="cr-main" v-if="this.type==='1'">{{detailInfo.number}}</text>
+						<text class="cr-main" v-if="this.type==='0'&&detailInfo.state==0">0</text>
+						<text class="cr-main" v-if="this.type==='0'&&detailInfo.state==1">1</text>
 				    </view>
+					
 				    <view class="">
 				        <text class="">热度</text>
-				        <text class="cr-main">123</text>
+				        <text class="cr-main">{{detailInfo.clicks}}</text>
 				    </view>
 				</view>
 			</view>
@@ -508,6 +510,7 @@ export default {
 
 .cr-main {
     color: #f6c133 !important;
+	margin-left: 10rpx;
 }
 .inventory{
 	display: flex;

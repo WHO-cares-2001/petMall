@@ -93,7 +93,7 @@
 		</uni-row> -->
 		
 		<!-- 卡片 -->
-		<view class="grey">
+		<!-- <view class="grey">
 			<view class="guess-section">
 				<view 
 					v-for="(item, index) in items" :key="index"
@@ -107,13 +107,15 @@
 					<text class="price">￥{{item.price}}</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
+		<indexCard :items="items" :type="0"></indexCard>
 	</view>
 </template>
 
 <script>
 	import GoodsList from '../../components/common/GoodsList.vue'
+	import indexCard from '../../components/indexCard.vue'
 	
 	import {goDetail} from '@/common/sharedMethods.js'
 	import {
@@ -122,7 +124,8 @@
 	
 	export default {
 		components:{
-			GoodsList
+			GoodsList,
+			indexCard
 		},
 		data() {
 			return {
