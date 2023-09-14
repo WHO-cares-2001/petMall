@@ -11,8 +11,9 @@
 				
 				<view class="shops-goods" v-for="(item,secondIndex) in i" :key="item.id">
 					<!-- 倒计时 -->
-					<view class="countdown" v-if="timeupSecond!==null&&item.state === '0'">
-						<!-- <view>时间{{ timeupSecond }}</view> -->
+					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
+					secondIndex:{{secondIndex}}</view> -->
+					<view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime)">
 						<uni-countdown v-if="item.state === '0'&&secondIndex===0" 
 						class="room-count" color="#fff" 
 						:show-day="false" :second="timeupSecond"
@@ -20,7 +21,7 @@
 						@timeup="timeup(i[0].createTime)" />
 						<text v-if="item.state === '0'&&secondIndex===0" class="count-txt">之后订单取消</text>
 					</view>
-					<view class="invalid" v-if="timeupSecond===null&&secondIndex===0&&item.state === '0'">
+					<view class="invalid" v-if="!rest(i[0].createTime)&&secondIndex===0&&item.state === '0'">
 						<text class="invalid-text">交易关闭</text>
 					</view>
 					
@@ -68,7 +69,6 @@
 						style="color:#FE4355;border-color: #FE4355;
 						border-radius: 30rpx;height: 60rpx;">
 						{{text[i[0].state]}}
-							<!-- {{text}} -->
 					</button>
 				</view>
 			</view>
@@ -141,7 +141,27 @@
 					uni.showToast({
 						title: '时间到'
 					})
-					this.getOrderPage()
+					clearInterval(that.timer); // 清除计时器
+					// 在这里可以触发交易关闭的操作
+					// this.getOrderPage()
+				}
+			},
+			rest(time){
+				// 当前时间
+				var currentTime = new Date();
+				// 假设 createTime 是字符串形式，需要将其解析为日期对象
+				// console.log(time)
+				var createTime = new Date(time);
+				// 添加10分钟的时间
+				createTime.setMinutes(createTime.getMinutes() + 10);
+				// 比较当前时间是否大于 createTime + 10分钟
+				if (currentTime > createTime) {
+				  // console.log("已经超时");
+				  //去订单表里写取消时间
+				  return false
+				} else {
+				  // console.log("还未超时");
+				  return true
 				}
 			},
 			go(t,i){
