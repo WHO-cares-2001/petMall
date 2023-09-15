@@ -8,14 +8,12 @@
 
 <script>
 	import indexCard from '@/components/indexCard.vue'
-	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import TopBar from '../../components/common/topBar.vue'
 	import {
 		searchByType
 	} from "../../network/modules/type.js";
 	export default {
 		components: {
-			uniLoadMore,
 			indexCard,
 			TopBar
 		},
