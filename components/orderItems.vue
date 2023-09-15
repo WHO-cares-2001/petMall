@@ -182,7 +182,7 @@
 					else{
 						uni.showToast({
 							title: `交易已失效，请重新购买！`,
-							icon: 'none'
+							icon: 'error'
 						})
 					}
 				}else if(t==="待发货"){
@@ -190,8 +190,18 @@
 				}else if(t==="签收"){
 					
 				}else if(t==="去评价"){
-					
+					this.goComment()
 				}
+			},
+			goComment(){
+				//判断是不是已评价
+				// uni.showToast({
+				// 	title: `已评价，不能重新评价！`,
+				// 	icon: 'error'
+				// })
+				uni.navigateTo({
+					url: '../comment/comment'
+				});
 			},
 			goOrderDetail(i){
 				//订单详情

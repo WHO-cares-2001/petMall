@@ -369,6 +369,12 @@
 				"selectedIconPath": "static/icon/selectHome.png"
 			},
 			{
+				"pagePath": "pages/category/category",
+				"iconPath": "static/icon/tab-cate.png",
+				"selectedIconPath": "static/icon/tab-cate-current.png",
+				"text": "分类"
+			},
+			{
 				"text": "购物车",
 				"pagePath": "pages/cart/cart",
 				"iconPath": "static/icon/cart.png",

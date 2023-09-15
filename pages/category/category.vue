@@ -1,23 +1,30 @@
 <template>
-	<view class="content">
-		<scroll-view scroll-y class="left-aside">
-			<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{active: item.id === currentId}" @click="tabtap(item)">
-				{{item.typeName}}
-			</view>
-		</scroll-view>
-		<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll"
-			:scroll-top="tabScrollTop">
-			<view v-for="item in slist" :key="item.id" class="s-list" :id="'main-'+item.id">
-				<text class="s-item">{{item.typeName}}</text>
-				<view class="t-list">
-					<view @click="navToList(titem.id)" v-if="titem.animalType === item.typeName" class="t-item"
-						v-for="titem in tlist" :key="titem.id">
-						<image :src="'../../static/petImgs/'+titem.img"></image>
-						<text>{{titem.typeName}}</text>
+	<view>
+		<!-- <TopBar barTitle="分类"></TopBar> -->
+		<!-- 导航栏 -->
+		<uni-nav-bar title="分类" :border="false"/>
+		
+		<view class="content">
+			<scroll-view scroll-y class="left-aside">
+				<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{active: item.id === currentId}"
+					@click="tabtap(item)">
+					{{item.typeName}}
+				</view>
+			</scroll-view>
+			<scroll-view scroll-with-animation scroll-y class="right-aside" @scroll="asideScroll"
+				:scroll-top="tabScrollTop">
+				<view v-for="item in slist" :key="item.id" class="s-list" :id="'main-'+item.id">
+					<text class="s-item">{{item.typeName}}</text>
+					<view class="t-list">
+						<view @click="navToList(titem.id)" v-if="titem.animalType === item.typeName" class="t-item"
+							v-for="titem in tlist" :key="titem.id">
+							<image :src="'../../static/petImgs/'+titem.img"></image>
+							<text>{{titem.typeName}}</text>
+						</view>
 					</view>
 				</view>
-			</view>
-		</scroll-view>
+			</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -26,18 +33,45 @@
 		showTypeList,
 		showType
 	} from "../../network/modules/type.js";
+	import TopBar from '../../components/common/topBar.vue'
 	export default {
+		components: {
+			TopBar
+		},
 		data() {
 			return {
 				sizeCalcState: false,
 				tabScrollTop: 0,
 				currentId: "a",
-				flist: [{id: "a",typeName: '猫'}, 
-						{id: "b",typeName: '狗'},
-						{id: "c",typeName: '异宠'}],
-				slist: [{id: "d",typeName: '猫',animalType:'a'}, 
-						{id: "e",typeName: '狗',animalType:'b'},
-						{id: "f",typeName: '异宠',animalType:'c'}],
+				flist: [{
+						id: "a",
+						typeName: '猫'
+					},
+					{
+						id: "b",
+						typeName: '狗'
+					},
+					{
+						id: "c",
+						typeName: '异宠'
+					}
+				],
+				slist: [{
+						id: "d",
+						typeName: '猫',
+						animalType: 'a'
+					},
+					{
+						id: "e",
+						typeName: '狗',
+						animalType: 'b'
+					},
+					{
+						id: "f",
+						typeName: '异宠',
+						animalType: 'c'
+					}
+				],
 				tlist: [],
 			}
 		},
@@ -50,7 +84,7 @@
 				let self = this;
 				showTypeList().then(function(res) {
 					let list = res.data;
-					self.tlist=list;
+					self.tlist = list;
 				})
 			},
 			//一级分类点击

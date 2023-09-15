@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+		<TopBar barTitle="商品列表" @click-left='callGoCategory()'></TopBar>
 		<indexCard :items="goodsList" :type="0"></indexCard>
 		<uni-load-more status="noMore"></uni-load-more>
 	</view>
@@ -8,13 +9,15 @@
 <script>
 	import indexCard from '@/components/indexCard.vue'
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+	import TopBar from '../../components/common/topBar.vue'
 	import {
 		searchByType
 	} from "../../network/modules/type.js";
 	export default {
 		components: {
 			uniLoadMore,
-			indexCard
+			indexCard,
+			TopBar
 		},
 		data() {
 			return {
@@ -54,11 +57,19 @@
 			this.loadData();
 		},
 		methods: {
+			callGoCategory(){
+				// goIndex();
+				uni.navigateBack({
+					delta: 1, //返回层数，2则上上页
+				})
+			},
 			//加载分类
 			async loadCateList(tid) {
-				let self=this;
-				searchByType({typeId:tid}).then(function(res){
-					self.goodsList=res.data;
+				let self = this;
+				searchByType({
+					typeId: tid
+				}).then(function(res) {
+					self.goodsList = res.data;
 					console.log(self.goodsList)
 				})
 			},
@@ -159,12 +170,14 @@
 </script>
 
 <style lang="scss">
-page{
+	page {
 		background: $page-color-base;
 	}
-	.content{
+
+	.content {
 		padding-top: 10rpx;
 	}
+
 	.navbar {
 		position: fixed;
 		left: 0;
