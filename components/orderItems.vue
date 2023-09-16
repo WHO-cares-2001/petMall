@@ -180,7 +180,7 @@
 				}
 			},
 			rest(time,i){
-				console.log('rest')
+				// console.log('rest')
 				// 当前时间
 				var currentTime = new Date();
 				// 假设 createTime 是字符串形式，需要将其解析为日期对象
@@ -257,9 +257,22 @@
 				});
 			},
 			goFirst(text,i){
+				let self=this
 				if(text=="取消订单"){
 					//用户取消的
 					
+					let data={
+						cancelReason:"用户取消",
+						laststate:i[0].state,
+						orderitemNumber:i[0].num
+					}
+					console.log(data)
+					cancelR(data)
+					.then(function(res){
+						console.log(res)
+						// self.timeupSecond=0
+						//订单不显示倒计时
+					})
 				}
 			},
 			goOrderDetail(i){
