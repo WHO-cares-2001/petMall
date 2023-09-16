@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<TopBar barTitle="个人信息" @click-left='goBack()'></TopBar>
 		<view class="list-cell b-b m-t" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">个人资料</text>
 			<text class="cell-more yticon icon-you"></text>
@@ -39,8 +40,14 @@
 <script>
 	import {  
 	    mapMutations  
-	} from 'vuex';
+	} from 'vuex';import {
+		goBack
+	} from '@/common/sharedMethods.js'
+	import TopBar from '../../components/common/topBar.vue'
 	export default {
+		components: {
+			TopBar
+		},
 		data() {
 			return {
 				
@@ -48,7 +55,11 @@
 		},
 		methods:{
 			...mapMutations(['cleanUserInfo']),
-
+			goBack() {
+				uni.navigateBack({
+					delta: 1,
+				})
+			},
 			navTo(url){
 				// this.$api.msg(`跳转到${url}`);
 				uni.navigateTo({

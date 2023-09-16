@@ -9,6 +9,14 @@ export default{
 		hasLogin: false,
 		userInfo: {},
 	},
+	getters: {
+		getHasLogin(state) {
+			return state.hasLogin
+		},
+		getUserInfo(state) {
+			return state.userInfo
+		}
+	},
 	mutations: {
 		setUserId(state, userId) {
 		  state.userId = userId
@@ -26,13 +34,15 @@ export default{
 		setUserInfo(state, provider) {
 			state.hasLogin = true;
 			state.userInfo = provider;
+			provider.hasLogin = state.hasLogin;
 			uni.setStorage({ //缓存用户登陆状态
 				key: 'userInfo',
 				data: provider
 			});
 			
 			localStorage.setItem('token', provider.token);
-			localStorage.setItem('userId', provider.user.id)
+			localStorage.setItem('userId', provider.user.id);
+			localStorage.setItem('hasLogin', state.hasLogin);
 			console.log('set token,userId')
 		},
 		cleanUserInfo(state) {
@@ -44,16 +54,8 @@ export default{
 			
 			localStorage.removeItem('token');
 			localStorage.removeItem('userId');
+			localStorage.removeItem('hasLogin');
 			console.log('remove token,userId')
-		}
-	},
-	//2
-	getters:{
-		getHasLogin(state){
-			return state.hasLogin
-		},
-		getUserInfo(state){
-			return state.userInfo
 		}
 	},
 }

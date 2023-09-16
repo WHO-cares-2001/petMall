@@ -2,12 +2,12 @@
 	<view class="container">
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
-			<view class="user-info-box">
+			<view class="user-info-box" @click="goNext()">
 				<view class="portrait-box">
-					<image class="portrait" :src="'../../static/petImgs/'+userInfo.user.img"></image>
+					<image class="portrait" :src="'../../static/petImgs/'+userInfo.img"></image>
 				</view>
 				<view class="info-box">
-					<text class="username">{{userInfo.user.nikename}}</text>
+					<text class="username">{{userInfo.nikename}}</text>
 				</view>
 			</view>
 			<view class="vip-card-box">
@@ -103,12 +103,7 @@
 		data() {
 			return {
 				hasLogin: false,
-				userInfo: {
-					user: {
-						img:'img/missing-face.png',
-						nikename:'未登录'
-					}
-				},
+				userInfo: {},
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
 				moving: false,
@@ -118,12 +113,13 @@
 
 		},
 		onShow() {
-			this.hasLogin = this.$store.getters.getHasLogin;
+			let userInfoGet = uni.getStorageSync('userInfo');
+			this.hasLogin = userInfoGet.hasLogin;
 			if (this.hasLogin) {
-				this.userInfo = this.$store.getters.getUserInfo;
-			}else{
-				this.userInfo.user.img='img/missing-face.png';
-				this.userInfo.user.nikename='未登录';
+				this.userInfo = userInfoGet.user;
+			} else {
+				this.userInfo.img = 'img/0.jpg';
+				this.userInfo.nikename = '未登录';
 			}
 		},
 		// #ifndef MP
@@ -153,7 +149,17 @@
 			
 		},
 		methods: {
-
+			goNext() {
+				if (!this.hasLogin) {
+					uni.navigateTo({
+						url: '/pages/public/login'
+					})
+				} else {
+					uni.navigateTo({
+						url: '/pages/userinfo/userinfo'
+					})
+				}
+			},
 			/**
 			 * 统一跳转接口,拦截未登录路由
 			 * navigator标签现在默认没有转场动画，所以用view
