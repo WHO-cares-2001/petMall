@@ -241,7 +241,7 @@
 				}else if(t==="待发货"){
 					
 				}else if(t==="签收"){
-					this.signfor(json)
+					this.signfor(i)
 				}else if(t==="去评价"){
 					this.goComment(json)
 				}
@@ -259,6 +259,7 @@
 				  });
 				} else {
 				  // 处理 json 不是数组的情况
+				  console.log('订单编号：'+json.number)
 				  updateByNum(json.number, 3)
 				  .then(function(res){
 				  	console.log(res)
