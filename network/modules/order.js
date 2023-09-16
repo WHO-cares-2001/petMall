@@ -36,3 +36,8 @@ export function cancelR(reason){
 export function updateByNum(number,state){
     return get('/show/updatabynumber', {number:number,state:state})
 }
+
+//展示该用户取消的所有订单
+export function cancel(id){
+    return get('/show/bycancle', {id:id})
+}

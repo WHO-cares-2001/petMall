@@ -341,6 +341,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/cancelOrders/cancelOrders",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

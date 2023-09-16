@@ -10,29 +10,23 @@
 				</view>
 				
 				<view class="shops-goods" v-for="(item,secondIndex) in i" 
-				:key="item.id" @tap="goOrderDetail(i)">
+				:key="secondIndex" @tap="goOrderDetail(i)">
 					<!-- 倒计时 -->
 					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
 					secondIndex:{{secondIndex}}</view> -->
-					<view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime,i)">
+					<!-- <view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime,i)">
 						<uni-countdown v-if="item.state === '0'&&secondIndex===0" 
 						class="room-count" color="#fff" 
 						:show-day="false" :second="timeupSecond"
 						 background-color="#FE4355"
 						@timeup="timeup(i[0].createTime)" />
 						<text v-if="item.state === '0'&&secondIndex===0" class="count-txt">之后订单取消</text>
-					</view>
-					<view class="invalid" v-if="!rest(i[0].createTime,i)&&secondIndex===0&&item.state === '0'">
-						<text class="invalid-text">交易关闭</text>
+					</view> -->
+					<view class="invalid">
+						<text class="invalid-text">{{item.cancelReason}}</text>
 					</view>
 					
 					<view class="g-body">
-						<!-- 多选框 -->
-						<!-- <label class="radio" @tap="selectedItem(item.id)">
-							<radio value="" color="#FF3333" :checked="item.checked"/>
-							<text></text>
-						</label> -->
-						
 						<image :src="petPath+item.img" mode="" 
 						class="shop-img"@tap="callGoDetail(item)">
 						</image>
@@ -53,7 +47,7 @@
 							
 							<view class="shop-price">
 								<view class="price-color" @tap="callGoDetail(item)">
-									￥{{item.money}}
+									￥{{item.moneys}}
 								</view>
 								<view class="">
 									x{{item.num}}
@@ -64,7 +58,7 @@
 				</view>
 					
 				<!-- 底部按钮  v-if="text[i[0].state]!==''"-->
-				<view class="btns" >
+			<!-- 	<view class="btns" >
 					
 					<view class="" v-show="i[0].state!=0||rest(i[0].createTime,i)">
 						<button @click="goFirst(leftBtn[i[0].state],i)"
@@ -74,7 +68,7 @@
 							border-radius: 30rpx;height: 60rpx;">
 							{{leftBtn[i[0].state]}}
 						</button>
-					</view>
+					</view> -->
 					<!-- <view class="" >
 						<button @click="goFirst(text[i[0].state],i)"
 							type="primary" plain="true" size="mini" 
@@ -85,14 +79,14 @@
 						</button>
 					</view> -->
 					
-					<button @click="go(text[i[0].state],i)"
+					<!-- <button @click="go(text[i[0].state],i)"
 					class="btns-2"
 						type="primary" plain="true" size="mini" 
 						style="color:#FE4355;border-color: #FE4355;
 						border-radius: 30rpx;height: 60rpx;">
 						{{text[i[0].state]}}
 					</button>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		
@@ -111,10 +105,10 @@
 			  type: Array,
 			  required: true
 			},
-			text:{
-				type:Array,
-				required:true
-			},
+			// text:{
+			// 	type:Array,
+			// 	required:true
+			// },
 			// texts:{
 			// 	type:Array,
 			// 	required:true

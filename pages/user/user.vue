@@ -84,7 +84,7 @@
 				@eventClick="navTo('/pages/collection/collection')" tips="我们竭诚为您服务"></list-cell>
 				
 				<list-cell icon="icon-share" iconColor="#9789f7" title="我取消的订单" 
-				@eventClick="navTo('/pages/collection/collection')" tips=""></list-cell>
+				@eventClick="navTo('/pages/cancelOrders/cancelOrders')" tips=""></list-cell>
 				
 				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>
 				
