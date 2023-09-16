@@ -17,12 +17,17 @@ export function updateDetails(OrderDetails){
 }
 
 export function getByStates(id,state){
-    return get('/show/bystateorders', {id:id,state: state })
+    return get('/show/byidstateorders', {id:id,state: state })
 }
 export function getById(id){
     return get('/show/byordersid', {id:ids})
 }
 
-export function getAll(){
-    return get('/show/allorders')
+export function getAll(id){
+    return get('/show/byidorders',{id:id})
+}
+
+//取消理由
+export function cancelR(reason){
+    return postJson('/reason/saves', reason)
 }

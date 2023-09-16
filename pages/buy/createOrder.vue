@@ -221,7 +221,8 @@
 						userId:this.usersId,
 						adressesId:this.defaultPath.id,
 						money:null,
-						remark:this.desc
+						remark:this.desc,
+						state:0,
 					}
 					Orders.money=this.totals[i]
 					console.log(Orders)
@@ -257,7 +258,7 @@
 							stuffId:ele.stuffId,
 							goodsId:ele.goodsType,
 							orderitemNumber:self.orderIds[j],
-							state:0,
+							shopId:ele.shopId,//加的
 							moneys:ele.pprice*ele.number
 						}
 						console.log(json)

@@ -87,10 +87,11 @@
 				@click="goShop" class="shop-text"
 				/>
 				
-				<view class="" v-if="this.type==='1'">
-					<uni-list-item showArrow title="周边评价信息"
+				<!-- v-if="this.type==='1'" -->
+				<view class="" >
+					<uni-list-item showArrow title="评价信息"
 					rightText="评价详情" link
-					@click="goRemark(detailInfo.id)"/>
+					@click="goRemark(detailInfo.id,type)"/>
 				</view>
 			</uni-list>
 		</view>
@@ -362,9 +363,10 @@ export default {
 				url: '../shop/shop?shopId='+ this.shopId
 			});
 		},
-		goRemark(stuffId){
+		goRemark(stuffId,type){
+			console.log(type)
 			uni.navigateTo({
-				url: '../remark/remark?stuffId='+stuffId
+				url: '../remark/remark?stuffId='+stuffId+'&type='+type
 			});
 		},
 		// 商品查看大图

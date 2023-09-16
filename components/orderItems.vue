@@ -14,7 +14,7 @@
 					<!-- 倒计时 -->
 					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
 					secondIndex:{{secondIndex}}</view> -->
-					<view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime)">
+					<view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime,i)">
 						<uni-countdown v-if="item.state === '0'&&secondIndex===0" 
 						class="room-count" color="#fff" 
 						:show-day="false" :second="timeupSecond"
@@ -22,7 +22,7 @@
 						@timeup="timeup(i[0].createTime)" />
 						<text v-if="item.state === '0'&&secondIndex===0" class="count-txt">之后订单取消</text>
 					</view>
-					<view class="invalid" v-if="!rest(i[0].createTime)&&secondIndex===0&&item.state === '0'">
+					<view class="invalid" v-if="!rest(i[0].createTime,i)&&secondIndex===0&&item.state === '0'">
 						<text class="invalid-text">交易关闭</text>
 					</view>
 					
@@ -65,7 +65,28 @@
 					
 				<!-- 底部按钮  v-if="text[i[0].state]!==''"-->
 				<view class="btns" >
+					
+					<view class="" v-show="i[0].state!=0||rest(i[0].createTime,i)">
+						<button @click="goFirst(leftBtn[i[0].state],i)"
+							type="primary" plain="true" size="mini" 
+							class="btns-1"
+							style="color:#FE4355;border-color: #FE4355;
+							border-radius: 30rpx;height: 60rpx;">
+							{{leftBtn[i[0].state]}}
+						</button>
+					</view>
+					<!-- <view class="" >
+						<button @click="goFirst(text[i[0].state],i)"
+							type="primary" plain="true" size="mini" 
+							class="btns-1"
+							style="color:#FE4355;border-color: #FE4355;
+							border-radius: 30rpx;height: 60rpx;">
+							{{leftBtn[i[0].state]}}
+						</button>
+					</view> -->
+					
 					<button @click="go(text[i[0].state],i)"
+					class="btns-2"
 						type="primary" plain="true" size="mini" 
 						style="color:#FE4355;border-color: #FE4355;
 						border-radius: 30rpx;height: 60rpx;">
@@ -80,6 +101,9 @@
 
 <script>
 	import {goMy} from '@/common/sharedMethods.js'
+	import{
+		cancelR
+	}from '@/network/modules/order.js'
 	
 	export default {
 		props: {
@@ -102,7 +126,14 @@
 				petPath:"../../static/petImgs/",
 				//被绑定的时间值
 				timeupSecond:null,
-
+				//左边按钮文字
+				leftBtn:[
+					"取消订单",
+					"取消订单",
+					"申请退单",
+					"申请退单",
+					"查看评价"
+				],
 			};
 		},
 		methods:{
@@ -148,7 +179,8 @@
 					
 				}
 			},
-			rest(time){
+			rest(time,i){
+				console.log('rest')
 				// 当前时间
 				var currentTime = new Date();
 				// 假设 createTime 是字符串形式，需要将其解析为日期对象
@@ -158,20 +190,39 @@
 				createTime.setMinutes(createTime.getMinutes() + 10);
 				// 比较当前时间是否大于 createTime + 10分钟
 				if (currentTime > createTime) {
-				  // console.log("已经超时");
-				  //去订单表里写取消时间
+				  console.log("已经超时");
+				  //去订单表里写取消说明
+				  this.cancelReason(time,i[0].state,i[0].number)
 				  return false
 				} else {
 				  // console.log("还未超时");
 				  return true
 				}
 			},
+			cancelReason(time,astate,num){
+				//待支付状态和已超时 去写取消说明（超时）
+				//!rest(time,i)&&
+				if(astate==0){
+					let data={
+						cancelReason:"超时取消",
+						laststate:astate,
+						orderitemNumber:num
+					}
+					console.log(data)
+					cancelR(data)
+					.then(function(res){
+						console.log(res)
+					})
+				}
+			},
 			go(t,i){
 				// console.log('go')
 				let goodsList=i
 				console.log(goodsList)
+				let json=JSON.stringify(i)
+				
 				if(t==="去支付"){
-					if(this.rest(i[0].createTime)){
+					if(this.rest(i[0].createTime,i)){
 						console.log(i[0].money)
 						uni.navigateTo({
 							// url:`../payment/payment?goodsList=${JSON.stringify(goodsList)}`
@@ -190,18 +241,26 @@
 				}else if(t==="签收"){
 					
 				}else if(t==="去评价"){
-					this.goComment()
+					this.goComment(json)
 				}
 			},
-			goComment(){
-				//判断是不是已评价
+			goComment(json){
+				//判断是不是已评价 
+				//不用判断，自己到下一个界面
 				// uni.showToast({
 				// 	title: `已评价，不能重新评价！`,
 				// 	icon: 'error'
 				// })
+				console.log(json)
 				uni.navigateTo({
-					url: '../comment/comment'
+					url: '../comment/comment?json='+json
 				});
+			},
+			goFirst(text,i){
+				if(text=="取消订单"){
+					//用户取消的
+					
+				}
 			},
 			goOrderDetail(i){
 				//订单详情
@@ -378,8 +437,14 @@ radio{
 }
 .btns{
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 	align-items: center;
-	padding-left:500rpx ;
+	/* padding-left:500rpx ; */
+}
+.btns-1{
+	margin-left: 20rpx;
+}
+.btns-2{
+	margin-right: 20rpx;
 }
 </style>
