@@ -69,18 +69,25 @@
 				<view class="order-item" @click="navTo('/pages/orderStates/orderStates?state=4')" hover-class="common-hover"
 					:hover-stay-time="50">
 					<text class="yticon icon-shouhoutuikuan"></text>
-					<text>退款/售后</text>
+					<text>已评价</text>
 				</view>
 			</view>
 			<!-- 浏览历史 -->
 			<view class="history-section icon">
 				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理"
 					@eventClick="navTo('/pages/address/address')"></list-cell>
+					
 				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" 
 				@eventClick="navTo('/pages/collection/collection')" title="我的收藏"></list-cell>
-				<list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></list-cell>
-				<list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></list-cell>
+				
+				<list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的退货" 
+				@eventClick="navTo('/pages/collection/collection')" tips="我们竭诚为您服务"></list-cell>
+				
+				<list-cell icon="icon-share" iconColor="#9789f7" title="我取消的订单" 
+				@eventClick="navTo('/pages/collection/collection')" tips=""></list-cell>
+				
 				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell>
+				
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border=""
 					@eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>

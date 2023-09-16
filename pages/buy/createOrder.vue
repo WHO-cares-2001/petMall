@@ -241,7 +241,7 @@
 					
 					uni.navigateTo({
 						url: '/pages/payment/payment?money='+self.totalCount.pprice
-						+'&goodsList='+JSON.stringify(self.submitJson)
+						+'&ids='+JSON.stringify(self.orderIds)
 					})
 				})
 			},
@@ -277,7 +277,7 @@
 				if(Object.keys(this.defaultPath).length === 0){
 					uni.showToast({
 					  title: '地址不能为空',
-					  icon: 'none',
+					  icon: 'error',
 					});
 				}
 				else{

@@ -54,7 +54,7 @@
 <script>
 	import {goBack} from '@/common/sharedMethods.js'
 	import {
-			add,addDetails,updateDetails
+			add,addDetails,updateByNum
 	} from "../../network/modules/order.js";
 	
 	export default {
@@ -72,7 +72,9 @@
 			console.log(e.money)
 			this.money=e.money
 			console.log(e)
-			this.orders=JSON.parse(e.goodsList)
+			
+			//传的是订单编号数组
+			this.orders=JSON.parse(e.ids)
 			console.log(this.orders)
 			
 		},
@@ -88,19 +90,20 @@
 			//确认支付
 			confirm() {
 				this.orders.forEach(i=>{
-					i.state=1
-				})
-				console.log(this.orders)
-				
-				updateDetails(this.orders)
-				.then(function(res){
-					console.log(res)
+					// i.state=1
+					console.log(i)
 					
-					uni.redirectTo({
-						url: '/pages/payment/paySuccess'
+					//遍历订单编号，改变state为1
+					updateByNum(i,1)
+					.then(function(res){
+						console.log(res)
+						
+						uni.redirectTo({
+							url: '/pages/payment/paySuccess'
+						})
 					})
 				})
-				
+				// console.log(this.orders)
 			},
 			cancelPay(){
 				uni.switchTab({

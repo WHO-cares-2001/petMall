@@ -44,7 +44,7 @@ export default {
 				{title:"待发货"},
 				{title:"已发货"},
 				{title:"待评价"},
-				{title:"已完成"}
+				{title:"已评价"}
 			],
 			current:0,
 			test:[
@@ -90,7 +90,7 @@ export default {
 				"待发货",
 				"签收",
 				"去评价",
-				"已完成"
+				"已评价"
 			]
 		}
 	},

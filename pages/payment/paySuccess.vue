@@ -4,7 +4,8 @@
 		<text class="tit">支付成功</text>
 		
 		<view class="btn-group">
-			<navigator url="/pages/orderDetail/orderDetail" open-type="redirect" class="mix-btn">查看订单</navigator>
+			<view  @tap="go" open-type="redirect" class="mix-btn">查看订单</view>
+			
 			<navigator url="/pages/index/index" open-type="switchTab" class="mix-btn hollow">返回首页</navigator>
 		</view>
 	</view>
@@ -18,6 +19,13 @@
 			}
 		},
 		methods: {
+			go(){
+				uni.switchTab({
+					url:"/pages/user/user"
+				})
+			}
+		},
+		onLoad(e) {
 			
 		}
 	}

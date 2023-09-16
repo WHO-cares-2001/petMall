@@ -12,9 +12,9 @@ export function addDetails(OrderDetails){
     return postJson('/orderdetails/saves', OrderDetails)
 }
 
-export function updateDetails(OrderDetails){
-    return postJson('/orderdetails/update', OrderDetails)
-}
+// export function updateDetails(OrderDetails){
+//     return postJson('/orderdetails/update', OrderDetails)
+// }
 
 export function getByStates(id,state){
     return get('/show/byidstateorders', {id:id,state: state })
@@ -30,4 +30,9 @@ export function getAll(id){
 //取消理由
 export function cancelR(reason){
     return postJson('/reason/saves', reason)
+}
+
+//通过订单编号更改订单状态
+export function updateByNum(number,state){
+    return get('/show/updatabynumber', {number:number,state:state})
 }

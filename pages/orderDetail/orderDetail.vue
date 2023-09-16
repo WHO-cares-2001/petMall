@@ -179,6 +179,7 @@
 		},
 		onLoad(e){
 			console.log("1")
+			//使用addressId，shopName，moneys，数量，name，img
 			console.log(e.Info)
 			this.info=JSON.parse(e.Info)
 			let id=this.info[0].adressesId

@@ -10,7 +10,7 @@
 				</view>
 				
 				<view class="shops-goods" v-for="(item,secondIndex) in i" 
-				:key="secondIndex" @tap="goOrderDetail(i)">
+				:key="item.id" @tap="goOrderDetail(i)">
 					<!-- 倒计时 -->
 					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
 					secondIndex:{{secondIndex}}</view> -->
@@ -102,7 +102,7 @@
 <script>
 	import {goMy} from '@/common/sharedMethods.js'
 	import{
-		cancelR,updateByNum
+		cancelR
 	}from '@/network/modules/order.js'
 	
 	export default {
@@ -134,7 +134,6 @@
 					"申请退单",
 					"查看评价"
 				],
-				
 			};
 		},
 		methods:{
@@ -220,7 +219,6 @@
 				// console.log('go')
 				let goodsList=i
 				console.log(goodsList)
-				//这是一个数组，包含一个订单里的所有商品
 				let json=JSON.stringify(i)
 				
 				if(t==="去支付"){
@@ -241,39 +239,10 @@
 				}else if(t==="待发货"){
 					
 				}else if(t==="签收"){
-					this.signfor(json)
+					
 				}else if(t==="去评价"){
 					this.goComment(json)
 				}
-			},
-			signfor(json){
-				console.log('签收：'+json)
-				if (Array.isArray(json)) {
-				  //遍历订单编号，改变state为1
-				  json.forEach((item) => {
-				  	console.log('订单编号：'+item.number)
-				  	updateByNum(item.number, 3)
-				  	.then(function(res){
-				  		console.log(res)
-				  	})
-				  });
-				} else {
-				  // 处理 json 不是数组的情况
-				  updateByNum(json.number, 3)
-				  .then(function(res){
-				  	console.log(res)
-				  })
-				}
-				
-				
-				// updateByNum(i,3)
-				// .then(function(res){
-				// 	console.log(res)
-					
-				// 	uni.redirectTo({
-				// 		url: '/pages/payment/paySuccess'
-				// 	})
-				// })
 			},
 			goComment(json){
 				//判断是不是已评价 
@@ -289,13 +258,13 @@
 			},
 			goFirst(text,i){
 				let self=this
-				console.log(i)
 				if(text=="取消订单"){
 					//用户取消的
+					
 					let data={
 						cancelReason:"用户取消",
 						laststate:i[0].state,
-						orderitemNumber:i[0].ids
+						orderitemNumber:i[0].num
 					}
 					console.log(data)
 					cancelR(data)
