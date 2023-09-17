@@ -133,7 +133,34 @@ export default{
 			}
 		},
 		//byshopList的有关更新购物车界面操作写在下面
-		
+		//获取完整byshopList
+		getbyshopList(state,data){
+			data=JSON.parse(data)
+			state.byshopList=data
+			console.log('getbyshopList:'+state.byshopList)
+		},
+		//清空
+		clearbyshopList(state){
+			state.byshopList=[]
+		},
+		//byshopList中删掉一个json
+		delOnebyshopList(state,id){
+			state.byshopList.forEach((item, index)=>{
+				item.forEach((i, iIndex)=>{
+					if(i.id===id){
+						state.byshopList[index].splice(iIndex, 1);
+					}
+				})
+			})
+			console.log('delOnebyshopList'+state.byshopList)
+		},
+		//加入购物车
+		addbyshopList(state,data){
+			//周边
+			if(data.goodsType==1){
+				
+			}
+		}
 	},
 	actions:{
 		//全选

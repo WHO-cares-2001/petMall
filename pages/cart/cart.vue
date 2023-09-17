@@ -113,7 +113,9 @@
 				id:'',
 				numbers:'',
 				oldNum:null,
-				byshopList:[]
+				byshopList:[],
+				//这个页面用的
+				// byshopList2:[]
 			};
 		},
 		computed:{
@@ -121,11 +123,11 @@
 				a:state=>state.cart.a,
 				username: state => state.username,
 				list:state=>state.cart.list,
-				
+				byshopList:state=>state.cart.byshopList,
 				//选中的商品
 				selectedList:state=>state.cart.selectedList
 			}),
-			...mapGetters(['checkedAll','totalCount'])
+			...mapGetters(['checkedAll','totalCount','getbyshopList'])
 		},
 		methods:{
 			//进入确认订单
@@ -146,7 +148,7 @@
 				
 			},
 			...mapActions(['selectAll']),
-			...mapMutations(['selectedItem','updateList']),
+			...mapMutations(['selectedItem','updateList','delOnebyshopList']),
 			judgeNum(num){
 				this.oldNum=num;
 				return num;
@@ -171,8 +173,10 @@
 				  const result = [...shopIdMap.values()];
 				  console.log(result)
 				  this.byshopList=result
-				  //放入vuex
 				  
+				  //放入vuex
+				  let temp=JSON.stringify(this.byshopList)
+				  this.$store.commit('getbyshopList',temp)
 			},
 			getAll(){
 				let self=this
@@ -225,14 +229,8 @@
 				deleteCart(id)
 				.then(function(res){
 					console.log(res); // 输出完整的响应对象，以便查看数据结构
-					  // if (res.status === 200) {
-						self.$store.commit('delList', id);
-				
-						// console.log(res.data); 
-						
-					  // }
-					// self.list=res.data
-					
+					// self.$store.commit('delList', id);
+					self.$store.commit('delOnebyshopList', id);
 				})
 			},
 			changeValue(value) {

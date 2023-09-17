@@ -14,25 +14,19 @@
 					<!-- 倒计时 -->
 					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
 					secondIndex:{{secondIndex}}</view> -->
-					<view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime,i)">
+					<!-- <view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime,i)">
 						<uni-countdown v-if="item.state === '0'&&secondIndex===0" 
 						class="room-count" color="#fff" 
 						:show-day="false" :second="timeupSecond"
 						 background-color="#FE4355"
 						@timeup="timeup(i[0].createTime)" />
 						<text v-if="item.state === '0'&&secondIndex===0" class="count-txt">之后订单取消</text>
-					</view>
-					<view class="invalid" v-if="!rest(i[0].createTime,i)&&secondIndex===0&&item.state === '0'">
-						<text class="invalid-text">交易关闭</text>
+					</view> -->
+					<view class="invalid">
+						<text class="invalid-text">{{item.cancelReason}}</text>
 					</view>
 					
 					<view class="g-body">
-						<!-- 多选框 -->
-						<!-- <label class="radio" @tap="selectedItem(item.id)">
-							<radio value="" color="#FF3333" :checked="item.checked"/>
-							<text></text>
-						</label> -->
-						
 						<image :src="petPath+item.img" mode="" 
 						class="shop-img"@tap="callGoDetail(item)">
 						</image>
@@ -53,7 +47,7 @@
 							
 							<view class="shop-price">
 								<view class="price-color" @tap="callGoDetail(item)">
-									￥{{item.money}}
+									￥{{item.moneys}}
 								</view>
 								<view class="">
 									x{{item.num}}
@@ -64,7 +58,7 @@
 				</view>
 					
 				<!-- 底部按钮  v-if="text[i[0].state]!==''"-->
-				<view class="btns" >
+			<!-- 	<view class="btns" >
 					
 					<view class="" v-show="i[0].state!=0||rest(i[0].createTime,i)">
 						<button @click="goFirst(leftBtn[i[0].state],i)"
@@ -74,7 +68,7 @@
 							border-radius: 30rpx;height: 60rpx;">
 							{{leftBtn[i[0].state]}}
 						</button>
-					</view>
+					</view> -->
 					<!-- <view class="" >
 						<button @click="goFirst(text[i[0].state],i)"
 							type="primary" plain="true" size="mini" 
@@ -85,35 +79,14 @@
 						</button>
 					</view> -->
 					
-					<button @click="go(text[i[0].state],i)"
+					<!-- <button @click="go(text[i[0].state],i)"
 					class="btns-2"
 						type="primary" plain="true" size="mini" 
 						style="color:#FE4355;border-color: #FE4355;
 						border-radius: 30rpx;height: 60rpx;">
 						{{text[i[0].state]}}
 					</button>
-					
-					<!-- 弹出申请退单 -->
-					<view v-if="showDialogFlag">
-					  <view class="dialog">
-						<text>请输入退单理由：</text>
-						<input v-model="reason" />
-						<button @click="submit(index)" 
-						:class="{'disabled': reason.length == 0}">提交</button>
-					  </view>
-					</view>
-					
-					<!-- 弹出申请退单 -->
-					<button @click="open">打开弹窗</button>
-					<uni-popup ref="popDialog" type="dialog">
-						<uni-popup-dialog mode="input" message="成功消息" 
-							:duration="2000" :before-close="false" 
-							 @confirm="confirm">
-						</uni-popup-dialog>
-					</uni-popup>
-
-				</view>
-				
+				</view> -->
 			</view>
 		</view>
 		
@@ -123,7 +96,7 @@
 <script>
 	import {goMy} from '@/common/sharedMethods.js'
 	import{
-		cancelR,updateByNum
+		cancelR
 	}from '@/network/modules/order.js'
 	
 	export default {
@@ -132,10 +105,10 @@
 			  type: Array,
 			  required: true
 			},
-			text:{
-				type:Array,
-				required:true
-			},
+			// text:{
+			// 	type:Array,
+			// 	required:true
+			// },
 			// texts:{
 			// 	type:Array,
 			// 	required:true
@@ -155,30 +128,7 @@
 					"申请退单",
 					"查看评价"
 				],
-				Dialog: [] ,// 用于存储每个商品项的对话框状态和理由
-				showDialogFlag:false,
-				reason:'',
-				
 			};
-		},
-		created() {
-		    // 在页面加载时根据byshopList的长度创建对应长度的Dialog数组
-		    // this.Dialog = this.byshopList.map(() => ({
-		    //   showDialogFlag: false,
-		    //   reason: ''
-		    // }));
-			
-			// 确保byshopList有值
-			if (this.byshopList.length > 0) {
-				  // 在页面加载时根据byshopList的长度创建对应长度的Dialog数组
-				  this.Dialog = this.byshopList.map(() => ({
-					showDialogFlag: false,
-					reason: ''
-				  }));
-				  console.log('Dialog数组已创建：', this.Dialog);
-			  } else {
-				console.log('byshopList为空，无法创建Dialog数组');
-			  }
 		},
 		methods:{
 			goMy(){
@@ -263,7 +213,6 @@
 				// console.log('go')
 				let goodsList=i
 				console.log(goodsList)
-				//这是一个数组，包含一个订单里的所有商品
 				let json=JSON.stringify(i)
 				
 				if(t==="去支付"){
@@ -284,40 +233,10 @@
 				}else if(t==="待发货"){
 					
 				}else if(t==="签收"){
-					this.signfor(i)
+					
 				}else if(t==="去评价"){
 					this.goComment(json)
 				}
-			},
-			signfor(json){
-				console.log('签收：'+json)
-				if (Array.isArray(json)) {
-				  //遍历订单编号，改变state为1
-				  json.forEach((item) => {
-				  	console.log('订单编号：'+item.number)
-				  	updateByNum(item.number, 3)
-				  	.then(function(res){
-				  		console.log(res)
-				  	})
-				  });
-				} else {
-				  // 处理 json 不是数组的情况
-				  console.log('订单编号：'+json.number)
-				  updateByNum(json.number, 3)
-				  .then(function(res){
-				  	console.log(res)
-				  })
-				}
-				
-				
-				// updateByNum(i,3)
-				// .then(function(res){
-				// 	console.log(res)
-					
-				// 	uni.redirectTo({
-				// 		url: '/pages/payment/paySuccess'
-				// 	})
-				// })
 			},
 			goComment(json){
 				//判断是不是已评价 
@@ -333,13 +252,13 @@
 			},
 			goFirst(text,i){
 				let self=this
-				console.log(i)
 				if(text=="取消订单"){
 					//用户取消的
+					
 					let data={
 						cancelReason:"用户取消",
 						laststate:i[0].state,
-						orderitemNumber:i[0].ids
+						orderitemNumber:i[0].num
 					}
 					console.log(data)
 					cancelR(data)
@@ -349,10 +268,6 @@
 						//订单不显示倒计时
 					})
 				}
-				else if(text=="申请退单"){
-					this.showDialogFlag=true
-					this.submit(i)
-				}
 			},
 			goOrderDetail(i){
 				//订单详情
@@ -360,44 +275,6 @@
 				uni.navigateTo({
 					url: '../orderDetail/orderDetail?Info='+it
 				});
-			},
-			submit(i) {
-			  const item =i
-			  if (this.reason.length > 0) {
-				// 执行提交操作
-				// 可以在这里添加你的提交逻辑
-				console.log('提交退单：',this.reason);
-				// 提交完成后关闭对话框
-				this.showDialogFlag = false;
-				// 清空理由输入框
-				this.reason = '';
-			  }
-			},
-			open() {
-				console.log('open')
-				this.$refs.popDialog[0].open()
-			},
-			/**
-			 * 点击取消按钮触发
-			 * @param {Object} done
-			 */
-			// close() {
-			// 	// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
-			// 	console.log('close')
-			// 	// before-close=true
-			// 	this.$refs.popDialog[0].close()
-			// },
-			/**
-			 * 点击确认按钮触发
-			 * @param {Object} done
-			 * @param {Object} value
-			 */
-			confirm(value) {
-				// 输入框的值
-				console.log(value)
-				// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
-				
-				this.$refs.popDialog[0].close()
 			}
 		}
 	}
@@ -576,46 +453,5 @@ radio{
 }
 .btns-2{
 	margin-right: 20rpx;
-}
-
-/* 对话框 */
-.dialog {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.dialog text {
-  margin-bottom: 10px;
-}
-
-.dialog input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.dialog button {
-  background-color: #FE4355;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.dialog button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
 }
 </style>

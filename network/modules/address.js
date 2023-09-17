@@ -21,6 +21,7 @@ export function deleteByIds(params) {
 	return post('/address/updatass', params)
 }
 
+//用成阮静的
 export function selectById(id){
-    return get('/address/selectById', { id: id })
+    return get('/address/searchbyid', { id: id })
 }

@@ -44,7 +44,7 @@ export default {
 				{title:"待发货"},
 				{title:"已发货"},
 				{title:"待评价"},
-				{title:"退款项"}
+				{title:"已评价"}
 			],
 			current:0,
 			test:[
@@ -90,7 +90,7 @@ export default {
 				"待发货",
 				"签收",
 				"去评价",
-				"已完成"
+				"已评价"
 			]
 		}
 	},
@@ -100,10 +100,12 @@ export default {
 			if(this.current != e.currentIndex){
 				this.current = e.currentIndex;
 			}
+			
+			let id = window.localStorage.getItem("userId");
 			if(this.current===0){
-				getAll()
+				getAll(id)
 				.then(function(res){
-					console.log(res.data)
+					console.log(res)
 					self.orderByNumber(res.data)
 				})
 			}else if(this.current>0){
@@ -133,17 +135,20 @@ export default {
 		fetchPetData(current){
 			let self=this
 			let id = window.localStorage.getItem("userId");
-			if(current>0&&this.current<5){
+			//&&this.current<5
+			if(current>0){
 				//查state
+				console.log(current-1)
 				getByStates(id,current-1)
 				.then(function(res){
-					console.log(res.data)
+					console.log(res)
 					self.orderByNumber(res.data)
 				})
 				self.ftext=self.texts[current-1]
-			}else if(current===5){
-				this.items=[]
 			}
+			// else if(current===5){
+			// 	this.items=[]
+			// }
 		},
 		callGoMy(){
 			goMy();

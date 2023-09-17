@@ -3,6 +3,11 @@
 		<!-- 顶部导航栏 -->
 		<TopBar barTitle="评价页" @click-left='goBack()'></TopBar>
 
+		<view class="" v-if="remarkList.length==0" 
+		style="margin-top: 300rpx;margin-left: 200rpx;">
+			没有评价哦，到处逛逛吧
+		</view>
+		
 		<view class="page">
 			<view class="evaluate-goods" v-for="item in remarkList" :key="item.id">
 				<view class="list">
@@ -43,7 +48,7 @@
 	} from '@/common/sharedMethods.js'
 	import TopBar from '../../components/common/topBar.vue'
 	import {
-		stuffRemarks
+		stuffRemarks,animalRemarks
 	} from "../../network/modules/remark.js";
 	export default {
 		components: {
@@ -64,12 +69,25 @@
 			// 上个页面的参数
 			// let id="1";
 			let id = this.$route.query.stuffId
-			stuffRemarks({
+			let type=this.$route.query.type
+			if(type==0){
+				animalRemarks({
+					animalId: id
+				})
+				.then(function(res) {
+					console.log(res)
+					self.remarkList = res.data;
+				})
+			}else if(type==1){
+				stuffRemarks({
 					stuffId: id
 				})
 				.then(function(res) {
+					console.log(res)
 					self.remarkList = res.data;
 				})
+			}
+			
 		},
 		methods: {
 			goBack() {
