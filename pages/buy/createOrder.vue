@@ -287,6 +287,7 @@
 					    // 在这里执行删除操作，传递item的id给commit函数
 						//而且买的如果是动物，变成禁买状态
 					    // this.$store.commit('delList', item.id);
+						
 					  });
 					});
 					

@@ -217,7 +217,7 @@ export default {
 				
 				uni.showToast({
 					title: `加入购物车成功`,
-					icon: 'none'
+					icon: 'success'
 				})
 				// self.$store.commit('addToCart',data);
 			})
@@ -269,7 +269,7 @@ export default {
 				console.log('已收藏，取消收藏')
 				uni.showToast({
 					title: '取消收藏成功',
-					icon: 'none'
+					icon: 'success'
 				})
 				
 				//去后端改一下
@@ -283,7 +283,7 @@ export default {
 					//应该先判断一下是不是已经收藏了
 					uni.showToast({
 						title: `收藏成功`,
-						icon: 'none'
+						icon: 'success'
 					})
 					self.options[1].text="已收藏"
 					

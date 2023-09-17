@@ -27,7 +27,7 @@ export function getAll(id){
     return get('/show/byidorders',{id:id})
 }
 
-//取消理由
+//取消理由以及其他的所有理由
 export function cancelR(reason){
     return postJson('/reason/saves', reason)
 }

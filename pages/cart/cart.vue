@@ -136,7 +136,7 @@
 				if( this.selectedList.length === 0 ){
 					return uni.showToast({
 						title:"请至少选择一件商品",
-						icon:"none"
+						icon:"error"
 					})
 				}
 				
