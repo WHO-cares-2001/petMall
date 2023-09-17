@@ -12,10 +12,13 @@
 		</view>
 
 		<view class="list-cell" @click="inputDialogToggle()" hover-class="cell-hover" :hover-stay-time="50">
+			
 			<uni-popup ref="inputDialog" type="dialog">
-				<uni-popup-dialog ref="inputClose" mode="input" title="修改昵称" :value="userData.nikename" placeholder="请输入内容"
+				<uni-popup-dialog ref="inputClose" mode="input" title="修改昵称" 
+					:value="userData.nikename" placeholder="请输入内容"
 					@confirm="dialogInputConfirm"></uni-popup-dialog>
 			</uni-popup>
+			
 			<text class="cell-tit">昵称</text>
 			<text class="cell-tip">{{userData.nikename}}</text>
 			<text class="cell-more yticon icon-you"></text>

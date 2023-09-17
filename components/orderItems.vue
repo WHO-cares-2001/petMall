@@ -107,8 +107,8 @@
 					<button @click="open">打开弹窗</button>
 					<uni-popup ref="popDialog" type="dialog">
 						<uni-popup-dialog mode="input" message="成功消息" 
-							:duration="2000" :before-close="true" 
-							@close="close" @confirm="confirm">
+							:duration="2000" :before-close="false" 
+							 @confirm="confirm">
 						</uni-popup-dialog>
 					</uni-popup>
 
@@ -381,11 +381,12 @@
 			 * 点击取消按钮触发
 			 * @param {Object} done
 			 */
-			close() {
-				// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
-				console.log('close')
-				this.$refs.popDialog[0].close()
-			},
+			// close() {
+			// 	// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
+			// 	console.log('close')
+			// 	// before-close=true
+			// 	this.$refs.popDialog[0].close()
+			// },
 			/**
 			 * 点击确认按钮触发
 			 * @param {Object} done
