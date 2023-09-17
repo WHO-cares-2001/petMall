@@ -94,26 +94,27 @@
 					</button>
 					
 					<!-- 弹出申请退单 -->
-					<view v-if="showDialogFlag">
+					<!-- <view v-if="showDialogFlag">
 					  <view class="dialog">
 						<text>请输入退单理由：</text>
 						<input v-model="reason" />
 						<button @click="submit(index)" 
 						:class="{'disabled': reason.length == 0}">提交</button>
 					  </view>
-					</view>
+					</view> -->
 					
 					<!-- 弹出申请退单 -->
-					<button @click="open">打开弹窗</button>
+					<!-- <button @click="open">打开弹窗</button> -->
 					<uni-popup ref="popDialog" type="dialog">
 						<uni-popup-dialog mode="input" message="成功消息" 
 							:duration="2000" :before-close="false" 
-							 @confirm="confirm">
+							placeholder="请输入退单理由"
+							 @confirm="confirm($event,i)" title="录入退单理由"
+							 >
 						</uni-popup-dialog>
 					</uni-popup>
 
 				</view>
-				
 			</view>
 		</view>
 		
@@ -162,19 +163,13 @@
 			};
 		},
 		created() {
-		    // 在页面加载时根据byshopList的长度创建对应长度的Dialog数组
-		    // this.Dialog = this.byshopList.map(() => ({
-		    //   showDialogFlag: false,
-		    //   reason: ''
-		    // }));
-			
 			// 确保byshopList有值
 			if (this.byshopList.length > 0) {
 				  // 在页面加载时根据byshopList的长度创建对应长度的Dialog数组
-				  this.Dialog = this.byshopList.map(() => ({
-					showDialogFlag: false,
-					reason: ''
-				  }));
+				 //  this.Dialog = this.byshopList.map(() => ({
+					// showDialogFlag: false,
+					// reason: ''
+				 //  }));
 				  console.log('Dialog数组已创建：', this.Dialog);
 			  } else {
 				console.log('byshopList为空，无法创建Dialog数组');
@@ -308,20 +303,10 @@
 				  	console.log(res)
 				  })
 				}
-				
-				
-				// updateByNum(i,3)
-				// .then(function(res){
-				// 	console.log(res)
-					
-				// 	uni.redirectTo({
-				// 		url: '/pages/payment/paySuccess'
-				// 	})
-				// })
 			},
 			goComment(json){
 				//判断是不是已评价 
-				//不用判断，自己到下一个界面
+				//不用判断，自己到下一个状态界面
 				// uni.showToast({
 				// 	title: `已评价，不能重新评价！`,
 				// 	icon: 'error'
@@ -339,9 +324,11 @@
 					let data={
 						cancelReason:"用户取消",
 						laststate:i[0].state,
-						orderitemNumber:i[0].ids
+						orderitemNumber:i[0].number
 					}
 					console.log(data)
+					//这个不是专门写取消理由的，
+					//而是专门写所有理由的
 					cancelR(data)
 					.then(function(res){
 						console.log(res)
@@ -362,42 +349,53 @@
 				});
 			},
 			submit(i) {
-			  const item =i
-			  if (this.reason.length > 0) {
-				// 执行提交操作
-				// 可以在这里添加你的提交逻辑
-				console.log('提交退单：',this.reason);
-				// 提交完成后关闭对话框
-				this.showDialogFlag = false;
-				// 清空理由输入框
-				this.reason = '';
-			  }
+			 //  const item =i
+			 //  if (this.reason.length > 0) {
+				// // 执行提交操作
+				// // 可以在这里添加你的提交逻辑
+				// console.log('提交退单：',this.reason);
+				// // 提交完成后关闭对话框
+				// this.showDialogFlag = false;
+				// // 清空理由输入框
+				// this.reason = '';
+			 //  }
+				this.open()
 			},
 			open() {
 				console.log('open')
 				this.$refs.popDialog[0].open()
 			},
-			/**
-			 * 点击取消按钮触发
-			 * @param {Object} done
-			 */
-			// close() {
-			// 	// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
-			// 	console.log('close')
-			// 	// before-close=true
-			// 	this.$refs.popDialog[0].close()
-			// },
-			/**
-			 * 点击确认按钮触发
-			 * @param {Object} done
-			 * @param {Object} value
-			 */
-			confirm(value) {
+			confirm(value,i) {
 				// 输入框的值
-				console.log(value)
-				// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
+				const inputValue = value;
+				console.log(inputValue)
+				console.log('要退单的商品')
+				console.log(i)
+				if(value.length===0){
+					uni.showToast({
+						title:'理由不能为空！',
+						icon:'error'
+					})
+				}else{
+					//先提交理由，再更改订单状态
+					let data={
+						returnReason:value,
+						laststate:i[0].state,
+						orderitemNumber:i[0].number
+					}
+					console.log('退单理由'+data)
+					//这个不是专门写取消理由的，
+					//而是专门写所有理由的
+					cancelR(data)
+					.then(function(res){
+						console.log(res)
+						
+					})
+					
+					//关闭
+					this.$refs.popDialog[0].close()
+				}
 				
-				this.$refs.popDialog[0].close()
 			}
 		}
 	}

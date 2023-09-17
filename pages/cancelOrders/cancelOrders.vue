@@ -13,7 +13,8 @@
 	import {
 			cancel
 		} from "../../network/modules/order.js";
-		
+	import {goMy} from '@/common/sharedMethods.js'
+	
 	export default {
 		components:{
 			canceItems,
@@ -26,6 +27,9 @@
 			};
 		},
 		methods:{
+			callGoMy(){
+				goMy();
+			},
 			get(){
 				let self=this
 				let id = window.localStorage.getItem("userId")
