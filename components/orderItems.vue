@@ -27,12 +27,6 @@
 					</view>
 					
 					<view class="g-body">
-						<!-- 多选框 -->
-						<!-- <label class="radio" @tap="selectedItem(item.id)">
-							<radio value="" color="#FF3333" :checked="item.checked"/>
-							<text></text>
-						</label> -->
-						
 						<image :src="petPath+item.img" mode="" 
 						class="shop-img"@tap="callGoDetail(item)">
 						</image>
@@ -41,10 +35,6 @@
 							<view class="" >
 								<view class="shop-name" @tap="callGoDetail(item)">
 									<view @tap="callGoDetail(item)">{{item.name}}</view>
-									<!-- <uni-icons type="trash-filled" size="25"
-									color="grey" @tap="del(item.id)"
-									class="trash">
-									</uni-icons> -->
 								</view>
 								<view class="shop-option">
 									<!-- {{item.option}} -->
@@ -94,17 +84,6 @@
 					</button>
 					
 					<!-- 弹出申请退单 -->
-					<!-- <view v-if="showDialogFlag">
-					  <view class="dialog">
-						<text>请输入退单理由：</text>
-						<input v-model="reason" />
-						<button @click="submit(index)" 
-						:class="{'disabled': reason.length == 0}">提交</button>
-					  </view>
-					</view> -->
-					
-					<!-- 弹出申请退单 -->
-					<!-- <button @click="open">打开弹窗</button> -->
 					<uni-popup ref="popDialog" type="dialog">
 						<uni-popup-dialog mode="input" message="成功消息" 
 							:duration="2000" :before-close="false" 
@@ -137,10 +116,6 @@
 				type:Array,
 				required:true
 			},
-			// texts:{
-			// 	type:Array,
-			// 	required:true
-			// }
 		},
 		name:"orderItems",
 		data() {
@@ -170,9 +145,9 @@
 					// showDialogFlag: false,
 					// reason: ''
 				 //  }));
-				  console.log('Dialog数组已创建：', this.Dialog);
+				  // console.log('Dialog数组已创建：', this.Dialog);
 			  } else {
-				console.log('byshopList为空，无法创建Dialog数组');
+				// console.log('byshopList为空，无法创建Dialog数组');
 			  }
 		},
 		methods:{
