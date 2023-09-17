@@ -1,6 +1,6 @@
 <template>
-
 	<view class="container">
+		<TopBar barTitle="个人信息" @click-left='goBack()'></TopBar>
 		<view class="list-cell b-b m-t" hover-class="cell-hover" :hover-stay-time="50" @click="showActionsheet()">
 			<text class="cell-tit">头像</text>
 			<img class="avatar" :src="'../../static/petImgs/'+userData.img" />
@@ -12,13 +12,10 @@
 		</view>
 
 		<view class="list-cell" @click="inputDialogToggle()" hover-class="cell-hover" :hover-stay-time="50">
-			
 			<uni-popup ref="inputDialog" type="dialog">
-				<uni-popup-dialog ref="inputClose" mode="input" title="修改昵称" 
-					:value="userData.nikename" placeholder="请输入内容"
-					@confirm="dialogInputConfirm"></uni-popup-dialog>
+				<uni-popup-dialog ref="inputClose" mode="input" title="修改昵称" :value="userData.nikename"
+					placeholder="请输入内容" @confirm="dialogInputConfirm"></uni-popup-dialog>
 			</uni-popup>
-			
 			<text class="cell-tit">昵称</text>
 			<text class="cell-tip">{{userData.nikename}}</text>
 			<text class="cell-more yticon icon-you"></text>
@@ -41,7 +38,17 @@
 		mapState,
 		mapMutations
 	} from 'vuex';
+	import {
+		update
+	} from "../../network/modules/user.js";
+	import {
+		goBack
+	} from '@/common/sharedMethods.js'
+	import TopBar from '../../components/common/topBar.vue'
 	export default {
+		components: {
+			TopBar
+		},
 		data() {
 			return {
 				hasLogin: false,
@@ -52,32 +59,51 @@
 					username: 'test',
 					nikename: '我是测试',
 					img: 'https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png',
-					sex: '',
+					sex: 0,
 					tel: '',
 				},
 			};
 		},
 		onLoad() {
-			this.hasLogin = this.$store.getters.getHasLogin;
-			// if (this.hasLogin) {
-			// 	this.userInfo = this.$store.getters.getUserInfo;
-			// }
-			let user= this.$store.getters.getUserInfo;
-			this.userData=user.user;
+			let userInfoGet = uni.getStorageSync('userInfo');
+			this.hasLogin = userInfoGet.hasLogin;
+			this.userData = userInfoGet.user;
+			this.index = this.userData.sex;
 		},
 		methods: {
+			goBack() {
+				uni.navigateBack({
+					delta: 1,
+				})
+			},
 			inputDialogToggle() {
 				this.$refs.inputDialog.open()
 			},
 			dialogClose() {
 				console.log('点击关闭')
 			},
+			sumbitUpdate() {
+				let self = this;
+				let userInfoGet = uni.getStorageSync('userInfo');
+				userInfoGet.user = this.userData;
+				update({
+					...self.userData
+				}).then(function() {
+					uni.setStorage({ //缓存用户登陆状态
+						key: 'userInfo',
+						data: userInfoGet
+					});
+				});
+			},
 			dialogInputConfirm(val) {
 				this.userData.nikename = val
-				this.$refs.inputDialog.close()
+				this.$refs.inputDialog.close();
+				this.sumbitUpdate();
 			},
 			bindPickerChange: function(e) {
-				this.index = e.detail.value
+				this.index = e.detail.value;
+				this.userData.sex = this.index;
+				this.sumbitUpdate();
 			},
 			showActionsheet() {
 				uni.showActionSheet({
