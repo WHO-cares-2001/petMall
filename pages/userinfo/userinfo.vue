@@ -68,9 +68,7 @@
 			let userInfoGet = uni.getStorageSync('userInfo');
 			this.hasLogin = userInfoGet.hasLogin;
 			this.userData = userInfoGet.user;
-			console.log("userinfo页面的");
 			this.index = this.userData.sex;
-			console.log(this.userData);
 		},
 		methods: {
 			goBack() {
