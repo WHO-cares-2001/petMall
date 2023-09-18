@@ -16,7 +16,7 @@
 								<text>{{item.name}}的商品评价</text>
 							</view>
 							<view class="star-list">
-								<uni-rate v-model="item.rateValue" @change="onChange(e)" />
+								<uni-rate v-model="item.rateValue" @change="onChange(item.rateValue)" />
 								<view class="hint">
 									<text>{{remarkStar[item.rateValue]}}</text>
 								</view>
@@ -35,9 +35,9 @@
 						<textarea placeholder="感觉怎么样？跟大家分享一下吧~" 
 						@input="sumfontnum(item,$event)"></textarea>
 						<view class="record-text">
-							<text>已写</text>
+							<!-- <text>已写</text>
 							<text class="ac">{{item.fontNum}}</text>
-							<text>个字</text>
+							<text>个字</text> -->
 						</view>
 					</view>
 				</view>
@@ -84,8 +84,9 @@
 			goBack(){
 				goBack()
 			},
-			onChange(e) {
-				console.log('rate发生改变:' + JSON.stringify(e))
+			onChange(rateValue) {
+				// console.log('rate发生改变:' + JSON.stringify(e))
+				console.log('rate发生改变:' + rateValue)
 			},
 			// sumfontnum(e) {
 			// 	this.fontNum = e.detail.value.length
@@ -104,6 +105,8 @@
 				this.goods.forEach(item => {
 					let rateValue= item.rateValue 
 					let fontNum=item.fontNum 
+					console.log('rateValue'+rateValue)
+					console.log('fontNum'+fontNum)
 					if(fontNum==0){
 						uni.showToast({
 							title: `请填写评价！`,
