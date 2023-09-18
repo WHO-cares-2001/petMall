@@ -56,6 +56,9 @@
 <script>
 	import {goBack} from '@/common/sharedMethods.js'
 	import TopBar from '../../components/common/topBar.vue'
+	import {
+		addComment
+	}from '../../network/modules/comment.js'
 	
 	export default {
 		components:{
@@ -79,7 +82,7 @@
 			// 在这里初始化rateValue和fontNum属性
 			 this.goods.forEach(item => {
 				item.rateValue = 0; // 初始化rateValue为0
-				item.fontNum = 0;   // 初始化fontNum为0
+				item.fontNum = '';   // 初始化fontNum为0
 				console.log(item)
 			 });
 		},
@@ -97,7 +100,8 @@
 			// },
 			sumfontnum(item, event) {
 				
-			  item.fontNum = event.detail.value.length;
+			  item.fontNum = event.detail.value;
+			  console.log('文字内容：'+event.detail.value)
 			  // this.$set(item, 'fontNum', event.detail.value.length);
 			  console.log('统计:'+item.fontNum )
 			},
@@ -105,39 +109,43 @@
 				this.medias = e.detail.medias;
 			},
 			submit(){
-				//查每个
+				//查每个是不是有没填的
+				var flag=false
 				this.goods.forEach(item => {
 					let rateValue= item.rateValue 
 					let fontNum=item.fontNum 
 					console.log('rateValue'+rateValue)
 					console.log('fontNum'+fontNum)
-					if(fontNum==0){
+					if(fontNum.length==0){
 						uni.showToast({
 							title: `请填写评价！`,
 							icon: 'error'
 						})
+						flag=true
 					}
 					if(rateValue==0){
 						uni.showToast({
 							title: `请选择满意度！`,
 							icon: 'error'
 						})
+						flag=true
 					}
 				});
-				// console.log(this.rateValue)
-				// console.log(this.fontNum)
-				// if(this.fontNum==0){
-				// 	uni.showToast({
-				// 		title: `请填写评价！`,
-				// 		icon: 'error'
-				// 	})
-				// }
-				// if(this.rateValue==0){
-				// 	uni.showToast({
-				// 		title: `请选择满意度！`,
-				// 		icon: 'error'
-				// 	})
-				// }
+				if(!flag){
+					//没有没填的，可以交到后端
+					this.goods.forEach(item=>{
+						var com={
+							content:item.fontNum,
+							level:item.rateValue,
+							orderdetailsId:item.ids
+						}
+						console.log(com)
+						addComment(com)
+						.then(function(res){
+							console.log(res)
+						})
+					})
+				}
 			}
 		}
 	}

@@ -5,7 +5,7 @@ import {
 } from "../axios"
 
 export function add(Orders){
-    return postJson('/orders/saves', Orders)
+    return postJson('/orders/saves',Orders )
 }
 
 export function addDetails(OrderDetails){
@@ -40,4 +40,9 @@ export function updateByNum(number,state){
 //展示该用户取消的所有订单
 export function cancel(id){
     return get('/show/bycancle', {id:id})
+}
+
+//提交订单以后删掉相应购物车内容
+export function deleteCarts(ids){
+    return post('/cart/deletes', { ids: ids })
 }

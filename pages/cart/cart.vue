@@ -140,7 +140,7 @@
 					})
 				}
 				
-				// 把选中的传过去
+				// 把选中的商品具体信息都传过去
 				uni.navigateTo({
 					// url: '../buy/buy?detail='+goods
 					url:`../buy/createOrder?detail=${JSON.stringify(this.selectedList)}`
@@ -231,6 +231,7 @@
 					console.log(res); // 输出完整的响应对象，以便查看数据结构
 					// self.$store.commit('delList', id);
 					self.$store.commit('delOnebyshopList', id);
+					
 				})
 			},
 			changeValue(value) {

@@ -148,7 +148,7 @@
 	import {mapGetters,mapState} from 'vuex';
 	import {goBack} from '@/common/sharedMethods.js'
 	import {
-		add,addDetails
+		add,addDetails,deleteCarts
 	} from "../../network/modules/order.js";
 	
 	export default {
@@ -211,6 +211,34 @@
 			changePayType(type){
 				this.payType = type;
 			},
+			//提交订单删除购物车里的这些商品
+			cartIds(){
+				// 创建一个空数组来存储所有的id
+				const idList = []
+				// 使用嵌套的循环遍历二维数组，并提取id字段
+				for (const innerArray of this.goodsList) {
+				    for (const item of innerArray) {
+				        if (item.id) {
+				            idList.push(item.id);
+				        }
+				    }
+				}
+				// 使用join方法将id数组拼接成逗号分隔的字符串
+				const ids = idList.join(',')
+				// 输出拼接结果
+				console.log(ids)
+				return ids
+			},
+			delCart(){
+				let ids=this.cartIds()
+				console.log(ids)
+				
+				deleteCarts(ids)
+				.then(function(res){
+					console.log(res)
+					
+				})
+			},
 			addOrderItem(){
 				// console.log(Orders)
 				this.everyOrderTotal()
@@ -224,6 +252,7 @@
 						remark:this.desc,
 						state:0,
 					}
+					//算每个订单的总金额
 					Orders.money=this.totals[i]
 					console.log(Orders)
 					Orders2.push(Orders)
@@ -231,6 +260,20 @@
 				console.log(Orders2)
 				
 				let self=this
+				//购物车商品ids
+				let ids=this.cartIds()
+				// Orders2.push(ids)
+				console.log('增加订单项该传的数据：')
+				// console.log(Orders2)
+				let o={
+					orders:Orders2,
+					ids:ids
+				}
+				console.log(o)
+				
+				//提交订单以后删掉相应购物车内容
+				this.delCart()
+				
 				//生成订单编号
 				add(Orders2)
 				.then(function(res){
@@ -301,7 +344,7 @@
 			para(e){
 				
 				console.log(e.detail)
-				//选中的商品id集合  [2,9]
+				//this.item是所有传过来的商品
 				this.item= JSON.parse(e.detail);
 				
 				//找默认地址
@@ -361,7 +404,8 @@
 				list:state=>state.cart.list
 			}),
 			...mapGetters(['totalCount']),
-			//根据商品列表找到对应e.detail 数据的 id  最终返回商品数据
+			//根据商品列表找到对应e.detail 数据的 id  
+			//最终返回商品数据
 			goodsList(){
 				console.log(this.list)
 				let arr={}

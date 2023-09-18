@@ -88,14 +88,14 @@
 		</view>
 		
 		<!-- 底部 -->
-		<view class="footer">
+		<!-- <view class="footer">
 			<view class="price-content">
-				<!-- <text>实付款</text>
+				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">12</text> -->
+				<text class="price">12</text>
 			</view>
 			<text class="submit" @click="submit">确认收货</text>
-		</view>
+		</view> -->
 		
 		<!-- 优惠券面板 -->
 		<view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
