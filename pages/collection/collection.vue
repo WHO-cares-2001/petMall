@@ -14,9 +14,9 @@
 				@tap="callGoDetail(item.animalId,item.goodsId,null)"></image>
 				
 				<view class="shop-text">
-					<view class="" @tap="callGoDetail(item.animalId,item.goodsId,null)">
+					<view class="">
 						<view class="header">
-							<view class="shop-name">
+							<view class="shop-name" @tap="callGoDetail(item.animalId,item.goodsId,null)">
 								{{item.name}}
 							</view>
 							<uni-icons type="trash-filled" size="25"
@@ -24,7 +24,7 @@
 							>
 							</uni-icons>
 						</view>
-						<view class="footer">
+						<view class="footer" @tap="callGoDetail(item.animalId,item.goodsId,null)">
 							
 						</view>
 					</view>

@@ -210,17 +210,46 @@ export default {
 		addGoods(data){
 			console.log(data)
 			let self=this
-			
-			addCart(data)
-			.then(function(res){
-				console.log(res); 
-				
-				uni.showToast({
-					title: `加入购物车成功`,
-					icon: 'success'
-				})
-				// self.$store.commit('addToCart',data);
-			})
+			if(this.type==='0'){
+				//宠物
+				if(this.detailInfo.state==0){
+					uni.showToast({
+						title:'宠物库存为0，不能购买！',
+						icon:'error'
+					})
+				}else{
+					addCart(data)
+					.then(function(res){
+						console.log(res); 
+						
+						uni.showToast({
+							title: `加入购物车成功`,
+							icon: 'success'
+						})
+						// self.$store.commit('addToCart',data);
+					})
+				}
+			}
+			else if(this.type==='1'){
+				//周边
+				if(this.detailInfo.number>0){
+					uni.showToast({
+						title:'周边库存为0，不能购买！',
+						icon:'error'
+					})
+				}else{
+					addCart(data)
+					.then(function(res){
+						console.log(res); 
+						
+						uni.showToast({
+							title: `加入购物车成功`,
+							icon: 'success'
+						})
+						// self.$store.commit('addToCart',data);
+					})
+				}
+			}
 		},
 		onClick(e) {
 			// console.log(e)
@@ -276,24 +305,62 @@ export default {
 				this.delC(this.favorId)
 			}else{
 				console.log('未收藏')
+				//未收藏想收藏时要判断库存是否为0
+				//不为0收藏，为0不能收藏
+				if(this.type==0){
+					//宠物
+					if(this.detailInfo.state==1){
+						addFavor(data)
+						.then(function(res){
+							console.log(res.data); 
+							//应该先判断一下是不是已经收藏了
+							uni.showToast({
+								title: `收藏成功`,
+								icon: 'success'
+							})
+							self.options[1].text="已收藏"
+							
+							data.id=res.data
+							self.favorId=res.data
+							console.log(self.favorId)
+							console.log(data)
+							self.$store.commit('addone', data)
+							
+						})
+					}else{
+						uni.showToast({
+							title:'宠物库存为0，不能收藏！',
+							icon:'error'
+						})
+					}
+				}else if(this.type==1){
+					//周边
+					if(this.number>0){
+						addFavor(data)
+						.then(function(res){
+							console.log(res.data); 
+							//应该先判断一下是不是已经收藏了
+							uni.showToast({
+								title: `收藏成功`,
+								icon: 'success'
+							})
+							self.options[1].text="已收藏"
+							
+							data.id=res.data
+							self.favorId=res.data
+							console.log(self.favorId)
+							console.log(data)
+							self.$store.commit('addone', data)
+							
+						})
+					}else{
+						uni.showToast({
+							title:'周边库存为0，不能收藏！',
+							icon:'error'
+						})
+					}
+				}
 				
-				addFavor(data)
-				.then(function(res){
-					console.log(res.data); 
-					//应该先判断一下是不是已经收藏了
-					uni.showToast({
-						title: `收藏成功`,
-						icon: 'success'
-					})
-					self.options[1].text="已收藏"
-					
-					data.id=res.data
-					self.favorId=res.data
-					console.log(self.favorId)
-					console.log(data)
-					self.$store.commit('addone', data)
-					
-				})
 				
 			}
 		},

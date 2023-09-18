@@ -16,14 +16,16 @@
 								<text>{{item.name}}的商品评价</text>
 							</view>
 							<view class="star-list">
-								<uni-rate v-model="item.rateValue" @change="onChange" />
+								<uni-rate v-model="item.rateValue" @change="onChange(e)" />
 								<view class="hint">
 									<text>{{remarkStar[item.rateValue]}}</text>
 								</view>
+								<view>{{item.rateValue}}</view>
 							</view>
 						</view>
 					</view>
 				</view>
+				
 				<!--填写-->
 				<view class="input-info">
 					<view class="input-title">
@@ -83,7 +85,7 @@
 				goBack()
 			},
 			onChange(e) {
-				// console.log('rate发生改变:' + JSON.stringify(e))
+				console.log('rate发生改变:' + JSON.stringify(e))
 			},
 			// sumfontnum(e) {
 			// 	this.fontNum = e.detail.value.length
