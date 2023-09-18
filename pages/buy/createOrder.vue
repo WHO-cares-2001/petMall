@@ -264,6 +264,7 @@
 						console.log(json)
 						self.submitJson.push(json)
 						
+						//添加订单项
 						addDetails(json)
 						.then(function(res){
 							console.log(res.data)

@@ -231,13 +231,9 @@ export default {
 				}
 			}
 			else if(this.type==='1'){
+				console.log('周边数量：'+this.detailInfo.number)
 				//周边
 				if(this.detailInfo.number>0){
-					uni.showToast({
-						title:'周边库存为0，不能购买！',
-						icon:'error'
-					})
-				}else{
 					addCart(data)
 					.then(function(res){
 						console.log(res); 
@@ -247,6 +243,11 @@ export default {
 							icon: 'success'
 						})
 						// self.$store.commit('addToCart',data);
+					})
+				}else{
+					uni.showToast({
+						title:'周边库存为0，不能购买！',
+						icon:'error'
 					})
 				}
 			}
