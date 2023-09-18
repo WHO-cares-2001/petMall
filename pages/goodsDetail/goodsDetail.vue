@@ -334,9 +334,11 @@ export default {
 							icon:'error'
 						})
 					}
-				}else if(this.type==1){
+				}
+				else if(this.type==1){
 					//周边
-					if(this.number>0){
+					//可以收藏
+					if(this.detailInfo.number>0){
 						addFavor(data)
 						.then(function(res){
 							console.log(res.data); 
