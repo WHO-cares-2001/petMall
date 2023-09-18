@@ -16,11 +16,11 @@
 								<text>{{item.name}}的商品评价</text>
 							</view>
 							<view class="star-list">
-								<uni-rate v-model="item.rateValue" @change="onChange(item.rateValue)" />
+								<uni-rate v-model="item.rateValue" @change="onChange(item)" />
 								<view class="hint">
 									<text>{{remarkStar[item.rateValue]}}</text>
 								</view>
-								<view>{{item.rateValue}}</view>
+								<!-- <view>{{item.rateValue==''}}</view> -->
 							</view>
 						</view>
 					</view>
@@ -66,27 +66,31 @@
 				isChecked: false,
 				// rateValue: 0,
 				// fontNum:0,
-				remarkStar: ['', '很不满意', '不满意', '一般', '比较满意', '很满意'],
+				remarkStar: ['很不满意', '不满意', '一般', '比较满意', '很满意'],
 				goods:[],
 			};
 		},
 		onLoad(e) {
 			this.goods=JSON.parse(e.json)
 			console.log(this.goods)
-			 // 在这里初始化rateValue和fontNum属性
-			  this.goods.forEach(item => {
+			 
+		},
+		mounted(){
+			// 在这里初始化rateValue和fontNum属性
+			 this.goods.forEach(item => {
 				item.rateValue = 0; // 初始化rateValue为0
 				item.fontNum = 0;   // 初始化fontNum为0
 				console.log(item)
-			  });
+			 });
 		},
 		methods: {
 			goBack(){
 				goBack()
 			},
-			onChange(rateValue) {
+			onChange(item) {
 				// console.log('rate发生改变:' + JSON.stringify(e))
-				console.log('rate发生改变:' + rateValue)
+				console.log('rate发生改变:' + item.rateValue)
+				this.$set(item, 'rateValue', item.rateValue); 
 			},
 			// sumfontnum(e) {
 			// 	this.fontNum = e.detail.value.length
