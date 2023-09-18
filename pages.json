@@ -348,8 +348,15 @@
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
-            
-        }
+        },
+		{
+		    "path" : "pages/orderComments/orderComments",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -5,22 +5,23 @@
 		
 		<view class="page">
 			<!-- 每个评价 -->
-			<view class=""  v-for="(item,index) in goods" :key="index">
+			<view class=""  v-for="(item,index) in comments" :key="index">
 				<view class="evaluate-goods">
 					<view class="list">
 						<view class="picture">
-							<image :src="'../../static/petImgs/'+item.img"></image>
+							<image :src="'../../static/petImgs/'+item.imgs"></image>
 						</view>
 						<view class="item">
 							<view class="title">
 								<text>{{item.name}}的商品评价</text>
 							</view>
 							<view class="star-list">
-								<uni-rate v-model="item.rateValue" @change="onChange(item)" />
+								<uni-rate :value="item.level" 
+								:readonly="true"
+								@change="onChange(item)" />
 								<view class="hint">
 									<text>{{remarkStar[item.rateValue]}}</text>
 								</view>
-								<!-- <view>{{item.rateValue==''}}</view> -->
 							</view>
 						</view>
 					</view>
@@ -32,21 +33,10 @@
 						<text>分享你的使用体验吧</text>
 					</view>
 					<view class="input-text">
-						<textarea placeholder="感觉怎么样？跟大家分享一下吧~" 
-						@input="sumfontnum(item,$event)"></textarea>
-						<view class="record-text">
-							<!-- <text>已写</text>
-							<text class="ac">{{item.fontNum}}</text>
-							<text>个字</text> -->
+						<view class="">
+							{{item.content}}
 						</view>
 					</view>
-				</view>
-			</view>
-			
-			<!--提交-->
-			<view class="submit-btn">
-				<view class="btn" @tap="submit">
-					<text>提交</text>
 				</view>
 			</view>
 		</view>
@@ -57,7 +47,7 @@
 	import {goBack} from '@/common/sharedMethods.js'
 	import TopBar from '../../components/common/topBar.vue'
 	import {
-		addComment
+		addComment,getCommentsByNumber
 	}from '../../network/modules/comment.js'
 	
 	export default {
@@ -71,20 +61,31 @@
 				// fontNum:0,
 				remarkStar: ['很不满意', '不满意', '一般', '比较满意', '很满意'],
 				goods:[],
+				orderNumber:null,
+				comments:[],
+				
 			};
 		},
 		onLoad(e) {
-			this.goods=JSON.parse(e.json)
-			console.log(this.goods)
-			 
+			let self=this
+			
+			this.orderNumber=e.orderNumber
+			console.log(this.orderNumber)
+			getCommentsByNumber(this.orderNumber)
+			.then(function(res){
+				console.log(res)
+				self.comments=res.data
+				
+			})
 		},
 		mounted(){
 			// 在这里初始化rateValue和fontNum属性
-			 this.goods.forEach(item => {
-				item.rateValue = 0; // 初始化rateValue为0
-				item.fontNum = '';   // 初始化fontNum为0
-				console.log(item)
-			 });
+			 // this.goods.forEach(item => {
+				// item.rateValue = 0; // 初始化rateValue为0
+				// item.fontNum = '';   // 初始化fontNum为0
+				// console.log(item)
+			 // });
+			 
 		},
 		methods: {
 			goBack(){

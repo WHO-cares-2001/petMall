@@ -148,9 +148,6 @@ export default {
 					self.petList=res.data
 					console.log(res.data); 
 					
-				 
-				// self.list=res.data
-				
 			})
 			.catch(function(err){
 				console.log(err)
@@ -160,7 +157,6 @@ export default {
 			goDetail(id,type,shopId)
 			console.log(id,type,shopId);
 		
-			// console.log(id)
 		},
 	},
 	computed:{

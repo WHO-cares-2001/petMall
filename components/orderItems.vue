@@ -286,6 +286,7 @@
 				// 	title: `已评价，不能重新评价！`,
 				// 	icon: 'error'
 				// })
+				
 				console.log(json)
 				uni.navigateTo({
 					url: '../comment/comment?json='+json
@@ -314,6 +315,13 @@
 				else if(text=="申请退单"){
 					this.showDialogFlag=true
 					this.submit(i)
+				}
+				else if(text=="查看评价"){
+					console.log('订单编号：'+i.number)
+					//把订单编号传过去
+					uni.navigateTo({
+						url: '../orderComments/orderComments?orderNumber='+i[0].number
+					});
 				}
 			},
 			goOrderDetail(i){
