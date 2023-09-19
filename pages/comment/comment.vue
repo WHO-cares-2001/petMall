@@ -151,7 +151,9 @@
 						icon:'success'
 					})
 					//跳转别的页面
-					
+					uni.navigateTo({
+						url:'../orderStates/orderStates?state=4'
+					})
 				}
 			}
 		}

@@ -79,6 +79,8 @@
 				    	}
 				    }
 				});
+				//去vuex中删除购物车、收藏的东西
+				
 			},
 			//switch
 			switchChange(e){

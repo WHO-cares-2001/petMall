@@ -13,7 +13,7 @@
 			<uni-list-item :border="false" title="商家详情" :note="shopInfo.introduction" class="intro"/>
 		</uni-list>
 		
-		<uni-row>
+		<!-- <uni-row>
 			<uni-col :span="12" 
 			v-for="(item,index) in petList" :key="index" :index="index">
 				<uni-card padding="0" spacing="0" margin="15rpx" 
@@ -52,7 +52,7 @@
 					<template v-slot:cover>
 						<view class="custom-cover" @tap='callGoDetail(item.id,1,item.shopId)'>
 							<image class="pet-img" 
-							mode="aspectFit" 
+							mode="aspectFill" 
 							:src="petPath+item.imgs">
 							</image>
 							
@@ -71,8 +71,10 @@
 					</uni-list>
 				</uni-card>
 			</uni-col>
-		</uni-row>
+		</uni-row> -->
 		
+		<indexCard :items="petList" :type="0"></indexCard>
+		<indexCard :items="stuffList" :type="1"></indexCard>
 	</view>
 </template>
 
@@ -81,8 +83,12 @@
 		shop,getstuff,getanimal
 	} from "../../network/modules/shop.js";
 	import {goDetail} from '@/common/sharedMethods.js'
+	import indexCard from '../../components/indexCard.vue'
 	
 	export default {
+		components:{
+			indexCard
+		},
 		data() {
 			return {
 				shopInfo:{
@@ -153,6 +159,9 @@
 		margin: 0 20rpx;
 		width: 310rpx;
 		height: 340rpx;
+	/* 	width: 100%;
+		height: 100%;
+		opacity: 1; */
 	}
 	.slot-text{
 		color: red;

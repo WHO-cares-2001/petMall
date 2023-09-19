@@ -123,7 +123,7 @@
 				a:state=>state.cart.a,
 				username: state => state.username,
 				list:state=>state.cart.list,
-				byshopList:state=>state.cart.byshopList,
+				// byshopList:state=>state.cart.byshopList,
 				//选中的商品
 				selectedList:state=>state.cart.selectedList
 			}),
@@ -176,7 +176,7 @@
 				  
 				  //放入vuex
 				  let temp=JSON.stringify(this.byshopList)
-				  this.$store.commit('getbyshopList',temp)
+				  // this.$store.commit('getbyshopList',temp)
 			},
 			getAll(){
 				let self=this
@@ -230,8 +230,8 @@
 				.then(function(res){
 					console.log(res); // 输出完整的响应对象，以便查看数据结构
 					// self.$store.commit('delList', id);
-					self.$store.commit('delOnebyshopList', id);
-					
+					// self.$store.commit('delOnebyshopList', id);
+					self.getAll();
 				})
 			},
 			changeValue(value) {
@@ -263,7 +263,13 @@
 				
 				update(data)
 				.then(function(res){
-					console.log(res); 
+					console.log(res);
+				})
+			},
+			refreshByGo(){
+				//通过跳转回原页面实现刷新
+				uni.switchTab({
+					url:'../cart/cart'
 				})
 			},
 		},

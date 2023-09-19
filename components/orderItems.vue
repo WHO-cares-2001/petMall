@@ -140,12 +140,14 @@
 		created() {
 			// 确保byshopList有值
 			if (this.byshopList.length > 0) {
-				  // 在页面加载时根据byshopList的长度创建对应长度的Dialog数组
-				 //  this.Dialog = this.byshopList.map(() => ({
+				  //在页面加载时根据byshopList的长度创建对应长度的flag
+				  //用来判断是不是按钮禁用的
+				  //
+				 //  this.byshopList.map(() => ({
 					// showDialogFlag: false,
 					// reason: ''
 				 //  }));
-				  // console.log('Dialog数组已创建：', this.Dialog);
+				 //  console.log('Dialog数组已创建：', this.Dialog);
 			  } else {
 				// console.log('byshopList为空，无法创建Dialog数组');
 			  }
@@ -229,6 +231,8 @@
 					})
 				}
 			},
+			//通过右边的按钮去别的界面
+			//第一个参数是按钮内文字，i是商品json数组
 			go(t,i){
 				// console.log('go')
 				let goodsList=i
@@ -243,6 +247,7 @@
 							// url:`../payment/payment?goodsList=${JSON.stringify(goodsList)}`
 							url: '../payment/payment?money='+i[0].money
 								+'&goodsList='+JSON.stringify(goodsList)
+								+'&ids='+i[0].number
 						});
 					}
 					else{
@@ -260,6 +265,7 @@
 				}
 			},
 			signfor(json){
+				let self=this
 				console.log('签收：'+json)
 				if (Array.isArray(json)) {
 				  //遍历订单编号，改变state为1
@@ -268,16 +274,25 @@
 				  	updateByNum(item.number, 3)
 				  	.then(function(res){
 				  		console.log(res)
+						self.refreshByGo(3)
 				  	})
 				  });
-				} else {
+				}
+				else {
 				  // 处理 json 不是数组的情况
 				  console.log('订单编号：'+json.number)
 				  updateByNum(json.number, 3)
 				  .then(function(res){
 				  	console.log(res)
+					self.refreshByGo(3)
 				  })
 				}
+			},
+			refreshByGo(state){
+				//跳转对应下一个状态的页面
+				uni.navigateTo({
+					url:'../orderStates/orderStates?state='+state
+				})
 			},
 			goComment(json){
 				//判断是不是已评价 
@@ -310,6 +325,10 @@
 						console.log(res)
 						// self.timeupSecond=0
 						//订单不显示倒计时
+						//跳转别的页面
+						uni.navigateTo({
+							url:'../orderStates/orderStates?state=1'
+						})
 					})
 				}
 				else if(text=="申请退单"){
@@ -377,6 +396,10 @@
 					
 					//关闭
 					this.$refs.popDialog[0].close()
+					//跳转别的页面
+					uni.navigateTo({
+						url:'../orderStates/orderStates?state=2'
+					})
 				}
 				
 			}

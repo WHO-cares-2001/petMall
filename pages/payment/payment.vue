@@ -89,21 +89,34 @@
 			},
 			//确认支付
 			confirm() {
-				this.orders.forEach(i=>{
-					// i.state=1
-					console.log(i)
-					
-					//遍历订单编号，改变state为1
-					updateByNum(i,1)
-					.then(function(res){
-						console.log(res)
-						
-						uni.redirectTo({
-							url: '/pages/payment/paySuccess'
+				if (Array.isArray(this.orders)) {
+				   this.orders.forEach(i=>{
+				   	// i.state=1
+				   	console.log(i)
+				   	
+				   	//遍历订单编号，改变state为1
+				   	updateByNum(i,1)
+				   	.then(function(res){
+				   		console.log(res)
+				   		
+				   		uni.redirectTo({
+				   			url: '/pages/payment/paySuccess'
+				   		})
+				   	})
+				   })
+				   // console.log(this.orders)
+				} 
+				else {
+					// this.orders单个，直接把这个订单编号传过去
+					updateByNum(this.orders,1)
+						.then(function(res){
+							console.log(res)
+							uni.redirectTo({
+								url: '/pages/payment/paySuccess'
+							})
 						})
-					})
-				})
-				// console.log(this.orders)
+				    console.log("this.orders is not an array");
+				}
 			},
 			cancelPay(){
 				uni.switchTab({
