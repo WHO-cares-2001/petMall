@@ -273,10 +273,13 @@
 				})
 			},
 		},
-		mounted(){
+		// mounted(){
+		// 	this.getAll()
+		// },
+		//每次进入该页面都去后端获取
+		onShow(){
 			this.getAll()
 		}
-		
 	}
 </script>
 

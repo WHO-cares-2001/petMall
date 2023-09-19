@@ -165,7 +165,11 @@ export default {
 			
 		})
 	},
-	mounted(){
+	// mounted(){
+	// 	this.getData()
+	// },
+	//每次进入该页面都去后端获取
+	onShow(){
 		this.getData()
 	}
 }
