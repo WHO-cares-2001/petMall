@@ -61,7 +61,7 @@
 					// self.$forceUpdate();
 			},
 		},
-		onLoad(){
+		onShow(){
 			this.get()
 		}
 	}

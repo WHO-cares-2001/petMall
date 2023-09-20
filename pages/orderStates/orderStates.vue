@@ -95,6 +95,8 @@ export default {
 		}
 	},
 	methods: {
+		//过滤负数状态的订单
+		
 		onClickItem(e){
 			let self=this
 			if(this.current != e.currentIndex){

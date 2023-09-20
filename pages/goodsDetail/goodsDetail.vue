@@ -177,7 +177,25 @@ export default {
 	},
 	methods: {
 		...mapMutations(['addone','delfavorList','addToCart']),
+		//判断用户是否登录,没登录直接跳到登录界面
+		isLogin(){
+			let userInfoGet = uni.getStorageSync('userInfo');
+			let hasLogin=userInfoGet.hasLogin;
+			console.log('进入')
+			if (!hasLogin) {
+				console.log('进入登录')
+				uni.showToast({
+					title:'未登录！'
+				})
+				uni.navigateTo({
+					url: '/pages/public/login'
+				})
+				return false
+			}
+			return true
+		},
 		buttonClick(e) {
+			
 			// console.log(e)
 			this.userId=localStorage.getItem('userId');
 			
@@ -208,76 +226,80 @@ export default {
 			
 		},
 		addGoods(data){
-			console.log(data)
-			let self=this
-			if(this.type==='0'){
-				//宠物
-				if(this.detailInfo.state==0){
-					uni.showToast({
-						title:'宠物库存为0，不能购买！',
-						icon:'error'
-					})
-				}else{
-					addCart(data)
-					.then(function(res){
-						console.log(res); 
-						
+			if(this.isLogin()){
+				console.log(data)
+				let self=this
+				if(this.type==='0'){
+					//宠物
+					if(this.detailInfo.state==0){
 						uni.showToast({
-							title: `加入购物车成功`,
-							icon: 'success'
+							title:'宠物库存为0，不能购买！',
+							icon:'error'
 						})
-						// self.$store.commit('addToCart',data);
-					})
+					}else{
+						addCart(data)
+						.then(function(res){
+							console.log(res); 
+							
+							uni.showToast({
+								title: `加入购物车成功`,
+								icon: 'success'
+							})
+							// self.$store.commit('addToCart',data);
+						})
+					}
 				}
-			}
-			else if(this.type==='1'){
-				console.log('周边数量：'+this.detailInfo.number)
-				//周边
-				if(this.detailInfo.number>0){
-					addCart(data)
-					.then(function(res){
-						console.log(res); 
-						
-						uni.showToast({
-							title: `加入购物车成功`,
-							icon: 'success'
+				else if(this.type==='1'){
+					console.log('周边数量：'+this.detailInfo.number)
+					//周边
+					if(this.detailInfo.number>0){
+						addCart(data)
+						.then(function(res){
+							console.log(res); 
+							
+							uni.showToast({
+								title: `加入购物车成功`,
+								icon: 'success'
+							})
+							// self.$store.commit('addToCart',data);
 						})
-						// self.$store.commit('addToCart',data);
-					})
-				}else{
-					uni.showToast({
-						title:'周边库存为0，不能购买！',
-						icon:'error'
-					})
+					}else{
+						uni.showToast({
+							title:'周边库存为0，不能购买！',
+							icon:'error'
+						})
+					}
 				}
 			}
 		},
 		onClick(e) {
-			// console.log(e)
-			this.userId=localStorage.getItem('userId');
-			
-			if(e.index===1){
-				//console.log(this.detailInfo)
-				let data = {
-				    "animalId": null,
-				    "userId": null,
-				    "goodsId": 0,
-					"stuffId": null
-				}
+			if(this.isLogin()){
+				// console.log(e)
+				this.userId=localStorage.getItem('userId');
 				
-				data.userId=this.userId
-				if(this.type==='0'){
-					data.goodsId=0
-					data.animalId=this.detailInfo.id
-					//console.log(typeof(data.animalId))
+				if(e.index===1){
+					//console.log(this.detailInfo)
+					let data = {
+					    "animalId": null,
+					    "userId": null,
+					    "goodsId": 0,
+						"stuffId": null
+					}
+					
+					data.userId=this.userId
+					if(this.type==='0'){
+						data.goodsId=0
+						data.animalId=this.detailInfo.id
+						//console.log(typeof(data.animalId))
+					}
+					else if(this.type==='1'){
+						data.goodsId=1
+						data.stuffId=this.detailInfo.id
+						//console.log(typeof(data.stuffId))
+					}
+					this.addCollection(data)
+					
 				}
-				else if(this.type==='1'){
-					data.goodsId=1
-					data.stuffId=this.detailInfo.id
-					//console.log(typeof(data.stuffId))
-				}
-				this.addCollection(data)
-				
 			}
 		},
 		delC(id){

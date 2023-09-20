@@ -75,7 +75,7 @@
 			</view>
 			<view class="yt-list-cell desc-cell underline-between-views">
 				<text class="cell-tit clamp">备注</text>
-				<text class="cell-tip">快递</text>
+				<text class="cell-tip">{{info[0].remark}}</text>
 			</view>
 			<view class="yt-list-cell  b-b ">
 				<text class="cell-tit clamp">创建时间</text>

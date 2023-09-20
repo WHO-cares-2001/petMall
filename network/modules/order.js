@@ -46,3 +46,8 @@ export function cancel(id){
 export function deleteCarts(ids){
     return post('/cart/deletes', { ids: ids })
 }
+
+//是否折扣在有效期
+export function isDiscountValid(id){
+    return get('/discounts/time', {id:id})
+}

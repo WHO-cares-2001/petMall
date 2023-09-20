@@ -17,30 +17,18 @@
 			</uni-segmented-control>
 			
 			<!-- 具体内容 -->
-			<view class="content">
-				<!-- <view v-if="current === 0">
-					<text>1</text>
-				</view>
-				<view v-if="current === 1">
-					<text>2</text>
-				</view>
-				<view v-if="current === 2">
-					<text>3</text>
-				</view> -->
-				
+			<!-- <view class="content">
 				<pet-card v-for="(item, index) in petList" :key="index" :pet="item" />
-			</view>
+			</view> -->
+			<indexCard :items="petList" :type="0"></indexCard>
 		</view>
-		
-		
 	</view>
-	
 </template>
 
 <script>
 import TopBar from '../../components/common/topBar.vue'
 import PetCard from '@/components/categorySelect/categoryList.vue'
-
+import indexCard from '../../components/indexCard.vue'
 import {goIndex} from '@/common/sharedMethods.js'
 import {
 		getAnimalbytype
@@ -51,7 +39,8 @@ import {goDetail} from '@/common/sharedMethods.js'
 export default {
 	components:{
 		TopBar,
-		PetCard
+		PetCard,
+		indexCard
 	},
 	data() {
 		return {

@@ -93,7 +93,12 @@
 				</view>
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">优惠金额</text>
-					<text class="cell-tip red">-￥0</text>
+					<view class="" v-if="isValid(i[0].discountsId)">
+						<text class="cell-tip red">-￥{{i[0].discountMoney}}</text>
+					</view>
+					<view class="" v-else>
+						<text class="cell-tip red">-￥0</text>
+					</view>
 				</view>
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">运费</text>
@@ -101,7 +106,8 @@
 				</view>
 				<view class="yt-list-cell desc-cell">
 					<text class="cell-tit clamp">备注</text>
-					<input class="desc" type="text" v-model="desc" placeholder="请填写备注信息" placeholder-class="placeholder" />
+					<input class="desc" type="text" v-model="desc[shopIndex]" 
+					placeholder="请填写备注信息" placeholder-class="placeholder" />
 				</view>
 			</view>
 		</view>
@@ -148,14 +154,14 @@
 	import {mapGetters,mapState} from 'vuex';
 	import {goBack} from '@/common/sharedMethods.js'
 	import {
-		add,addDetails,deleteCarts
+		add,addDetails,deleteCarts,isDiscountValid
 	} from "../../network/modules/order.js";
 	
 	export default {
 		data() {
 			return {
 				maskState: 0, //优惠券面板显示状态
-				desc: '', //备注
+				desc:[], //备注
 				payType: 1, //1微信 2支付宝
 				couponList: [
 					{
@@ -183,7 +189,9 @@
 				usersId:'',
 				totals:[],//每个订单总金额
 				orderIds:[],//每个订单的编号
-				submitJson:[]
+				submitJson:[],
+				flag:null,
+				
 			}
 		},
 		onLoad(e){
@@ -192,9 +200,28 @@
 			//console.log(data);
 			this.para(e);
 		},
+		// onShow(){
+		// 	this.para(e);
+		// },
 		methods: {
 			goBack(){
 				goBack()
+			},
+			//判断折扣时间是否有效
+			isValid(id){
+				let self=this
+				console.log('discountsId:'+id)
+				isDiscountValid(id)
+				.then(function(res){
+					console.log(res.data)
+					self.flag=res.data
+					if(self.flag==1){
+						console.log('true')
+						return true
+					}else{
+						return false
+					}
+				})
 			},
 			//显示优惠券面板
 			toggleMask(type){
@@ -249,7 +276,7 @@
 						userId:this.usersId,
 						adressesId:this.defaultPath.id,
 						money:null,
-						remark:this.desc,
+						remark:this.desc[i],
 						state:0,
 					}
 					//算每个订单的总金额
@@ -340,12 +367,20 @@
 				}
 			},
 			stopPrevent(){},
-			
 			para(e){
 				
 				console.log(e.detail)
 				//this.item是所有传过来的商品
 				this.item= JSON.parse(e.detail);
+				//给item每个json加个备注
+				if(Array.isArray(this.item)){
+					this.item.forEach(i=>{
+						this.desc.push('')
+					})
+				}else{
+					// 如果 this.item 不是数组，将 this.desc 设置为空字符串
+					  this.desc = ''
+				}
 				
 				//找默认地址
 				//有个bug，地址更改了不能实时更新
@@ -353,6 +388,7 @@
 				let Id = window.localStorage.getItem("userId");
 				this.usersId=Id
 				
+				//找默认地址
 				adList({
 					userId: Id
 				}).then(function(res) {
@@ -397,7 +433,29 @@
 					this.totals.push(this.orderItemtotalCount(i))
 				}
 				console.log(this.totals)
-			}
+			},
+			// cntEveryOrder(result){
+			// 	if(Array.isArray(result)){
+			// 		result.forEach(item=>{
+			// 			var total=0
+			// 			i.forEach({
+			// 				isDiscountValid(i.id)
+			// 				.then(function(res){
+			// 					console.log(res.data)
+			// 					if(res.data==1){
+			// 						console.log('true')
+			// 						total+=i.discountMoney
+			// 					}else{
+									
+			// 					}
+			// 				})
+			// 			})
+						
+			// 		})
+			// 	}else{
+					
+			// 	}
+			// }
 		},
 		computed:{
 			...mapState({
@@ -427,11 +485,13 @@
 				});	
 				// 将 Map 转换为数组，即按照 shopId 分组的数组
 				const result = [...shopIdMap.values()];
+				
 				console.log(result)//goodsList内容	
 				return result
 			},
 			
 		},
+		
 	}
 </script>
 
