@@ -81,7 +81,7 @@
 				@eventClick="navTo('/pages/collection/collection')" title="我的收藏"></list-cell>
 				
 				<list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的退货" 
-				@eventClick="navTo('/pages/collection/collection')" tips="我们竭诚为您服务"></list-cell>
+				@eventClick="navTo('/pages/returnOrders/returnOrders')" tips="我们竭诚为您服务"></list-cell>
 				
 				<list-cell icon="icon-share" iconColor="#9789f7" title="我取消的订单" 
 				@eventClick="navTo('/pages/cancelOrders/cancelOrders')" tips=""></list-cell>

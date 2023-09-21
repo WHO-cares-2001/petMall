@@ -11,18 +11,8 @@
 				
 				<view class="shops-goods" v-for="(item,secondIndex) in i" 
 				:key="secondIndex" @tap="goOrderDetail(i)">
-					<!-- 倒计时 -->
-					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
-					secondIndex:{{secondIndex}}</view> -->
-					<!-- <view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime,i)">
-						<uni-countdown v-if="item.state === '0'&&secondIndex===0" 
-						class="room-count" color="#fff" 
-						:show-day="false" :second="timeupSecond"
-						 background-color="#FE4355"
-						@timeup="timeup(i[0].createTime)" />
-						<text v-if="item.state === '0'&&secondIndex===0" class="count-txt">之后订单取消</text>
-					</view> -->
-					<view class="invalid">
+					<!-- 红色按钮 取消原因 -->
+					<view class="invalid" v-if="secondIndex===0">
 						<text class="invalid-text">{{item.cancelReason}}</text>
 					</view>
 					

@@ -11,7 +11,7 @@
 	import TopBar from '../../components/common/topBar.vue'
 	import returnItems from '../../components/returnItems.vue'
 	import {
-			cancel
+			returnOrders
 		} from "../../network/modules/order.js";
 	import {goMy} from '@/common/sharedMethods.js'
 	
@@ -33,8 +33,9 @@
 			get(){
 				let self=this
 				let id = window.localStorage.getItem("userId")
+				console.log('userId:'+id)
 				
-				cancel(id)
+				returnOrders(id)
 				.then(function(res){
 					console.log(res)
 					self.orderByNumber(res.data,self)

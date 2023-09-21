@@ -51,3 +51,8 @@ export function deleteCarts(ids){
 export function isDiscountValid(id){
     return get('/discounts/time', {id:id})
 }
+
+//展示该用户退货状态-2 -3 -4的所有订单
+export function returnOrders(id){
+    return get('/show/byreturn', {id:id})
+}

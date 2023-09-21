@@ -11,28 +11,19 @@
 				
 				<view class="shops-goods" v-for="(item,secondIndex) in i" 
 				:key="item.id" @tap="goOrderDetail(i)">
-					<!-- 倒计时 -->
-					<!-- <view>时间{{ timeupSecond!==0}} state:{{item.state}} 
-					secondIndex:{{secondIndex}}</view> -->
-					<view class="countdown" v-if="timeupSecond!==0&&item.state === '0'&&rest(i[0].createTime,i)">
-						<uni-countdown v-if="item.state === '0'&&secondIndex===0" 
-						class="room-count" color="#fff" 
-						:show-day="false" :second="timeupSecond"
-						 background-color="#FE4355"
-						@timeup="timeup(i[0].createTime)" />
-						<text v-if="item.state === '0'&&secondIndex===0" class="count-txt">之后订单取消</text>
+					<!-- 红色按钮区域 根据-2 -3 -4 状态显示 -->
+					<view class="invalid" v-if="secondIndex===0&&item.state == '-2'">
+						<text class="invalid-text">退单中</text>
 					</view>
-					<view class="invalid" v-if="!rest(i[0].createTime,i)&&secondIndex===0&&item.state === '0'">
-						<text class="invalid-text">交易关闭</text>
+					<view class="invalid" v-if="secondIndex===0&&item.state == '-3'">
+						<text class="invalid-text">成功退单</text>
+					</view>
+					<view class="invalid" v-if="secondIndex===0&&item.state == '-4'">
+						<text class="invalid-text">直接退单</text>
 					</view>
 					
+					<!-- 图片那块区域 -->
 					<view class="g-body">
-						<!-- 多选框 -->
-						<!-- <label class="radio" @tap="selectedItem(item.id)">
-							<radio value="" color="#FF3333" :checked="item.checked"/>
-							<text></text>
-						</label> -->
-						
 						<image :src="petPath+item.img" mode="" 
 						class="shop-img"@tap="callGoDetail(item)">
 						</image>
@@ -41,10 +32,6 @@
 							<view class="" >
 								<view class="shop-name" @tap="callGoDetail(item)">
 									<view @tap="callGoDetail(item)">{{item.name}}</view>
-									<!-- <uni-icons type="trash-filled" size="25"
-									color="grey" @tap="del(item.id)"
-									class="trash">
-									</uni-icons> -->
 								</view>
 								<view class="shop-option">
 									<!-- {{item.option}} -->
@@ -64,26 +51,7 @@
 				</view>
 					
 				<!-- 底部按钮  v-if="text[i[0].state]!==''"-->
-				<view class="btns" >
-					
-					<view class="" v-show="i[0].state!=0||rest(i[0].createTime,i)">
-						<button @click="goFirst(leftBtn[i[0].state],i)"
-							type="primary" plain="true" size="mini" 
-							class="btns-1"
-							style="color:#FE4355;border-color: #FE4355;
-							border-radius: 30rpx;height: 60rpx;">
-							{{leftBtn[i[0].state]}}
-						</button>
-					</view>
-					<!-- <view class="" >
-						<button @click="goFirst(text[i[0].state],i)"
-							type="primary" plain="true" size="mini" 
-							class="btns-1"
-							style="color:#FE4355;border-color: #FE4355;
-							border-radius: 30rpx;height: 60rpx;">
-							{{leftBtn[i[0].state]}}
-						</button>
-					</view> -->
+				<!-- <view class="btns" >
 					
 					<button @click="go(text[i[0].state],i)"
 					class="btns-2"
@@ -92,7 +60,7 @@
 						border-radius: 30rpx;height: 60rpx;">
 						{{text[i[0].state]}}
 					</button>
-				</view>
+				</view> -->
 			</view>
 		</view>
 		
@@ -111,14 +79,10 @@
 			  type: Array,
 			  required: true
 			},
-			text:{
-				type:Array,
-				required:true
-			},
-			// texts:{
+			// text:{
 			// 	type:Array,
 			// 	required:true
-			// }
+			// },
 		},
 		name:"orderItems",
 		data() {

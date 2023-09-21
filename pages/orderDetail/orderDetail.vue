@@ -85,6 +85,12 @@
 				<text class="cell-tit clamp">付款时间</text>
 				<text class="cell-tip">{{info[0].buyTime}}</text>
 			</view>
+			
+			<!-- 判断是不是申请退单了 展示退单理由 -->
+			<view class="yt-list-cell b-b" v-if="info[0].returnReason!=null">
+				<text class="cell-tit clamp">退单理由</text>
+				<text class="cell-tip">{{info[0].returnReason}}</text>
+			</view>
 		</view>
 		
 		<!-- 底部 -->
