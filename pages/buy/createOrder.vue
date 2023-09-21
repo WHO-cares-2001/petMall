@@ -93,12 +93,13 @@
 				</view>
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">优惠金额</text>
-					<view class="" v-if="isValid(i[0].discountsId)">
+					<!-- <view class="" v-if="isValid(i[0].discountsId)">
 						<text class="cell-tip red">-￥{{i[0].discountMoney}}</text>
 					</view>
 					<view class="" v-else>
 						<text class="cell-tip red">-￥0</text>
-					</view>
+					</view> -->
+						<text class="cell-tip red">-￥{{discount[shopIndex]}}</text>
 				</view>
 				<view class="yt-list-cell b-b">
 					<text class="cell-tit clamp">运费</text>
@@ -117,7 +118,7 @@
 			<view class="price-content">
 				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">{{totalCount.pprice}}</text>
+				<text class="price">{{totalCountDiscount}}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -191,7 +192,8 @@
 				orderIds:[],//每个订单的编号
 				submitJson:[],
 				flag:null,
-				
+				//放每个订单总折扣
+				discount:[]
 			}
 		},
 		onLoad(e){
@@ -279,7 +281,7 @@
 						remark:this.desc[i],
 						state:0,
 					}
-					//算每个订单的总金额
+					//算每个订单的总金额(实付款)
 					Orders.money=this.totals[i]
 					console.log(Orders)
 					Orders2.push(Orders)
@@ -434,28 +436,84 @@
 				}
 				console.log(this.totals)
 			},
+			//计算每个订单总金额，并依次放入discount数组中
 			// cntEveryOrder(result){
 			// 	if(Array.isArray(result)){
 			// 		result.forEach(item=>{
 			// 			var total=0
-			// 			i.forEach({
-			// 				isDiscountValid(i.id)
+			// 			item.forEach(i=>{
+			// 				isDiscountValid(i.discountsId)
 			// 				.then(function(res){
 			// 					console.log(res.data)
 			// 					if(res.data==1){
 			// 						console.log('true')
 			// 						total+=i.discountMoney
+			// 						console.log('i.discountMoney:'+i.discountMoney)
 			// 					}else{
 									
 			// 					}
 			// 				})
 			// 			})
-						
+			// 			this.discount.push(total); // 将总折扣金额添加到 this.discount 数组中
 			// 		})
 			// 	}else{
-					
+			// 		let self=this
+			// 		isDiscountValid(result.discountsId)
+			// 		.then(function(res){
+			// 			console.log(res.data)
+			// 			if(res.data==1){
+			// 				console.log('true')
+			// 				self.discount.push(result.discountMoney)
+			// 			}else{
+							
+			// 			}
+			// 		})
 			// 	}
+			// 	console.log(this.discount)
 			// }
+			cntEveryOrder(result) {
+				 let self = this;
+			    if (Array.isArray(result)) {
+			        var promises = [];
+			
+			        result.forEach(item => {
+			            var total = 0;
+			
+			            item.forEach(i => {
+			                var promise = isDiscountValid(i.discountsId)
+			                    .then(function (res) {
+			                        console.log(res.data);
+			                        if (res.data == 1) {
+			                            console.log('true');
+			                            total += i.discountMoney;
+			                            console.log('i.discountMoney:' + i.discountMoney);
+			                        }
+			                    });
+			
+			                promises.push(promise);
+			            });
+			
+			            // 等待内部的所有异步操作完成
+			            Promise.all(promises).then(function () {
+			                self.discount.push(total);
+			            });
+			        });
+			    } else {
+			        isDiscountValid(result.discountsId)
+			            .then(function (res) {
+			                console.log(res.data);
+			                if (res.data == 1) {
+			                    console.log('true');
+			                    self.discount.push(result.discountMoney);
+			                }
+			            })
+			            .then(function () {
+			                console.log(self.discount);
+			            });
+			    }
+				// console.log(self.discount);
+			},
+
 		},
 		computed:{
 			...mapState({
@@ -485,11 +543,19 @@
 				});	
 				// 将 Map 转换为数组，即按照 shopId 分组的数组
 				const result = [...shopIdMap.values()];
-				
+				this.cntEveryOrder(result);
 				console.log(result)//goodsList内容	
 				return result
 			},
-			
+			totalCountDiscount(){
+				let tt=this.totalCount.pprice
+				this.discount.forEach(d=>{
+					this.totalCount.pprice-=d
+					console.log('每次：'+d)
+				})
+				console.log('this.totalCount.pprice:'+this.totalCount.pprice)
+				return this.totalCount.pprice
+			}
 		},
 		
 	}

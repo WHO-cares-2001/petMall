@@ -3,7 +3,7 @@
 		<!-- 顶部导航栏 -->
 		<TopBar barTitle="编辑收货地址" @click-left='goBack()'></TopBar>
 		
-		<span class="btn-delete">12321</span>
+		<!-- <span class="btn-delete">12321</span> -->
 		<view class="row b-b">
 			<text class="tit">收件人</text>
 			<input class="input" type="text" v-model="addressData.addressName" placeholder="收货人姓名"
