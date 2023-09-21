@@ -118,7 +118,7 @@
 			<view class="price-content">
 				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">{{totalCountDiscount}}</text>
+				<text class="price">{{totalCount.pprice}}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -272,8 +272,10 @@
 				// console.log(Orders)
 				this.everyOrderTotal()
 				let len=this.totals.length
+				//Order2是所有订单存放的数组
 				let Orders2=[]
 				for(let i=0;i<len;i++){
+					//每个Orders再加个总折扣金额
 					let Orders={
 						userId:this.usersId,
 						adressesId:this.defaultPath.id,
@@ -371,7 +373,7 @@
 			stopPrevent(){},
 			para(e){
 				
-				console.log(e.detail)
+				console.log('购物车所有传过来的商品:'+e.detail)
 				//this.item是所有传过来的商品
 				this.item= JSON.parse(e.detail);
 				//给item每个json加个备注
@@ -436,41 +438,6 @@
 				}
 				console.log(this.totals)
 			},
-			//计算每个订单总金额，并依次放入discount数组中
-			// cntEveryOrder(result){
-			// 	if(Array.isArray(result)){
-			// 		result.forEach(item=>{
-			// 			var total=0
-			// 			item.forEach(i=>{
-			// 				isDiscountValid(i.discountsId)
-			// 				.then(function(res){
-			// 					console.log(res.data)
-			// 					if(res.data==1){
-			// 						console.log('true')
-			// 						total+=i.discountMoney
-			// 						console.log('i.discountMoney:'+i.discountMoney)
-			// 					}else{
-									
-			// 					}
-			// 				})
-			// 			})
-			// 			this.discount.push(total); // 将总折扣金额添加到 this.discount 数组中
-			// 		})
-			// 	}else{
-			// 		let self=this
-			// 		isDiscountValid(result.discountsId)
-			// 		.then(function(res){
-			// 			console.log(res.data)
-			// 			if(res.data==1){
-			// 				console.log('true')
-			// 				self.discount.push(result.discountMoney)
-			// 			}else{
-							
-			// 			}
-			// 		})
-			// 	}
-			// 	console.log(this.discount)
-			// }
 			cntEveryOrder(result) {
 				 let self = this;
 			    if (Array.isArray(result)) {
@@ -496,6 +463,9 @@
 			            // 等待内部的所有异步操作完成
 			            Promise.all(promises).then(function () {
 			                self.discount.push(total);
+							
+							// 在这里调用 totalCountDiscount() 方法
+							self.totalCountDiscount();
 			            });
 			        });
 			    } else {
@@ -509,11 +479,24 @@
 			            })
 			            .then(function () {
 			                console.log(self.discount);
+							
+							// 在这里调用 totalCountDiscount() 方法
+							self.totalCountDiscount();
 			            });
 			    }
 				// console.log(self.discount);
 			},
-
+			totalCountDiscount(){
+				console.log('初始值: ' + this.totalCount.pprice)
+				let tt=this.totalCount.pprice
+				this.discount.forEach(d=>{
+					this.totalCount.pprice-=d
+					console.log('每次：'+d)
+				})
+				console.log('this.totalCount.pprice最终值:'+this.totalCount.pprice)
+				return this.totalCount.pprice
+			},
+			
 		},
 		computed:{
 			...mapState({
@@ -547,15 +530,7 @@
 				console.log(result)//goodsList内容	
 				return result
 			},
-			totalCountDiscount(){
-				let tt=this.totalCount.pprice
-				this.discount.forEach(d=>{
-					this.totalCount.pprice-=d
-					console.log('每次：'+d)
-				})
-				console.log('this.totalCount.pprice:'+this.totalCount.pprice)
-				return this.totalCount.pprice
-			}
+			
 		},
 		
 	}

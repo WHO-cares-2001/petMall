@@ -243,11 +243,12 @@
 				if(t==="去支付"){
 					if(this.rest(i[0].createTime,i)){
 						console.log(i[0].money)
+						console.log('去支付的订单编号：'+i[0].number)
 						uni.navigateTo({
 							// url:`../payment/payment?goodsList=${JSON.stringify(goodsList)}`
 							url: '../payment/payment?money='+i[0].money
 								+'&goodsList='+JSON.stringify(goodsList)
-								+'&ids='+i[0].number
+								+'&ids='+JSON.stringify(i[0].number)
 						});
 					}
 					else{
@@ -368,6 +369,7 @@
 				this.$refs.popDialog[0].open()
 			},
 			confirm(value,i) {
+				let self=this
 				// 输入框的值
 				const inputValue = value;
 				console.log(inputValue)
@@ -392,14 +394,15 @@
 					.then(function(res){
 						console.log(res)
 						
+						//要等数据库连接之后才能跳转界面
+						//关闭
+						self.$refs.popDialog[0].close()
+						//跳转别的页面
+						uni.navigateTo({
+							url:'../orderStates/orderStates?state=2'
+						})
 					})
 					
-					//关闭
-					this.$refs.popDialog[0].close()
-					//跳转别的页面
-					uni.navigateTo({
-						url:'../orderStates/orderStates?state=2'
-					})
 				}
 				
 			}

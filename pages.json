@@ -357,6 +357,15 @@
 		        "enablePullDownRefresh": false
 		    }
 		}
+        ,{
+            "path" : "pages/returnOrders/returnOrders",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

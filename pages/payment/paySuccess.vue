@@ -20,8 +20,11 @@
 		},
 		methods: {
 			go(){
-				uni.switchTab({
-					url:"/pages/user/user"
+				// uni.switchTab({
+				// 	url:"/pages/user/user"
+				// })
+				uni.navigateTo({
+					url:'../orderStates/orderStates?state=1'
 				})
 			}
 		},

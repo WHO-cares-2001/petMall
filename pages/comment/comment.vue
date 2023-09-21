@@ -143,17 +143,20 @@
 						addComment(com)
 						.then(function(res){
 							console.log(res)
+							
+							//等待异步操作做完，再跳转相应订单界面
+							//添加完了提示
+							uni.showToast({
+								title:'评论已提交！',
+								icon:'success'
+							})
+							//跳转别的页面
+							uni.navigateTo({
+								url:'../orderStates/orderStates?state=4'
+							})
 						})
 					})
-					//添加完了提示
-					uni.showToast({
-						title:'评论已提交！',
-						icon:'success'
-					})
-					//跳转别的页面
-					uni.navigateTo({
-						url:'../orderStates/orderStates?state=4'
-					})
+					
 				}
 			}
 		}

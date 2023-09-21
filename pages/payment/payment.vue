@@ -75,7 +75,7 @@
 			
 			//传的是订单编号数组
 			this.orders=JSON.parse(e.ids)
-			console.log(this.orders)
+			console.log('payment订单编号数组'+this.orders)
 			
 		},
 
