@@ -25,7 +25,7 @@
 							</uni-icons>
 						</view>
 						<view class="footer" @tap="callGoDetail(item.animalId,item.goodsId,null)">
-							
+							<!-- <text class="price">￥{{item.price}}</text> -->
 						</view>
 					</view>
 				</view>
@@ -175,7 +175,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 	page{
 		background-color: #f5f5f5;
 	}
@@ -227,4 +227,11 @@ export default {
 	padding-left: 30rpx;
 }
 
+.price{
+	font-size: $font-lg-like;
+	color: $uni-color-primary-like;
+	line-height: 1;
+	padding: 0 0 0 20upx;
+}
+		
 </style>

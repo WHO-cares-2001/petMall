@@ -328,7 +328,7 @@
 						//订单不显示倒计时
 						//跳转别的页面
 						uni.navigateTo({
-							url:'../orderStates/orderStates?state=0'
+							url:'../orderStates/orderStates?state='+i[0].state
 						})
 					})
 				}

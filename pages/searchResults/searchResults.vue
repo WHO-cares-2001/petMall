@@ -17,8 +17,8 @@
 			
 			<view class="">
 				<view v-if="current === 0">
-				  <pet-card v-for="(item, index) in resList" :key="index" :pet="item" />
-				  
+				  <!-- <pet-card v-for="(item, index) in resList" :key="index" :pet="item" /> -->
+				  <indexCard :items="resList" :type="0"></indexCard>
 				  <view class="text" v-if="resList.length===0">
 				  	<text>无结果，请换个关键词搜索吧~</text>
 				  </view>
@@ -28,13 +28,9 @@
 					<view class="text" v-if="resList.length===0">
 						<text>无结果，请换个关键词搜索吧~</text>
 					</view>
-					
-				  <StuffCard v-for="(item, index) in resList" :key="index" :pet="item" />
+				  <!-- <StuffCard v-for="(item, index) in resList" :key="index" :pet="item" /> -->
+				  <indexCard :items="resList" :type="1"></indexCard>
 				</view>
-				
-				<!-- <view v-if="current === 2">
-				  <text>3</text>
-				</view> -->
 			</view>
 			
 		</view>
@@ -43,7 +39,7 @@
 
 <script>
 	import TopBar from '../../components/common/topBar.vue'
-	
+	import indexCard from '../../components/indexCard.vue'
 	import {goIndex} from '@/common/sharedMethods.js'
 	import PetCard from '@/components/categorySelect/categoryList.vue'
 	import StuffCard from '@/components/stuffCard/stuffCard.vue'
@@ -57,7 +53,8 @@
 		components:{
 			TopBar,
 			PetCard,
-			StuffCard
+			StuffCard,
+			indexCard
 		},
 		data() {
 			return {
@@ -136,5 +133,11 @@
 <style lang="scss">
 .text{
 	padding: 70rpx 140rpx;
+}
+page{
+	background-color: #F7F7F7;
+}
+.control{
+	background-color: #fff;
 }
 </style>

@@ -57,6 +57,10 @@
 					<text>【宝贝介绍】：</text>
 					<text>{{detailInfo.introduction}}</text>
 				</view>
+				<!-- 折扣 -->
+				<view class="invalid" v-if="valid">
+					<text class="invalid-text">该宝贝特价优惠￥{{detailInfo.discountMoney}}</text>
+				</view>
 				
 				<!-- 库存信息 -->
 				<view class="inventory">
@@ -123,7 +127,10 @@ import {
 } from "../../network/modules/collection.js";
 	
 import {mapState,mapActions,mapGetters,mapMutations} from 'vuex'
-
+import {
+		isDiscountValid
+	} from "../../network/modules/order.js";
+	
 export default {
 	components:{
 		TopBar
@@ -172,7 +179,10 @@ export default {
 			shopInfo:[],
 			userId:'',
 			//该商品收藏id
-			favorId:''
+			favorId:'',
+			//判断是否在折扣有限期
+			valid:null,
+			
 		}
 	},
 	methods: {
@@ -398,6 +408,7 @@ export default {
 		swiperChange(e) {
 		  console.log('Current Swiper Index:', e.detail.current)
 		},
+		//获得初始数据
 		fetchPetData(type){
 			let self=this
 			
@@ -406,11 +417,13 @@ export default {
 				//console.log('fetchPetData')
 				animalById(this.goodsId)
 				.then(function(res){
-					// console.log(res); 
+					console.log('打印动物信息res.data：'); 
 					self.detailInfo=res.data
 					console.log(self.detailInfo)
 					self.video(self.detailInfo.videoId,self)
 					self.shop(self.detailInfo.shopId,self)
+					
+					self.isValid(self.detailInfo.discountsId,self)
 				})
 				.catch(function(err){
 					console.log(err)
@@ -421,13 +434,31 @@ export default {
 				//stuff
 				stuffById(this.goodsId)
 				.then(function(res){
-					// console.log(res.data); 
+					console.log('打印动物信息res.data：')
 					self.detailInfo=res.data
 					console.log(self.detailInfo)
 					self.video(self.detailInfo.videoId,self)
 					self.shop(self.detailInfo.shopId,self)
+					
+					self.isValid(self.detailInfo.discountsId,self)
 				})
 			}
+		},
+		isValid(id,self){
+			isDiscountValid(id)
+			.then(function(res){
+				console.log(res.data)
+				// self.valid=res.data
+				if(res.data===1){
+					self.valid=true
+					console.log('true')
+					// return true
+				}else{
+					console.log('false')
+					self.valid=false
+					// return false
+				}
+			})
 		},
 		video(id,self){			
 			console.log(id)
@@ -615,5 +646,20 @@ export default {
 	justify-content:space-around ;
 	margin: 10rpx 0;
 	/* border-top: 1px solid #DCDFE6; */
+}
+.invalid{
+	background-color: #FE4355;
+	color: #fff;
+	width: 50%;
+	border-radius: 30rpx;
+	margin-left: 170rpx;
+	margin-bottom: 25rpx;
+	display: flex; 
+	justify-content: center;
+	
+}
+.invalid-text{
+	padding: 10rpx;
+	font-size: 30upx;
 }
 </style>

@@ -63,7 +63,8 @@
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
-				<text class="cell-tip red">-￥0</text>
+				<text class="cell-tip red" v-if="info[0].discountMoney!=null">-￥{{info[0].discountMoney}}</text>
+				<text class="cell-tip red" v-else>-￥0</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">运费</text>
@@ -71,7 +72,8 @@
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">实付款</text>
-				<text class="cell-tip red">￥{{info[0].money-0}}</text>
+				<text class="cell-tip red" v-if="info[0].discountMoney!=null">￥{{info[0].money-info[0].discountMoney}}</text>
+				<text class="cell-tip red" v-else>￥{{info[0].money}}</text>
 			</view>
 			<view class="yt-list-cell desc-cell underline-between-views">
 				<text class="cell-tit clamp">备注</text>

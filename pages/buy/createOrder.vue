@@ -282,12 +282,15 @@
 						money:null,
 						remark:this.desc[i],
 						state:0,
+						totalDiscount:this.discount[i]
 					}
 					//算每个订单的总金额(实付款)
 					Orders.money=this.totals[i]
+					console.log('每个订单项：')
 					console.log(Orders)
 					Orders2.push(Orders)
 				}
+				console.log('所有订单项：')
 				console.log(Orders2)
 				
 				let self=this
@@ -438,13 +441,63 @@
 				}
 				console.log(this.totals)
 			},
+			// cntEveryOrder(result) {
+			// 	 let self = this;
+			//     if (Array.isArray(result)) {
+			//         var promises = [];
+			
+			//         result.forEach(item => {
+			//             var total = 0;
+			
+			//             item.forEach(i => {
+			//                 var promise = isDiscountValid(i.discountsId)
+			//                     .then(function (res) {
+			//                         console.log(res.data);
+			//                         if (res.data == 1) {
+			//                             console.log('true');
+			//                             total += i.discountMoney;
+			//                             console.log('i.discountMoney:' + i.discountMoney);
+			//                         }
+			//                     });
+			
+			//                 promises.push(promise);
+			//             });
+			
+			//             // 等待内部的所有异步操作完成
+			//             Promise.all(promises).then(function () {
+			//                 self.discount.push(total);
+							
+			// 				// 在这里调用 totalCountDiscount() 方法
+			// 				self.totalCountDiscount();
+			//             });
+			//         });
+			//     } else {
+			//         isDiscountValid(result.discountsId)
+			//             .then(function (res) {
+			//                 console.log(res.data);
+			//                 if (res.data == 1) {
+			//                     console.log('true');
+			//                     self.discount.push(result.discountMoney);
+			//                 }
+			//             })
+			//             .then(function () {
+			//                 console.log(self.discount);
+							
+			// 				// 在这里调用 totalCountDiscount() 方法
+			// 				self.totalCountDiscount();
+			//             });
+			//     }
+			// 	// console.log(self.discount);
+			// },
 			cntEveryOrder(result) {
-				 let self = this;
+			    let self = this;
 			    if (Array.isArray(result)) {
 			        var promises = [];
+			        var totalCount = result.length;
 			
 			        result.forEach(item => {
 			            var total = 0;
+			            var itemCounter = item.length;
 			
 			            item.forEach(i => {
 			                var promise = isDiscountValid(i.discountsId)
@@ -455,17 +508,21 @@
 			                            total += i.discountMoney;
 			                            console.log('i.discountMoney:' + i.discountMoney);
 			                        }
+			                    })
+			                    .finally(function () {
+			                        itemCounter--;
+			                        if (itemCounter === 0) {
+			                            // 所有item的异步操作都完成了，可以将total添加到self.discount中
+			                            self.discount.push(total);
+			                            totalCount--;
+			                            if (totalCount === 0) {
+			                                // 所有result的异步操作都完成了，可以调用totalCountDiscount()
+			                                self.totalCountDiscount();
+			                            }
+			                        }
 			                    });
 			
 			                promises.push(promise);
-			            });
-			
-			            // 等待内部的所有异步操作完成
-			            Promise.all(promises).then(function () {
-			                self.discount.push(total);
-							
-							// 在这里调用 totalCountDiscount() 方法
-							self.totalCountDiscount();
 			            });
 			        });
 			    } else {
@@ -477,14 +534,11 @@
 			                    self.discount.push(result.discountMoney);
 			                }
 			            })
-			            .then(function () {
-			                console.log(self.discount);
-							
-							// 在这里调用 totalCountDiscount() 方法
-							self.totalCountDiscount();
+			            .finally(function () {
+			                // 在这里调用 totalCountDiscount() 方法
+			                self.totalCountDiscount();
 			            });
 			    }
-				// console.log(self.discount);
 			},
 			totalCountDiscount(){
 				console.log('初始值: ' + this.totalCount.pprice)
