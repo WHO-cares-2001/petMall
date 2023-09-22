@@ -114,7 +114,7 @@ export default {
 		
 		del(id){
 			let self=this
-			
+			console.log('进入删除收藏函数')
 			deleteFavor(id)
 			.then(function(res){
 				console.log(res); // 输出完整的响应对象，以便查看数据结构

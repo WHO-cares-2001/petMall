@@ -12,3 +12,8 @@ export function addFavor(favor){
 export function deleteFavor(id){
     return post('/favor/delete', { id: id })
 }
+
+//删除新版
+export function del(userId,goodsId,id){
+    return get('/show/delete', { userId:userId,goodsId:goodsId,id:id })
+}

@@ -333,7 +333,8 @@ export default {
 					title: '取消收藏成功',
 					icon: 'success'
 				})
-				
+				console.log('收藏id：')
+				console.log(this.favorId)
 				//去后端改一下
 				this.delC(this.favorId)
 			}else{
