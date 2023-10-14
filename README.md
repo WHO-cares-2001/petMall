@@ -1,13 +1,14 @@
-宠物商城系统app前端
+<h3>宠物商城系统app前端</h3>
+<br/>
+这是首页，首页商品根据商品点击量进行排序展示，库存不足的商品排在最后面，而且无法收藏、加购:
+<br/>
 <img src="https://github.com/WHO-cares-2001/petMall/assets/77758923/050979cb-0829-44b8-abbe-f35fae5ad84e" width="200px" />
 <img src="https://github.com/WHO-cares-2001/petMall/assets/77758923/088ee2e2-c78d-4153-bb68-9e25dd0a6a25" width="200px"/>
-![image](https://github.com/WHO-cares-2001/petMall/assets/77758923/050979cb-0829-44b8-abbe-f35fae5ad84e)
-![image](https://github.com/WHO-cares-2001/petMall/assets/77758923/088ee2e2-c78d-4153-bb68-9e25dd0a6a25)
+<br/>
 
-这是首页，首页商品根据商品点击量进行排序展示，库存不足的商品排在最后面，而且无法收藏、加购
+这是拥有二级分类的商品界面:
+<img src="https://github.com/WHO-cares-2001/petMall/assets/77758923/a5ec4f1c-e423-4c1e-8a50-0fda2ac72708" width="200px"/>
 
-![image](https://github.com/WHO-cares-2001/petMall/assets/77758923/a5ec4f1c-e423-4c1e-8a50-0fda2ac72708)
-这是拥有二级分类的商品界面
 ![image](https://github.com/WHO-cares-2001/petMall/assets/77758923/f5271cb2-fa35-4c01-8377-e263af7b59d5)
 这是异宠分类下蛇分类下的所有蛇商品
 
