@@ -1,6 +1,6 @@
 宠物商城系统app前端
-<img src="https://github.com/WHO-cares-2001/petMall/assets/77758923/050979cb-0829-44b8-abbe-f35fae5ad84e" style="zoom:50%" />
-<img src="https://github.com/WHO-cares-2001/petMall/assets/77758923/088ee2e2-c78d-4153-bb68-9e25dd0a6a25" style="zoom:50%" />
+<img src="https://github.com/WHO-cares-2001/petMall/assets/77758923/050979cb-0829-44b8-abbe-f35fae5ad84e" width="200px" />
+<img src="https://github.com/WHO-cares-2001/petMall/assets/77758923/088ee2e2-c78d-4153-bb68-9e25dd0a6a25" width="200px"/>
 ![image](https://github.com/WHO-cares-2001/petMall/assets/77758923/050979cb-0829-44b8-abbe-f35fae5ad84e)
 ![image](https://github.com/WHO-cares-2001/petMall/assets/77758923/088ee2e2-c78d-4153-bb68-9e25dd0a6a25)
 
